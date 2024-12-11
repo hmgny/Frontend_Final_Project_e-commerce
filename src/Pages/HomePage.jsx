@@ -11,30 +11,49 @@ import {
   Facebook,
   Instagram,
   Twitter,
+  Heart,
 } from "lucide-react";
 
 function HomePage() {
   return (
     <>
-      <header className="flex flex-col container py-4">
-        <div className=" flex justify-between">
-          <a className="h4 font-bold text-textColor">Bandage</a>
-          <div className="flex gap-5 items-center">
-            <a className="w-6 h-6">
-              <User color="black" />
+      <header className="flex flex-col px-8 py-4 sm:flex-row sm:justify-between">
+        <div className=" flex justify-between w-full">
+          <a className="h4 font-bold text-textColor sm:flex sm:justify-start">
+            Bandage
+          </a>
+          <div className="sm:flex sm:flex-row sm:items-center hidden sm:gap-5 mr-72 ml-16 ">
+            <a className="text-SecondaryTextColor h7 font-bold">Home</a>
+            <a className="text-SecondaryTextColor h7 font-bold">Shop </a>
+            <a className="text-SecondaryTextColor h7 font-bold">About</a>
+            <a className="text-SecondaryTextColor h7 font-bold">Blog</a>
+            <a className="text-SecondaryTextColor h7 font-bold">Contact</a>
+            <a className="text-SecondaryTextColor h7 font-bold">Pages</a>
+          </div>
+          <div className="flex gap-5 items-center justify-end">
+            <a className="flex">
+              <p className="w-6 h-6">
+                <User className="text-black sm:text-Primary" />
+              </p>
+              <h6 className="hidden sm:block text-Primary h6 font-bold">
+                Login / Register
+              </h6>
             </a>
             <a className="w-6 h-6">
-              <Search color="black" />
+              <Search className="text-black sm:text-Primary" />
             </a>
             <a className="w-6 h-6">
-              <ShoppingCart color="black" />
+              <ShoppingCart className="text-black sm:text-Primary" />
             </a>
-            <a className="w-6 h-6">
-              <AlignRight color="black" />
+            <a className="w-6 h-6 sm:hidden">
+              <AlignRight className="text-black " />
+            </a>
+            <a className="sm:w-6 sm:h-6 hidden sm:block">
+              <Heart className="sm:text-Primary " />
             </a>
           </div>
         </div>
-        <div className="flex flex-col items-center gap-7 py-20">
+        <div className="flex flex-col items-center gap-7 py-20 sm:flex-row sm:hidden">
           <a className="text-SecondaryTextColor h3">Home</a>
           <a className="text-SecondaryTextColor h3">Product</a>
           <a className="text-SecondaryTextColor h3">Pricing</a>
@@ -42,11 +61,11 @@ function HomePage() {
         </div>
       </header>
 
-      <div className="bg-[url('/images/homeHero.jpg')] bg-no-repeat bg-cover bg-top text-lightTextColor flex justify-center items-center  ">
-        <div className="flex flex-col items-center gap-12 py-44 max-w-64 ">
-          <h6 className="h6 text-base font-bold">SUMMER 2020</h6>
-          <h2 className="h2 text-4xl font-bold">NEW COLLECTION</h2>
-          <h4 className="text-xl text-lightGray">
+      <div className="bg-[url('/images/homeHero.jpg')] bg-no-repeat bg-cover bg-top text-lightTextColor flex justify-center items-center sm:items-start sm:justify-start sm:px-40 ">
+        <div className="flex flex-col items-center sm:items-start gap-12 py-44 max-w-64 sm:max-w-none">
+          <h6 className="h6 font-bold">SUMMER 2020</h6>
+          <h2 className="h2 sm:h1 font-bold">NEW COLLECTION</h2>
+          <h4 className="h4 sm:h5 sm:max-w-80 text-lightGray">
             We know how large objects will act, but things on a small scale.
           </h4>
           <button className="bg-succes text-lightTextColor text-3xl font-bold w-56 h-16 rounded-md">
@@ -55,8 +74,8 @@ function HomePage() {
         </div>
       </div>
 
-      <div className="container flex flex-col items-center py-24 gap-16">
-        <div className="max-w-52 flex flex-col gap-5">
+      <div className="px-8 sm:px-40 flex flex-col items-center py-24 gap-16 ">
+        <div className="max-w-52 sm:max-w-none flex flex-col gap-5 ">
           <h4 className="h4 font-bold flex justify-center text-textColor">
             EDITOR'S PICK
           </h4>
@@ -64,54 +83,55 @@ function HomePage() {
             Problems trying to resolve the confict between
           </p>
         </div>
-        <div className=" flex flex-col gap-8">
-          <div className="relative cursor-pointer ">
+        <div className=" flex flex-col gap-8 sm:flex-row">
+          <div className="relative cursor-pointer sm:w-1/2">
             <img
-              className="w-Card h-Category object-cover"
+              className="w-Card h-Category sm:w-full sm:aspect-square object-cover"
               src="/images/men.jpg"
               alt="Men"
             />
-            <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2">
+            <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2 sm:px-10">
               MEN
             </button>
           </div>
 
-          <div className="relative cursor-pointer ">
+          <div className="relative cursor-pointer sm:w-1/4">
             <img
-              className="w-Card h-Category object-cover"
+              className="w-Card h-Category object-cover sm:w-full "
               src="/images/women.jpg"
               alt="Men"
             />
-            <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2">
+            <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2 sm:px-6">
               WOMEN
             </button>
           </div>
+          <div className="flex flex-col gap-8 sm:gap-6 sm:w-1/4">
+            <div className="relative cursor-pointer ">
+              <img
+                className="w-Card h-CategorySmall object-cover sm:w-full sm:h-56"
+                src="/images/accersories.jpg"
+                alt="Men"
+              />
+              <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2 sm:px-6">
+                ACCESSORIES
+              </button>
+            </div>
 
-          <div className="relative cursor-pointer ">
-            <img
-              className="w-Card h-CategorySmall object-cover"
-              src="/images/accersories.jpg"
-              alt="Men"
-            />
-            <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2">
-              ACCESSORIES
-            </button>
-          </div>
-
-          <div className="relative cursor-pointer ">
-            <img
-              className="w-Card cover h-CategorySmall object-cover"
-              src="/images/kids.jpg"
-              alt="Men"
-            />
-            <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2">
-              KIDS
-            </button>
+            <div className="relative cursor-pointer sm:w-full sm:h-56 ">
+              <img
+                className="w-Card h-CategorySmall object-cover  "
+                src="/images/kids.jpg"
+                alt="Men"
+              />
+              <button className="absolute bottom transform translate-x-8 -translate-y-16 bg-white h6 font-bold px-12 py-2">
+                KIDS
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="container flex flex-col items-center py-24 gap-16">
+      <div className="px-8 sm:px-40 flex flex-col items-center py-24 gap-16">
         <div className="max-w-52 flex flex-col gap-5">
           <h5>Featured Products</h5>
           <h4 className="h4 font-bold flex justify-center text-textColor">
@@ -121,7 +141,7 @@ function HomePage() {
             Problems trying to resolve the conflict between
           </p>
         </div>
-        <div className=" flex flex-col gap-16">
+        <div className=" flex flex-col gap-16 sm:flex-row sm:flex-wrap">
           <div className="relative cursor-pointer flex flex-col gap-4">
             <img
               src="/images/best1.jpg"
@@ -158,219 +178,221 @@ function HomePage() {
             </div>
           </div>
 
-          <div className="relative cursor-pointer flex flex-col gap-4">
-            <img
-              src="/images/best2.jpg"
-              alt="best1"
-              className="h-cardBestceller"
-            />
-            <h6 className="font-bold h6 flex justify-center text-textColor">
-              Graphic Design
-            </h6>
-            <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
-              English Department
-            </p>
-            <div className="flex justify-center gap-2">
-              <h6 className="font-bold h6 flex justify-center text-muted">
-                $16.48
+          <div>
+            <div className="relative cursor-pointer flex flex-col gap-4">
+              <img
+                src="/images/best2.jpg"
+                alt="best1"
+                className="h-cardBestceller"
+              />
+              <h6 className="font-bold h6 flex justify-center text-textColor">
+                Graphic Design
               </h6>
-              <h6 className="font-bold h6 flex justify-center text-Secondary">
-                $6.48
-              </h6>
+              <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
+                English Department
+              </p>
+              <div className="flex justify-center gap-2">
+                <h6 className="font-bold h6 flex justify-center text-muted">
+                  $16.48
+                </h6>
+                <h6 className="font-bold h6 flex justify-center text-Secondary">
+                  $6.48
+                </h6>
+              </div>
+              <div className="flex justify-center">
+                <a className="bg-Primary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-Secondary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-alert rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-darkBackground rounded-full">
+                  <Circle size={16} />
+                </a>
+              </div>
             </div>
-            <div className="flex justify-center">
-              <a className="bg-Primary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-Secondary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-alert rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-darkBackground rounded-full">
-                <Circle size={16} />
-              </a>
-            </div>
-          </div>
 
-          <div className="relative cursor-pointer flex flex-col gap-4">
-            <img
-              src="/images/best3.jpg"
-              alt="best1"
-              className="h-cardBestceller"
-            />
-            <h6 className="font-bold h6 flex justify-center text-textColor">
-              Graphic Design
-            </h6>
-            <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
-              English Department
-            </p>
-            <div className="flex justify-center gap-2">
-              <h6 className="font-bold h6 flex justify-center text-muted">
-                $16.48
+            <div className="relative cursor-pointer flex flex-col gap-4">
+              <img
+                src="/images/best3.jpg"
+                alt="best1"
+                className="h-cardBestceller"
+              />
+              <h6 className="font-bold h6 flex justify-center text-textColor">
+                Graphic Design
               </h6>
-              <h6 className="font-bold h6 flex justify-center text-Secondary">
-                $6.48
-              </h6>
+              <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
+                English Department
+              </p>
+              <div className="flex justify-center gap-2">
+                <h6 className="font-bold h6 flex justify-center text-muted">
+                  $16.48
+                </h6>
+                <h6 className="font-bold h6 flex justify-center text-Secondary">
+                  $6.48
+                </h6>
+              </div>
+              <div className="flex justify-center">
+                <a className="bg-Primary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-Secondary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-alert rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-darkBackground rounded-full">
+                  <Circle size={16} />
+                </a>
+              </div>
             </div>
-            <div className="flex justify-center">
-              <a className="bg-Primary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-Secondary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-alert rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-darkBackground rounded-full">
-                <Circle size={16} />
-              </a>
-            </div>
-          </div>
 
-          <div className="relative cursor-pointer flex flex-col gap-4">
-            <img
-              src="/images/best4.jpg"
-              alt="best1"
-              className="h-cardBestceller"
-            />
-            <h6 className="font-bold h6 flex justify-center text-textColor">
-              Graphic Design
-            </h6>
-            <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
-              English Department
-            </p>
-            <div className="flex justify-center gap-2">
-              <h6 className="font-bold h6 flex justify-center text-muted">
-                $16.48
+            <div className="relative cursor-pointer flex flex-col gap-4">
+              <img
+                src="/images/best4.jpg"
+                alt="best1"
+                className="h-cardBestceller"
+              />
+              <h6 className="font-bold h6 flex justify-center text-textColor">
+                Graphic Design
               </h6>
-              <h6 className="font-bold h6 flex justify-center text-Secondary">
-                $6.48
-              </h6>
+              <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
+                English Department
+              </p>
+              <div className="flex justify-center gap-2">
+                <h6 className="font-bold h6 flex justify-center text-muted">
+                  $16.48
+                </h6>
+                <h6 className="font-bold h6 flex justify-center text-Secondary">
+                  $6.48
+                </h6>
+              </div>
+              <div className="flex justify-center">
+                <a className="bg-Primary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-Secondary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-alert rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-darkBackground rounded-full">
+                  <Circle size={16} />
+                </a>
+              </div>
             </div>
-            <div className="flex justify-center">
-              <a className="bg-Primary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-Secondary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-alert rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-darkBackground rounded-full">
-                <Circle size={16} />
-              </a>
-            </div>
-          </div>
 
-          <div className="relative cursor-pointer flex flex-col gap-4">
-            <img
-              src="/images/best5.jpg"
-              alt="best1"
-              className="h-cardBestceller"
-            />
-            <h6 className="font-bold h6 flex justify-center text-textColor">
-              Graphic Design
-            </h6>
-            <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
-              English Department
-            </p>
-            <div className="flex justify-center gap-2">
-              <h6 className="font-bold h6 flex justify-center text-muted">
-                $16.48
+            <div className="relative cursor-pointer flex flex-col gap-4">
+              <img
+                src="/images/best5.jpg"
+                alt="best1"
+                className="h-cardBestceller"
+              />
+              <h6 className="font-bold h6 flex justify-center text-textColor">
+                Graphic Design
               </h6>
-              <h6 className="font-bold h6 flex justify-center text-Secondary">
-                $6.48
-              </h6>
+              <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
+                English Department
+              </p>
+              <div className="flex justify-center gap-2">
+                <h6 className="font-bold h6 flex justify-center text-muted">
+                  $16.48
+                </h6>
+                <h6 className="font-bold h6 flex justify-center text-Secondary">
+                  $6.48
+                </h6>
+              </div>
+              <div className="flex justify-center">
+                <a className="bg-Primary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-Secondary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-alert rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-darkBackground rounded-full">
+                  <Circle size={16} />
+                </a>
+              </div>
             </div>
-            <div className="flex justify-center">
-              <a className="bg-Primary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-Secondary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-alert rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-darkBackground rounded-full">
-                <Circle size={16} />
-              </a>
-            </div>
-          </div>
 
-          <div className="relative cursor-pointer flex flex-col gap-4">
-            <img
-              src="/images/best6.jpg"
-              alt="best1"
-              className="h-cardBestceller"
-            />
-            <h6 className="font-bold h6 flex justify-center text-textColor">
-              Graphic Design
-            </h6>
-            <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
-              English Department
-            </p>
-            <div className="flex justify-center gap-2">
-              <h6 className="font-bold h6 flex justify-center text-muted">
-                $16.48
+            <div className="relative cursor-pointer flex flex-col gap-4">
+              <img
+                src="/images/best6.jpg"
+                alt="best1"
+                className="h-cardBestceller"
+              />
+              <h6 className="font-bold h6 flex justify-center text-textColor">
+                Graphic Design
               </h6>
-              <h6 className="font-bold h6 flex justify-center text-Secondary">
-                $6.48
-              </h6>
+              <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
+                English Department
+              </p>
+              <div className="flex justify-center gap-2">
+                <h6 className="font-bold h6 flex justify-center text-muted">
+                  $16.48
+                </h6>
+                <h6 className="font-bold h6 flex justify-center text-Secondary">
+                  $6.48
+                </h6>
+              </div>
+              <div className="flex justify-center">
+                <a className="bg-Primary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-Secondary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-alert rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-darkBackground rounded-full">
+                  <Circle size={16} />
+                </a>
+              </div>
             </div>
-            <div className="flex justify-center">
-              <a className="bg-Primary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-Secondary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-alert rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-darkBackground rounded-full">
-                <Circle size={16} />
-              </a>
-            </div>
-          </div>
 
-          <div className="relative cursor-pointer flex flex-col gap-4">
-            <img
-              src="/images/best7.jpg"
-              alt="best1"
-              className="h-ProductCard"
-            />
-            <h6 className="font-bold h6 flex justify-center text-textColor">
-              Graphic Design
-            </h6>
-            <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
-              English Department
-            </p>
-            <div className="flex justify-center gap-2">
-              <h6 className="font-bold h6 flex justify-center text-muted">
-                $16.48
+            <div className="relative cursor-pointer flex flex-col gap-4">
+              <img
+                src="/images/best7.jpg"
+                alt="best1"
+                className="h-ProductCard"
+              />
+              <h6 className="font-bold h6 flex justify-center text-textColor">
+                Graphic Design
               </h6>
-              <h6 className="font-bold h6 flex justify-center text-Secondary">
-                $6.48
-              </h6>
-            </div>
-            <div className="flex justify-center">
-              <a className="bg-Primary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-Secondary rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-alert rounded-full">
-                <Circle size={16} />
-              </a>
-              <a className="bg-darkBackground rounded-full">
-                <Circle size={16} />
-              </a>
+              <p className="font-bold h7 flex justify-center text-SecondaryTextColor">
+                English Department
+              </p>
+              <div className="flex justify-center gap-2">
+                <h6 className="font-bold h6 flex justify-center text-muted">
+                  $16.48
+                </h6>
+                <h6 className="font-bold h6 flex justify-center text-Secondary">
+                  $6.48
+                </h6>
+              </div>
+              <div className="flex justify-center">
+                <a className="bg-Primary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-Secondary rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-alert rounded-full">
+                  <Circle size={16} />
+                </a>
+                <a className="bg-darkBackground rounded-full">
+                  <Circle size={16} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -416,7 +438,7 @@ function HomePage() {
         />
       </div>
 
-      <div className="container flex flex-col items-center py-24 gap-16">
+      <div className="px-8 sm:px-40 flex flex-col items-center py-24 gap-16">
         <div className="max-w-52 flex flex-col gap-5">
           <p className="h7 text-Primary">Practice Advice</p>
           <h2 className="h2 font-bold flex justify-center text-textColor">
@@ -426,7 +448,7 @@ function HomePage() {
             Problems trying to resolve the conflict between the two major
           </p>
         </div>
-        <div className=" flex flex-col gap-16 container">
+        <div className=" flex flex-col gap-16 px-8 sm:px-40">
           <div className="relative cursor-pointer flex flex-col gap-4">
             <div>
               <img
@@ -471,7 +493,7 @@ function HomePage() {
         </div>
       </div>
 
-      <div className=" flex flex-col gap-16 container">
+      <div className=" flex flex-col gap-16 px-8 sm:px-40">
         <div className="relative cursor-pointer flex flex-col gap-4">
           <div>
             <img
@@ -516,7 +538,7 @@ function HomePage() {
         </div>
       </div>
 
-      <div className=" flex flex-col gap-16 container">
+      <div className=" flex flex-col gap-16 px-8 sm:px-40">
         <div className="relative cursor-pointer flex flex-col gap-4">
           <div>
             <img
@@ -560,7 +582,7 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <footer className="container ">
+      <footer className="px-8 sm:px-40">
         <div className="py-12 bg-lightGray">
           <h3 className="h3 text-textColor font-bold">Bandage</h3>
           <div className="flex justify-start gap-4">
