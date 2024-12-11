@@ -27,7 +27,8 @@ export default {
      },
 
      width:{
-      "Card" : "325px"
+      "Card" : "325px",
+      "BlogCardWeb" : "240px"
 
      },
 
@@ -36,6 +37,7 @@ export default {
       'CategorySmall': '250px',
       'ProductCard': '425px',
       'BlogCard': '300px',
+      'BlogCardWeb' : "420px"
      }
     },
 
