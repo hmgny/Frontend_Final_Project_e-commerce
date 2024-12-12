@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -242,6 +242,8 @@ const SignupForm = () => {
       >
         {isSubmitting ? "Submitting..." : "Sign Up"}
       </button>
+      <p> Already have an account? <Link className="text-Primary font-bold" to="/login">Login</Link></p>
+
     </form>
     </div>
   );
