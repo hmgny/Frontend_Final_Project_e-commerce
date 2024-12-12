@@ -31,7 +31,7 @@ function HomePage() {
             <a className="text-SecondaryTextColor h7 font-bold">Pages</a>
           </div>
           <div className="flex gap-5 items-center justify-end">
-            <a className="flex">
+            <a href="/signup" className="flex">
               <p className="w-6 h-6">
                 <User className="text-black sm:text-Primary" />
               </p>
