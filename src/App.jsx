@@ -1,12 +1,21 @@
 import React from "react";
 import HomePage from "./Pages/HomePage";
 import "./App.css";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import SignupForm from "./Pages/SignupForm";
+
 
 function App() {
   return (
     <BrowserRouter>
-      <Route path="/" exact component={HomePage} />
+      <Switch>
+      <Route path="/signup">
+          <SignupForm/>
+        </Route>
+        <Route path="/">
+          <HomePage/>
+        </Route>
+      </Switch>
     </BrowserRouter>
   );
 }
