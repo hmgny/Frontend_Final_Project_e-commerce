@@ -13,51 +13,64 @@ import {
   Twitter,
   Heart,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   return (
     <>
       <header className="flex flex-col px-8 py-4 sm:flex-row sm:justify-between">
         <div className=" flex justify-between w-full">
-          <a className="h4 font-bold text-textColor sm:flex sm:justify-start">
+          <Link className="h4 font-bold text-textColor sm:flex sm:justify-start">
             Bandage
-          </a>
+          </Link>
           <div className="sm:flex sm:flex-row sm:items-center hidden sm:gap-5 mr-72 ml-16 ">
-            <a className="text-SecondaryTextColor h7 font-bold">Home</a>
-            <a className="text-SecondaryTextColor h7 font-bold">Shop </a>
-            <a className="text-SecondaryTextColor h7 font-bold">About</a>
-            <a className="text-SecondaryTextColor h7 font-bold">Blog</a>
-            <a className="text-SecondaryTextColor h7 font-bold">Contact</a>
-            <a className="text-SecondaryTextColor h7 font-bold">Pages</a>
+            <Link className="text-SecondaryTextColor h7 font-bold">Home</Link>
+            <Link className="text-SecondaryTextColor h7 font-bold">Shop </Link>
+            <Link className="text-SecondaryTextColor h7 font-bold">About</Link>
+            <Link className="text-SecondaryTextColor h7 font-bold">Blog</Link>
+            <Link className="text-SecondaryTextColor h7 font-bold">Contact</Link>
+            <Link className="text-SecondaryTextColor h7 font-bold">Pages</Link>
           </div>
           <div className="flex gap-5 items-center justify-end">
-            <a href="/signup" className="flex">
+            <div className="flex gap-1">
+            <Link to="" className="flex">
               <p className="w-6 h-6">
                 <User className="text-black sm:text-Primary" />
               </p>
               <h6 className="hidden sm:block text-Primary h6 font-bold">
-                Login / Register
+                Login
               </h6>
-            </a>
-            <a className="w-6 h-6">
+            </Link>
+            <h6 className="hidden sm:block text-Primary h6 font-bold">/ 
+              </h6>
+            <Link to="/signup" className="flex">
+              
+              <h6 className="hidden sm:block text-Primary h6 font-bold">
+                 Register
+              </h6>
+            </Link>
+
+            </div>
+            
+            <Link className="w-6 h-6">
               <Search className="text-black sm:text-Primary" />
-            </a>
-            <a className="w-6 h-6">
+            </Link>
+            <Link className="w-6 h-6">
               <ShoppingCart className="text-black sm:text-Primary" />
-            </a>
-            <a className="w-6 h-6 sm:hidden">
+            </Link>
+            <Link className="w-6 h-6 sm:hidden">
               <AlignRight className="text-black " />
-            </a>
-            <a className="sm:w-6 sm:h-6 hidden sm:block">
+            </Link>
+            <Link className="sm:w-6 sm:h-6 hidden sm:block">
               <Heart className="sm:text-Primary " />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="flex flex-col items-center gap-7 py-20 sm:flex-row sm:hidden">
-          <a className="text-SecondaryTextColor h3">Home</a>
-          <a className="text-SecondaryTextColor h3">Product</a>
-          <a className="text-SecondaryTextColor h3">Pricing</a>
-          <a className="text-SecondaryTextColor h3">Contact</a>
+          <Link className="text-SecondaryTextColor h3">Home</Link>
+          <Link className="text-SecondaryTextColor h3">Product</Link>
+          <Link className="text-SecondaryTextColor h3">Pricing</Link>
+          <Link className="text-SecondaryTextColor h3">Contact</Link>
         </div>
       </header>
 
@@ -163,18 +176,18 @@ function HomePage() {
               </h6>
             </div>
             <div className="flex justify-center">
-              <a className="bg-Primary rounded-full">
+              <Link className="bg-Primary rounded-full">
                 <Circle size={16} />
-              </a>
-              <a className="bg-Secondary rounded-full">
+              </Link>
+              <Link className="bg-Secondary rounded-full">
                 <Circle size={16} />
-              </a>
-              <a className="bg-alert rounded-full">
+              </Link>
+              <Link className="bg-alert rounded-full">
                 <Circle size={16} />
-              </a>
-              <a className="bg-darkBackground rounded-full">
+              </Link>
+              <Link className="bg-darkBackground rounded-full">
                 <Circle size={16} />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -200,18 +213,18 @@ function HomePage() {
                 </h6>
               </div>
               <div className="flex justify-center">
-                <a className="bg-Primary rounded-full">
+                <Link className="bg-Primary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-Secondary rounded-full">
+                </Link>
+                <Link className="bg-Secondary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-alert rounded-full">
+                </Link>
+                <Link className="bg-alert rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-darkBackground rounded-full">
+                </Link>
+                <Link className="bg-darkBackground rounded-full">
                   <Circle size={16} />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -236,18 +249,18 @@ function HomePage() {
                 </h6>
               </div>
               <div className="flex justify-center">
-                <a className="bg-Primary rounded-full">
+                <Link className="bg-Primary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-Secondary rounded-full">
+                </Link>
+                <Link className="bg-Secondary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-alert rounded-full">
+                </Link>
+                <Link className="bg-alert rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-darkBackground rounded-full">
+                </Link>
+                <Link className="bg-darkBackground rounded-full">
                   <Circle size={16} />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -272,18 +285,18 @@ function HomePage() {
                 </h6>
               </div>
               <div className="flex justify-center">
-                <a className="bg-Primary rounded-full">
+                <Link className="bg-Primary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-Secondary rounded-full">
+                </Link>
+                <Link className="bg-Secondary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-alert rounded-full">
+                </Link>
+                <Link className="bg-alert rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-darkBackground rounded-full">
+                </Link>
+                <Link className="bg-darkBackground rounded-full">
                   <Circle size={16} />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -308,18 +321,18 @@ function HomePage() {
                 </h6>
               </div>
               <div className="flex justify-center">
-                <a className="bg-Primary rounded-full">
+                <Link className="bg-Primary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-Secondary rounded-full">
+                </Link>
+                <Link className="bg-Secondary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-alert rounded-full">
+                </Link>
+                <Link className="bg-alert rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-darkBackground rounded-full">
+                </Link>
+                <Link className="bg-darkBackground rounded-full">
                   <Circle size={16} />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -344,18 +357,18 @@ function HomePage() {
                 </h6>
               </div>
               <div className="flex justify-center">
-                <a className="bg-Primary rounded-full">
+                <Link className="bg-Primary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-Secondary rounded-full">
+                </Link>
+                <Link className="bg-Secondary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-alert rounded-full">
+                </Link>
+                <Link className="bg-alert rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-darkBackground rounded-full">
+                </Link>
+                <Link className="bg-darkBackground rounded-full">
                   <Circle size={16} />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -380,18 +393,18 @@ function HomePage() {
                 </h6>
               </div>
               <div className="flex justify-center">
-                <a className="bg-Primary rounded-full">
+                <Link className="bg-Primary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-Secondary rounded-full">
+                </Link>
+                <Link className="bg-Secondary rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-alert rounded-full">
+                </Link>
+                <Link className="bg-alert rounded-full">
                   <Circle size={16} />
-                </a>
-                <a className="bg-darkBackground rounded-full">
+                </Link>
+                <Link className="bg-darkBackground rounded-full">
                   <Circle size={16} />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -463,9 +476,9 @@ function HomePage() {
 
             <div className=" flex flex-col gap-4 p-12">
               <div className="flex justify-between pr-56 gap-4">
-                <a className="text-disabledElement ">Google</a>
-                <a className="text-SecondaryTextColor">Trending</a>
-                <a className="text-SecondaryTextColor">New</a>
+                <Link className="text-disabledElement ">Google</Link>
+                <Link className="text-SecondaryTextColor">Trending</Link>
+                <Link className="text-SecondaryTextColor">New</Link>
               </div>
               <h5 className="h5 text-textColor">
                 Loudest à la Madison #1 (L'integral)
@@ -508,9 +521,9 @@ function HomePage() {
 
           <div className=" flex flex-col gap-4 p-12">
             <div className="flex justify-between pr-56 gap-4">
-              <a className="text-disabledElement ">Google</a>
-              <a className="text-SecondaryTextColor">Trending</a>
-              <a className="text-SecondaryTextColor">New</a>
+              <Link className="text-disabledElement ">Google</Link>
+              <Link className="text-SecondaryTextColor">Trending</Link>
+              <Link className="text-SecondaryTextColor">New</Link>
             </div>
             <h5 className="h5 text-textColor">
               Loudest à la Madison #1 (L'integral)
@@ -553,9 +566,9 @@ function HomePage() {
 
           <div className=" flex flex-col gap-4 p-12">
             <div className="flex justify-between pr-56 gap-4">
-              <a className="text-disabledElement ">Google</a>
-              <a className="text-SecondaryTextColor">Trending</a>
-              <a className="text-SecondaryTextColor">New</a>
+              <Link className="text-disabledElement ">Google</Link>
+              <Link className="text-SecondaryTextColor">Trending</Link>
+              <Link className="text-SecondaryTextColor">New</Link>
             </div>
             <h5 className="h5 text-textColor">
               Loudest à la Madison #1 (L'integral)
@@ -586,15 +599,15 @@ function HomePage() {
         <div className="py-12 bg-lightGray">
           <h3 className="h3 text-textColor font-bold">Bandage</h3>
           <div className="flex justify-start gap-4">
-            <a>
+            <Link>
               <Facebook color="#23A6F0"></Facebook>
-            </a>
-            <a>
+            </Link>
+            <Link>
               <Instagram color="#23A6F0"></Instagram>
-            </a>
-            <a>
+            </Link>
+            <Link>
               <Twitter color="#23A6F0"></Twitter>
-            </a>
+            </Link>
           </div>
         </div>
         <div className="flex flex-col gap-8 py-16">
