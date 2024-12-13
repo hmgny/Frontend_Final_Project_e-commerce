@@ -1,85 +1,99 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
-
-const axiosInstance = axios.create({
+import { useHistory } from "react-router-dom";
+// Axios instance
+const api = axios.create({
   baseURL: "https://workintech-fe-ecommerce.onrender.com",
 });
-
 const SignupForm = () => {
+  const [roles, setRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState("customer");
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  // React Hook Form
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    setValue,
+    formState: { errors },
   } = useForm({
     mode: "onChange", // Hataları kullanıcı yazarken kontrol eder
     reValidateMode: "onChange", // Hataları her değişiklikte yeniden kontrol eder
+    defaultValues: {
+      role_id: "customer",
+      
+    },
   });
-  const [roles, setRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState('customer');
-  const [storeName, setStoreName] = useState('');
-  const [storeNameError, setStoreNameError] = useState(null);
-
-  const [storeFieldsVisible, setStoreFieldsVisible] = useState(false);
-  const history = useHistory();
-
+  const role_id = watch("role_id", "customer");
+  
   useEffect(() => {
-    const fetchRoles = async () => {
+    async function fetchRoles() {
       try {
-        const response = await axiosInstance.get("/roles");
-        setRoles(response.data || []);
+        const response = await api.get("/roles");
+        setRoles(response.data);
         
+        if (response.data.length > 0) {
+          setSelectedRole("customer");
+        }
       } catch (error) {
-        console.error("Error fetching roles:", error);
+        console.error("Roles could not be loaded:", error);
       }
-    };
-
+    }
     fetchRoles();
   }, []);
+  
+  useEffect(() => {
+    setValue("role_id", selectedRole);  
+  }, [selectedRole, setValue]);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
-      const { role_id } = data;
-      let postData = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        role_id: selectedRole,
-      };
-
-      if (role_id === "store") {
-        postData.store = {
-          name: data.storeName,
-          phone: data.storePhone,
-          tax_no: data.storeTaxNo,
-          bank_account: data.storeBankAccount,
-        };
+     
+      const payload =
+        data.role_id === "store"
+          ? {
+              name: data.name,
+              email: data.email,
+              password: data.password,
+              role_id: data.role_id,
+              store: {
+                name: data.store_name,
+                phone: data.store_phone,
+                tax_no: data.tax_no,
+                bank_account: data.bank_account,
+              },
+            }
+          : {
+              name: data.name,
+              email: data.email,
+              password: data.password,
+              role_id: data.role_id,
+            };
+      const response = await api.post("/signup", payload);
+      if (response.data?.message) {
+        alert(response.data.message); 
+        history.push("/"); 
       }
-
-      await axiosInstance.post("/signup", postData);
-      history.push("/");
     } catch (error) {
-      console.error("Error during signup:", error);
-      alert("Signup failed. Please try again.");
+      setError("api", {
+        type: "manual",
+        message: error.response?.data?.message || "An unexpected error occurred",
+      });
+    } finally {
+      setLoading(false);
     }
   };
-
-  const handleRoleChange = (event) => {
-    const selectedRole = event.target.value;
-      setStoreFieldsVisible(selectedRole === "store");
-    
-    
-  };
   return (
-    <div className="bg-Primary w-screen h-screen flex flex-col justify-center items-center">
+    <div className="bg-Primary w-screen h-max-screen flex flex-col justify-center items-center">
     <form
-      className="flex flex-col gap-4 w-500px h-100px justify-center items-center rounded-md bg-lightGray2 p-10" 
+      className="flex flex-col gap-4 w-500px h-100px justify-center items-center rounded-md bg-lightBackground p-10" 
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-2">
-        <label className="text-textColor h5">Name *</label>
+        <label className="text-textColor h5">Name</label>
         <input
           type="text"
           placeholder="Enter your name"
@@ -159,11 +173,13 @@ const SignupForm = () => {
         <div className="flex w-[450px] h7 rounded-md h-[50px] text-SecondaryTextColor">
         <label className="w-10/12 p-5 flex items-center ">Role</label>
         <select
-          {...register("role_id", { required: true })}
-          onChange={handleRoleChange}
+          className="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+          {...register("role_id", { required: "Role selection is required" })}
+          onChange={(e) => setSelectedRole(e.target.value)} 
+          value={selectedRole} 
         >
           {roles.map((role) => (
-            <option key={role.id} value={role.id}>
+            <option key={role.id} value={role.code}>
               {role.name}
             </option>
           ))}
@@ -177,57 +193,71 @@ const SignupForm = () => {
         )}
       </div>
 
-      {storeFieldsVisible && (
+      {selectedRole === "store" && (
         <>
-          <div className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md">
+          <div className="flex flex-col gap-2">
             <label className="text-textColor h5">Store Name</label>
             <input
+            placeholder="Enter your store name"
+          className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md"
               {...register("storeName", { required: true, minLength: 3 })}
             />
-            <span className={errors.storeName ? "text-red-700" : "text-black"}>
+            <span className={`px-5 h8 text-SecondaryTextColor max-w-[450px] ${
+            errors.store_name ? "text-red-700" : "hidden"
+          }`}>
               Store Name is required and must be at least 3 characters.
             </span>
           </div>
 
-          <div className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md">
+          <div className="flex flex-col gap-2">
             <label className="text-textColor h5">Store Phone</label>
             <input
+            placeholder="Enter your phone number"
+          className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md"
               {...register("storePhone", {
                 required: true,
                 pattern: /^(\+90|0)?5\d{2}\d{7}$/,
               })}
             />
-            <span className={errors.storePhone ? "text-red-700" : "text-black"}>
+            <span className={`px-5 h8 text-SecondaryTextColor max-w-[450px] ${
+            errors.store_name ? "text-red-700" : "hidden"
+          }`}>
               Store Phone is required and must be a valid Türkiye phone number.
             </span>
           </div>
 
-          <div className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md">
+          <div className="flex flex-col gap-2">
             <label className="text-textColor h5">Store Tax ID</label>
             <input
+            placeholder="Enter your Tax ID"
+          className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md"
               {...register("storeTaxNo", {
                 required: true,
                 pattern: /^T\d{4}V\d{6}$/,
               })}
             />
-            <span className={errors.storeTaxNo ? "text-red-700" : "text-black"}>
+            <span className={`px-5 h8 text-SecondaryTextColor max-w-[450px] ${
+            errors.store_name ? "text-red-700" : "hidden"
+          }`}>
               Store Tax ID is required and must match the pattern
               "TXXXXVXXXXXX".
             </span>
           </div>
 
-          <div className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md">
+          <div className="flex flex-col gap-2">
             <label className="text-textColor h5">Store Bank Account</label>
             <input
+            placeholder="Enter your bank account number"
+          className="w-[450px] h-[50px] p-5 h7 text-SecondaryTextColor rounded-md"
               {...register("storeBankAccount", {
                 required: true,
                 pattern: /^TR\d{2}[0-9]{5}[0-9]{1,16}$/,
               })}
             />
             <span
-              className={
-                errors.storeBankAccount ? "text-red-700" : "text-black"
-              }
+              className={`px-5 h8 text-SecondaryTextColor max-w-[450px] ${
+                errors.store_name ? "text-red-700" : "hidden"
+              }`}
             >
               Store Bank Account is required and must be a valid IBAN.
             </span>
@@ -238,9 +268,9 @@ const SignupForm = () => {
       <button
         className="bg-Primary text-lightTextColor text-3xl h7 font-bold w-[450px] h-[50px] rounded-md flex justify-center items-center"
         type="submit"
-        disabled={isSubmitting}
+        disabled={loading}
       >
-        {isSubmitting ? "Submitting..." : "Sign Up"}
+        {loading ? "Submitting..." : "Sign Up"}
       </button>
     </form>
     </div>
