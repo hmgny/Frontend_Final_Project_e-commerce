@@ -12,6 +12,9 @@ function App() {
       <Route path="/signup">
           <SignupForm/>
         </Route>
+        <Route path="/login">
+          <LoginForm/>
+        </Route>
         <Route path="/">
           <HomePage/>
         </Route>
