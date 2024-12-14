@@ -33,7 +33,7 @@ function HomePage() {
           </div>
           <div className="flex gap-5 items-center justify-end">
             <div className="flex gap-1">
-            <Link to="" className="flex">
+            <Link to="/login" className="flex">
               <p className="w-6 h-6">
                 <User className="text-black sm:text-Primary" />
               </p>
