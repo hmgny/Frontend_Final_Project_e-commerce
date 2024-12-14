@@ -1,102 +1,140 @@
 import React, { useState } from "react";
-import { useHistory, Link } from "react-router-dom";
-import Gravatar from "react-gravatar";
-import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+
+const initialForm = {
+  email: "",
+  password: "",
+};
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState(initialForm);
+  const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
-
   const history = useHistory();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleChange = (event) => {
+    const { target } = event;
+    if (!target || !target.name) return;
+
+    let value = target.type === "checkbox" ? target.checked : target.value;
+    if (value === undefined || value === null) return;
+
+    setForm({ ...form, [target.name]: value });
+  };
+
+  const onSubmit = async (data) => {
+    setLoading(true);
     try {
-      const response = await axios.post("/login", { email, password });
+      const res = await axios.get(
+        "https://6540a96145bedb25bfc247b4.mockapi.io/api/login"
+      );
+      const user = res.data.find(
+        (item) => item.password === data.password && item.email === data.email
+      );
 
-      setUser(response.data);
-      setError(null);
-
-      if (rememberMe) {
-        localStorage.setItem("token", response.data.token);
+      if (user) {
+        setForm(initialForm);
+        history.push("/main");
+        toast.success(`Merhaba ${user.name}, tekrar hoş geldin.`);
+      } else {
+        toast.error("Girdiğiniz bilgilerle bir kullanıcı bulamadık.");
+        history.push("/error");
       }
-      toast.success("Logged in successfully!");
-      history.push(history.goback() || "/");
-    } catch (err) {
-      const errorMessage =
-        err.response?.data?.message ||
-        "Login failed! Please check your credentials.";
-      setError(errorMessage);
-      toast.error(errorMessage);
+    } catch (error) {
+      console.error("An error occurred during login:", error);
+      toast.error("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto mt-10">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-8 rounded-lg shadow-md"
+      >
+        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+
+        {/* Email */}
         <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
+          <label htmlFor="email" className="block text-sm font-semibold">
             Email
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
             type="email"
-            placeholder="Enter your email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[^@]+@[^@]+\.[^@]+$/,
+                message: "Invalid email address",
+              },
+            })}
+            className="w-full p-3 border border-gray-300 rounded-md"
           />
+          {errors.email && (
+            <span className="text-red-500 text-sm">{errors.email.message}</span>
+          )}
         </div>
+
+        {/* Password */}
         <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            for="password"
-          >
+          <label htmlFor="password" className="block text-sm font-semibold">
             Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
             type="password"
-            placeholder="Enter your password"
+            {...register("password", { required: "Password is required" })}
+            className="w-full p-3 border border-gray-300 rounded-md"
           />
-          <span
-            id="password-error"
-            className="text-red-500 text-xs hidden"
-          ></span>
+          {errors.password && (
+            <span className="text-red-500 text-sm">
+              {errors.password.message}
+            </span>
+          )}
         </div>
+
+        {/* Remember Me */}
         <div className="flex items-center mb-4">
           <input
-            className="mr-2 leading-tight"
-            id="remember-me"
             type="checkbox"
+            id="rememberMe"
+            checked={rememberMe}
+            onChange={() => setRememberMe(!rememberMe)}
+            className="mr-2"
           />
-          <label className="text-gray-700 text-sm" htmlFor="remember-me">
-            Remember me
+          <label htmlFor="rememberMe" className="text-sm">
+            Remember Me
           </label>
         </div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-          type="submit"
-        >
-          Login
-        </button>
+
+        {/* Submit Button */}
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 w-full disabled:bg-gray-400"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </div>
       </form>
-      <p className="text-center text-gray-500 text-xs mt-4">
-        Don't have an account?{" "}
-        <Link
-          to="/signup"
-          className="text-blue-500 hover:text-blue-700 font-bold"
-        >
-          Signup
-        </Link>
-      </p>
     </div>
   );
 };
