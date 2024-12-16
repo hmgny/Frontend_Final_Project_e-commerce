@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+
 // Axios instance
 const api = axios.create({
   baseURL: "https://workintech-fe-ecommerce.onrender.com",
@@ -272,6 +273,8 @@ const SignupForm = () => {
       >
         {loading ? "Submitting..." : "Sign Up"}
       </button>
+      <p> Already have an account? <Link className="text-Primary font-bold" to="/login">Login</Link></p>
+
     </form>
     </div>
   );

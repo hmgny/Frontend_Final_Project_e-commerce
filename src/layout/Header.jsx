@@ -1,4 +1,5 @@
 import React from "react";
+
 import { User, Search, ShoppingCart, AlignRight, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 

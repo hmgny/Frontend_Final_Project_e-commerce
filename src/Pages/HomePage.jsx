@@ -51,7 +51,6 @@ function HomePage() {
             className="object-bottom object-cover"
           />
         </div>
-
         <div className="px-8 sm:px-40 flex flex-col items-center py-24 gap-16">
           <div className="max-w-52 flex flex-col gap-5">
             <p className="h7 text-Primary">Practice Advice</p>
