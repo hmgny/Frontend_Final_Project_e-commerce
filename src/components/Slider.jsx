@@ -38,7 +38,7 @@ const Slider = () => {
           backgroundImage: `url(${sliderImages[currentIndex]})`,
         }}
       >
-        <div className="flex flex-col items-center sm:items-start gap-12 py-44 max-w-64 sm:max-w-none">
+        <div className="flex flex-col items-center sm:items-start gap-12 py-44 max-w-64 sm:max-w-none text-center">
           <h6 className="h6 font-bold">SUMMER 2020</h6>
           <h2 className="h2 sm:h1 font-bold">NEW COLLECTION</h2>
           <h4 className="h4 sm:h5 sm:max-w-80 text-lightGray">
@@ -52,13 +52,13 @@ const Slider = () => {
 
       {/* Sol ve sağ oklar */}
       <button
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-3xl text-lightTextColor"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-5xl text-lightTextColor"
         onClick={goToPrev}
       >
         &#10094;
       </button>
       <button
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-3xl text-lightTextColor"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-5xl text-lightTextColor"
         onClick={goToNext}
       >
         &#10095;
