@@ -1,10 +1,43 @@
-import React from "react" 
+import React, { useState, useEffect } from "react";
 
-function Slider() {
-  
+const sliderImages = [
+  "/images/homeHero.jpg",
+  "/images/best2.jpg",
+  "/images/best3.jpg",
+];
 
-    return (
-      <div className="bg-[url('/images/homeHero.jpg')] bg-no-repeat bg-cover bg-top text-lightTextColor flex justify-center items-center sm:items-start sm:justify-start sm:px-40 ">
+const Slider = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Otomatik kaydırma işlemi
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderImages.length);
+    }, 5000); // 5 saniyede bir kaydırma
+
+    return () => clearInterval(interval); // Temizlik
+  }, []);
+
+  // Sonraki slayta git
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderImages.length);
+  };
+
+  // Önceki slayta git
+  const goToPrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? sliderImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  return (
+    <div className="relative">
+      <div
+        className="bg-no-repeat bg-cover bg-top text-lightTextColor flex justify-center items-center sm:items-start sm:justify-start sm:px-40"
+        style={{
+          backgroundImage: `url(${sliderImages[currentIndex]})`,
+        }}
+      >
         <div className="flex flex-col items-center sm:items-start gap-12 py-44 max-w-64 sm:max-w-none">
           <h6 className="h6 font-bold">SUMMER 2020</h6>
           <h2 className="h2 sm:h1 font-bold">NEW COLLECTION</h2>
@@ -16,8 +49,22 @@ function Slider() {
           </button>
         </div>
       </div>
-    )
-  }
-  
-  export default Slider
-  
+
+      {/* Sol ve sağ oklar */}
+      <button
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-3xl text-lightTextColor"
+        onClick={goToPrev}
+      >
+        &#10094;
+      </button>
+      <button
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-3xl text-lightTextColor"
+        onClick={goToNext}
+      >
+        &#10095;
+      </button>
+    </div>
+  );
+};
+
+export default Slider;
