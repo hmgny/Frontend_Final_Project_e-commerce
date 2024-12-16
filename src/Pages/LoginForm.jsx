@@ -4,19 +4,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 
-const initialForm = {
-  email: "",
-  password: "",
-};
-
 const LoginForm = () => {
-  const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const history = useHistory();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -26,37 +21,36 @@ const LoginForm = () => {
     },
   });
 
-  const handleChange = (event) => {
-    const { target } = event;
-    if (!target || !target.name) return;
-
-    let value = target.type === "checkbox" ? target.checked : target.value;
-    if (value === undefined || value === null) return;
-
-    setForm({ ...form, [target.name]: value });
-  };
-
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        "https://6540a96145bedb25bfc247b4.mockapi.io/api/login"
+      const res = await axios.post(
+        "https://workintech-fe-ecommerce.onrender.com/login",
+        {
+          email: data.email,
+          password: data.password,
+        }
       );
-      const user = res.data.find(
-        (item) => item.password === data.password && item.email === data.email
-      );
+      console.log(res.data);
 
-      if (user) {
-        setForm(initialForm);
-        history.push("/main");
-        toast.success(`Merhaba ${user.name}, tekrar hoş geldin.`);
-      } else {
-        toast.error("Girdiğiniz bilgilerle bir kullanıcı bulamadık.");
-        history.push("/error");
+      if (res.status === 200 && res.data.token) {
+        reset(); // Formu sıfırla
+        toast.success(`Merhaba ${res.data.name}, tekrar hoş geldin.`);
+
+        // İsteğe bağlı: Kullanıcıyı yerel depolama alanına kaydet
+        if (rememberMe) {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data));
+        }
+
+        history.push("/"); // Ana sayfaya yönlendir
       }
     } catch (error) {
-      console.error("An error occurred during login:", error);
-      toast.error("An unexpected error occurred.");
+      console.error(
+        "An error occurred during login:",
+        error.response?.data || error.message
+      );
+      toast.error("Girdiğiniz bilgilerle bir kullanıcı bulamadık.");
     } finally {
       setLoading(false);
     }
