@@ -12,8 +12,8 @@ import {
 
 function Footer() {
   return (
-    <footer className="container ">
-      <div className="py-12 bg-lightGray">
+    <footer >
+      <div className="p-16 gap-8 flex flex-col bg-lightGray sm:flex-row sm:justify-between sm:py-12 sm:px-40">
         <h3 className="h3 text-textColor font-bold">Bandage</h3>
         <div className="flex justify-start gap-4">
           <a>
@@ -27,7 +27,7 @@ function Footer() {
           </a>
         </div>
       </div>
-      <div className="flex flex-col gap-8 py-16">
+      <div className="flex flex-col gap-8 p-16 sm:flex-row sm:px-40 sm:justify-between" >
         <div className="flex flex-col gap-3">
           <h6 className="text-textColor h6 font-bold">Company Info</h6>
           <p className="text-SecondaryTextColor h7 font-bold">About Us</p>
@@ -82,12 +82,13 @@ function Footer() {
             Lore imp sum dolor Amit
           </p>
         </div>
-        <div className="bg-lightGray text-SecondaryTextColor p-10">
-          <p className="flex max-w-48 justify-center">
+        
+      </div>
+      <div className="bg-lightGray text-SecondaryTextColor flex justify-center sm:justify-start sm:px-40 sm:py-10 p-20">
+          <p className="flex max-w-52 text-center font-bold sm:text-start sm:max-w-none">
             Made With Love By Finland All Right Reserved
           </p>
         </div>
-      </div>
     </footer>
   );
 }
