@@ -3,7 +3,7 @@ import React from "react";
 function Category() {
   return (
     <div className="px-8 sm:px-40 flex flex-col items-center py-24 gap-16 ">
-      <div className="max-w-52 sm:max-w-none flex flex-col gap-5 ">
+      <div className="max-w-52 sm:max-w-none flex flex-col gap-5 text-center ">
         <h4 className="h4 font-bold flex justify-center text-textColor">
           EDITOR'S PICK
         </h4>
