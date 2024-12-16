@@ -27,8 +27,8 @@ export default {
      },
 
      width:{
-      "Card" : "325px",
-      "BlogCardWeb" : "240px"
+      "Card" : "380px",
+      "BlogCardWeb" : "440px"
 
      },
 
@@ -36,7 +36,7 @@ export default {
       'Category': '500px',
       'CategorySmall': '250px',
       'ProductCard': '425px',
-      'BlogCard': '300px',
+      'BlogCard': '350px',
       'BlogCardWeb' : "420px"
      }
     },
@@ -63,13 +63,13 @@ export default {
       addUtilities(headerUtilities);
     }),
 
-    plugin(function ({ addUtilities }) {
+    /*plugin(function ({ addUtilities }) {
       addUtilities({
         "*": {
           border: "1px solid rgba(0, 0, 0, 0.5) " 
         },
       });
-    }),
+    }),*/
   ],
 }
 
