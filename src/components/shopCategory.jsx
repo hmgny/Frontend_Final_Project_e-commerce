@@ -35,9 +35,9 @@ function ShopCategory() {
       <div className="flex flex-col gap-16 px-4 sm:px-16 py-8 sm:flex-row sm:items-center sm:justify-between">
         <h4 className="h4 font-bold flex justify-center">Shop</h4>
         <div className="flex gap-2 h7 font-bold justify-center">
-          <p>Home</p>
+          <Link to="/">Home</Link>
           <p>/</p>
-          <p>Shop</p>
+          <Link to="/shop">Shop</Link>
         </div> 
       </div>
       <div className="grid grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-5 sm:gap-4">
