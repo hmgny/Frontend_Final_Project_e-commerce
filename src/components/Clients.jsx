@@ -30,13 +30,13 @@ function Clients() {
 
   return (
     <div className="flex flex-col items-center py-12 bg-lightGray">
-      <div className="flex flex-col gap-8 px-4">
+      <div className="flex flex-col sm:flex-row gap-8 px-4 sm:gap-32">
         {clients.map((client, index) => (
-          <div key={index} className="flex items-center justify-center">
+          <div key={index} className="flex items-center">
             <img
               src={client.logo}
               alt={client.name}
-              className="h-au w-[150px] grayscale hover:grayscale-0 transition-all duration-300"
+              className="w-[150px] sm:w-[100px] grayscale hover:grayscale-0 transition-all duration-300"
             />
           </div>
         ))}
