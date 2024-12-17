@@ -5,13 +5,13 @@ function ShopFilter() {
   const [viewType, setViewType] = useState('grid');
   
 return(
-<div className="p-12">
+<div className="p-12 sm:px-48 sm:flex sm:justify-between">
       <div className="text-center mb-8">
         <h2 className="text-2xl text-gray-600">Showing all 12 results</h2>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 sm:gap-60">
+        <div className="flex items-center gap-4 ">
           <span className="text-gray-600 text-lg">Views:</span>
           <button 
             className={`p-2 rounded ${viewType === 'grid' ? 'bg-gray-200' : 'bg-white'}`}
