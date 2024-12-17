@@ -31,8 +31,8 @@ function ShopCategory() {
   ];
 
   return (
-    <div className="bg-lightGray flex flex-col">
-      <div className="flex flex-col gap-16 px-4 py-8">
+    <div className="bg-lightGray flex flex-col sm:px-40">
+      <div className="flex flex-col gap-16 px-4 sm:px-16 py-8 sm:flex-row sm:items-center sm:justify-between">
         <h4 className="h4 font-bold flex justify-center">Shop</h4>
         <div className="flex gap-2 h7 font-bold justify-center">
           <p>Home</p>
@@ -40,10 +40,10 @@ function ShopCategory() {
           <p>Shop</p>
         </div> 
       </div>
-      <div className="grid grid-cols-1 gap-6 px-4 py-8">
+      <div className="grid grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-5 sm:gap-4">
         {categories.map((category, index) => (
           <Link to="/shop" key={index} className="relative group">
-            <div className="relative mx-8 overflow-hidden">
+            <div className="relative mx-2 overflow-hidden sm:h6">
               <img 
                 src={category.image} 
                 alt={category.title}
