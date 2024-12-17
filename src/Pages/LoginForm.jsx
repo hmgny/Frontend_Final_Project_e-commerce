@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { loginStart, loginSuccess, loginFailure, toggleRememberMe } from "../store/actions/authActions";
 
 const LoginForm = () => {
-  const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { loading, error, rememberMe } = useSelector((state) => state.auth);
+  
   const {
     register,
     handleSubmit,
@@ -22,7 +25,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data) => {
-    setLoading(true);
+    dispatch(loginStart());
     try {
       const res = await axios.post(
         "https://workintech-fe-ecommerce.onrender.com/login",
@@ -31,28 +34,29 @@ const LoginForm = () => {
           password: data.password,
         }
       );
-      console.log(res.data);
 
       if (res.status === 200 && res.data.token) {
-        reset(); // Formu sıfırla
+        reset();
         toast.success(`Merhaba ${res.data.name}, tekrar hoş geldin.`);
 
-        // İsteğe bağlı: Kullanıcıyı yerel depolama alanına kaydet
         if (rememberMe) {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("user", JSON.stringify(res.data));
         }
 
-        history.push("/"); // Ana sayfaya yönlendir
+        dispatch(loginSuccess({ 
+          user: res.data,
+          token: res.data.token 
+        }));
+        history.push("/");
       }
     } catch (error) {
       console.error(
         "An error occurred during login:",
         error.response?.data || error.message
       );
+      dispatch(loginFailure(error.response?.data || error.message));
       toast.error("Girdiğiniz bilgilerle bir kullanıcı bulamadık.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -104,17 +108,16 @@ const LoginForm = () => {
           )}
         </div>
 
-        {/* Remember Me */}
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="rememberMe"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-            className="mr-2"
-          />
-          <label htmlFor="rememberMe" className="text-sm">
-            Remember Me
+        {/* Remember Me checkbox */}
+        <div className="mb-4">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={() => dispatch(toggleRememberMe())}
+              className="mr-2"
+            />
+            <span className="text-sm">Remember me</span>
           </label>
         </div>
 
