@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function ShopCard() {
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 4;
+  const [productsPerPage] = useState(12);
 
   const products = [
     {
@@ -68,7 +68,63 @@ function ShopCard() {
       salePrice: "$6.48",
       img: "/images/best8.jpg",
       colors: ["blue", "green", "orange", "black"]
-    }
+    },
+    {
+        title: "Graphic Design",
+        department: "English Department",
+        originalPrice: "$16.48",
+        salePrice: "$6.48",
+        img: "/images/best1.jpg",
+        colors: ["blue", "green", "orange", "black"]
+      },
+      {
+        title: "Graphic Design",
+        department: "English Department",
+        originalPrice: "$16.48",
+        salePrice: "$6.48",
+        img: "/images/best2.jpg",
+        colors: ["blue", "green", "orange", "black"]
+      },
+      {
+        title: "Graphic Design",
+        department: "English Department",
+        originalPrice: "$16.48",
+        salePrice: "$6.48",
+        img: "/images/best3.jpg",
+        colors: ["blue", "green", "orange", "black"]
+      },
+      {
+        title: "Graphic Design",
+        department: "English Department",
+        originalPrice: "$16.48",
+        salePrice: "$6.48",
+        img: "/images/best4.jpg",
+        colors: ["blue", "green", "orange", "black"]
+      },
+      {
+        title: "Graphic Design",
+        department: "English Department",
+        originalPrice: "$16.48",
+        salePrice: "$6.48",
+        img: "/images/best5.jpg",
+        colors: ["blue", "green", "orange", "black"]
+      },
+      {
+        title: "Graphic Design",
+        department: "English Department",
+        originalPrice: "$16.48",
+        salePrice: "$6.48",
+        img: "/images/best6.jpg",
+        colors: ["blue", "green", "orange", "black"]
+      },
+      {
+        title: "Graphic Design",
+        department: "English Department",
+        originalPrice: "$16.48",
+        salePrice: "$6.48",
+        img: "/images/best7.jpg",
+        colors: ["blue", "green", "orange", "black"]
+      },
   ];
 
   // Get current products
@@ -81,15 +137,15 @@ function ShopCard() {
   const pageNumbers = Math.ceil(products.length / productsPerPage);
 
   return (
-    <div className="p-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2  gap-20">
+    <div className="p-8 sm:px-40 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
         {currentProducts.map((product, index) => (
           <div key={index} className="flex flex-col">
             <div className="relative group overflow-hidden mx-8">
               <img
                 src={product.img}
                 alt={product.title}
-                className="w-full object-cover"
+                className="w-full object-cover aspect-[3/4]"
               />
             </div>
             <div className="flex flex-col items-center mt-4">
