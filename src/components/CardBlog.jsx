@@ -77,9 +77,11 @@ function CardBlog() {
                   </p>
                 </div>
 
-                <p className="flex items-center gap-2 h7 font-bold text-Primary">
-                  Learn More <ChevronRight color="#23A6F0" size={20} />
-                </p>
+                <Link to="/product/:id">
+            <button className="mt-4 bg-white text-Primary font-bold border border-Primary px-6 py-2 rounded-full transition-colors w-40 flex items-center gap-2">
+              Learn More <span className="text-lg">&gt;</span>
+            </button>
+            </Link>
               </div>
             </div>
           </div>

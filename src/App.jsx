@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SignupForm from "./Pages/SignupForm";
 import LoginForm from "./Pages/LoginForm";
 import ShopPage from "./Pages/ShopPage";
+import ProductDetail from "./Pages/ProductDetail";
 
 
 function App() {
@@ -13,6 +14,9 @@ function App() {
       <Switch>
       <Route path="/shop">
           <ShopPage/>
+        </Route>
+        <Route path="/product/:id">
+          <ProductDetail/>
         </Route>
       <Route path="/signup">
           <SignupForm/>
