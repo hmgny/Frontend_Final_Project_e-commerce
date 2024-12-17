@@ -94,8 +94,8 @@ function Header() {
         <Link to="" className="text-SecondaryTextColor h3">
           Product
         </Link>
-        <Link to="" className="text-SecondaryTextColor h3">
-          Pricing
+        <Link to="/shop" className="text-SecondaryTextColor h3">
+          Shop
         </Link>
         <Link to="" className="text-SecondaryTextColor h3">
           Contact

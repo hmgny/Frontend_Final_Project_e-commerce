@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const sliderImages = [
   "/images/homeHero.jpg",
@@ -44,9 +45,9 @@ const Slider = () => {
           <h4 className="h4 sm:h5 sm:max-w-80 text-lightGray">
             We know how large objects will act, but things on a small scale.
           </h4>
-          <button className="bg-succes text-lightTextColor text-3xl font-bold w-56 h-16 rounded-md">
+          <Link to="/shop"><button className="bg-succes text-lightTextColor text-3xl font-bold w-56 h-16 rounded-md">
             SHOP NOW
-          </button>
+          </button></Link>
         </div>
       </div>
 
