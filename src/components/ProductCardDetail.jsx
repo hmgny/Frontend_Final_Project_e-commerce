@@ -12,6 +12,7 @@ import {
   prevSlide,
   goToSlide,
 } from "../store/actions/carouselActions";
+import { Link } from "react-router-dom";
 
 function ProductCardDetail({
   currentIndex,
@@ -21,7 +22,16 @@ function ProductCardDetail({
   goToSlide,
 }) {
   return (
-    <div className="bg-lightGray flex flex-col">
+    <>
+    <div className="flex gap-2 h7 font-bold justify-center sm:justify-start p-4 ">
+          <Link to="/" className="text-SecondaryTextColor hover:text-black">Home</Link>
+          <p className="text-SecondaryTextColor"><ChevronRight/></p>
+          <Link to="/shop" className="text-SecondaryTextColor hover:text-black">Shop</Link>
+        </div> 
+    <div className="bg-lightGray flex flex-col sm:flex-row">
+       
+       
+       
       <div className="flex flex-col items-start gap-4 max-w-2xl mx-auto p-4">
         {/* Main Carousel */}
         <div className="relative w-full">
@@ -126,6 +136,7 @@ function ProductCardDetail({
         </div>
       </div>
     </div>
+    </>
   );
 }
 

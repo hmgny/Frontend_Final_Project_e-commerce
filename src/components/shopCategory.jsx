@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -36,7 +37,7 @@ function ShopCategory() {
         <h4 className="h4 font-bold flex justify-center">Shop</h4>
         <div className="flex gap-2 h7 font-bold justify-center">
           <Link to="/">Home</Link>
-          <p>/</p>
+          <p><ChevronRight/></p>
           <Link to="/shop">Shop</Link>
         </div> 
       </div>
