@@ -1,10 +1,11 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess, loginFailure, toggleRememberMe } from "../store/actions/authActions";
+
 
 const LoginForm = () => {
   const history = useHistory();
@@ -130,7 +131,16 @@ const LoginForm = () => {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
+          
         </div>
+        <p className="text-center mt-4 h7">
+          {" "}
+          Don't have an account?{" "}
+          <Link className="text-Primary font-bold" to="/signup">
+            Sign Up
+          </Link>
+        </p>
+        
       </form>
     </div>
   );
