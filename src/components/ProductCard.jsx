@@ -1,5 +1,6 @@
 import React from "react";
 import { Circle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function ProductCard() {
   const products = [
@@ -86,7 +87,7 @@ function ProductCard() {
                 {product.salePrice}
               </h6>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-1">
               <a className="bg-Primary rounded-full">
                 <Circle size={16} />
               </a>
@@ -100,9 +101,11 @@ function ProductCard() {
                 <Circle size={16} />
               </a>
             </div>
+            <div className="flex justify-center">
+            </div>
           </div>
         ))}
-      </div>
+      </div> 
     </div>
   );
 }
