@@ -1,20 +1,18 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { thunk } from 'redux-thunk';
+import { createStore, combineReducers } from 'redux';
 import clientReducer from './reducers/clientReducer';
 import productReducer from './reducers/productReducer';
 import shoppingCartReducer from './reducers/shoppingCartReducer';
 import authReducer from './reducers/authReducer';
+import carouselReducer from './reducers/carouselReducer';
 
 const rootReducer = combineReducers({
   client: clientReducer,
   product: productReducer,
   shoppingCart: shoppingCartReducer,
-  auth: authReducer
+  auth: authReducer,
+  carousel: carouselReducer
 });
 
-export const store = createStore(
-  rootReducer,
-  applyMiddleware(thunk)
-);
+export const store = createStore(rootReducer);
 
 export default store;
