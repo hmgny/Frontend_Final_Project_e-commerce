@@ -20,16 +20,16 @@ export const fetchProducts = (params = {}) => async (dispatch) => {
     if (params.category) queryParams.append('category', params.category);
     if (params.sort) queryParams.append('sort', params.sort);
     if (params.filter) queryParams.append('filter', params.filter);
+    if (params.liproductsPerPage)queryParams.append('limit', params.limit || 25);
+    queryParams.append('offset', params.offset || 0);
     
     const url = `https://workintech-fe-ecommerce.onrender.com/products?${queryParams}`;
     const response = await axios.get(url);
 
     if (response.status === 200) {
-      const data = response.data;
-      console.log(data)
       dispatch(setFetchState('SUCCESS')); // Fetch işlemi başarıyla tamamlandı
-      dispatch(setProductList(data.products)); // Ürünleri store'a kaydediyoruz
-      dispatch(setTotal(data.total)); // Toplam ürün sayısını store'a kaydediyoruz
+      dispatch(setProductList(response.data.products)); // Ürünleri store'a kaydediyoruz
+      dispatch(setTotal(response.data.total)); // Toplam ürün sayısını store'a kaydediyoruz
     } else {
       dispatch(setFetchState('FAILED')); // Eğer API'den hata dönerse
       dispatch(setProductList([])); // Ürünleri store'a kaydediyoruz

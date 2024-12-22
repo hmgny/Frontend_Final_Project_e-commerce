@@ -1,50 +1,70 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useHistory } from "react-router-dom";
 import { fetchProducts } from "@/store/actions/productActions";
 import { Circle } from "lucide-react";
 
 function ShopCard() {
   const dispatch = useDispatch();
-  const { productList = [], fetchState } = useSelector(
-    (state) => state.product || {}
-  );
-  const [currentPage, setCurrentPage] = useState(1); // Burada currentPage'i tanımladık
-  let productsPerPage = window.innerWidth < 600 ? 5 : 12;
+  const location = useLocation();
+  const history = useHistory();
 
-  window.addEventListener("resize", () => {
-    productsPerPage = window.innerWidth < 600 ? 5 : 12;
-  });
+  // Parse URL parameters
+  const queryParams = new URLSearchParams(location.search);
+  const urlLimit = parseInt(queryParams.get("limit")) || 25;
+  const urlOffset = parseInt(queryParams.get("offset")) || 0;
+
+  const {
+    productList = [],
+    fetchState,
+    total,
+  } = useSelector((state) => state.product || {});
+
+  const [productsPerPage] = useState(urlLimit);
+  const [currentPage, setCurrentPage] = useState(
+    Math.floor(urlOffset / productsPerPage) + 1
+  );
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    // Calculate offset based on current page
+    const offset = (currentPage - 1) * productsPerPage;
+    history.replace({
+      pathname: "shop/",
+      search: `?limit=${productsPerPage}&offset=${offset}`,
+    });
+
+    dispatch(
+      fetchProducts({
+        limit: productsPerPage,
+        offset: offset,
+      })
+    );
+  }, [dispatch, currentPage, productsPerPage, history]);
 
   if (fetchState === "LOADING") {
-    return <Circle />;
+    return <Circle className="animate-spin" />;
   }
 
   if (fetchState === "FAILED") {
     return <div className="error">Failed to load products</div>;
   }
 
-  // Get current products
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = productList.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  // Calculate total pages
+  const totalPages = Math.ceil(total / productsPerPage);
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const pageNumbers = Math.ceil(productList.length / productsPerPage);
+  const paginate = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
+    window.scrollTo(0, 0); // Scroll to top when page changes
+  };
 
   return (
     <div className="p-8 sm:px-40">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
-        {currentProducts.map((product, index) => (
-          <div key={index} className="flex flex-col">
-            <div key={index} className="relative group overflow-hidden mx-8">
+        {productList.map((product, index) => (
+          <div key={product.id || index} className="flex flex-col">
+            <div className="relative group overflow-hidden mx-8">
               {product.images.map((image, imageIndex) => (
                 <img
                   key={imageIndex}
@@ -68,8 +88,7 @@ function ShopCard() {
                 <span className="text-Primary">
                   {`${(Math.floor((product.price / 2) * 100) / 100).toFixed(
                     2
-                  )}`}
-                  ₺{" "}
+                  )}₺`}
                 </span>
               </div>
             </div>
@@ -77,36 +96,60 @@ function ShopCard() {
         ))}
       </div>
 
-      {/* Pagination */}
+      {/* Pagination UI */}
       <div className="flex justify-center mt-8">
         <div className="flex items-center gap-2">
           <button
             onClick={() => paginate(1)}
-            className={`px-4 py-2 border ${
-              currentPage === 1 ? "bg-gray-100" : "bg-white"
-            }`}
+            disabled={currentPage === 1}
+            className="px-4 py-2 border disabled:bg-gray-100"
           >
             First
           </button>
-          {[...Array(pageNumbers)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => paginate(i + 1)}
-              className={`px-4 py-2 border ${
-                currentPage === i + 1 ? "bg-Primary text-white" : "bg-white"
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 border disabled:bg-gray-100"
+          >
+            Previous
+          </button>
+
+          {/* Sayfa numaraları */}
+          {[...Array(totalPages)].map((_, i) => {
+            // Sadece aktif sayfayı ve etrafındaki 2 sayfayı göster
+            if (
+              i + 1 === 1 ||
+              i + 1 === totalPages ||
+              (i + 1 >= currentPage - 2 && i + 1 <= currentPage + 2)
+            ) {
+              return (
+                <button
+                  key={i}
+                  onClick={() => paginate(i + 1)}
+                  className={`px-4 py-2 border ${
+                    currentPage === i + 1 ? "bg-Primary text-white" : "bg-white"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              );
+            }
+            return null;
+          })}
+
           <button
             onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === pageNumbers}
-            className={`px-4 py-2 border ${
-              currentPage === pageNumbers ? "bg-gray-100" : "bg-white"
-            }`}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 border disabled:bg-gray-100"
           >
             Next
+          </button>
+          <button
+            onClick={() => paginate(totalPages)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 border disabled:bg-gray-100"
+          >
+            Last
           </button>
         </div>
       </div>
