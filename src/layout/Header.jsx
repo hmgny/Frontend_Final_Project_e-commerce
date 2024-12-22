@@ -141,7 +141,7 @@ function Header() {
                 <Avatar
                   className="hidden sm:block"
                   name={user.name}
-                  src={user.avatar || "/images/men.jpg"}
+                  src={user.mail || ""}
                   size="40"
                   round={true}
                 />
