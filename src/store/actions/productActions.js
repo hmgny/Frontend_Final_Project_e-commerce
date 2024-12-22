@@ -7,15 +7,23 @@ export const SET_FETCH_STATE = 'SET_FETCH_STATE';
 export const SET_LIMIT = 'SET_LIMIT';
 export const SET_OFFSET = 'SET_OFFSET';
 export const SET_FILTER = 'SET_FILTER';
+export const SET_SORT = 'SET_SORT';
 
 
 // Thunk action to fetch products using axios
-export const fetchProducts = () => async (dispatch) => {
-  dispatch(setFetchState('LOADING')); // Set loading state
+export const fetchProducts = (params = {}) => async (dispatch) => {
+  dispatch(setFetchState('LOADING'));
 
   try {
     // Axios ile API çağrısı yapıyoruz
-    const response = await axios.get('https://workintech-fe-ecommerce.onrender.com/products');
+    const queryParams = new URLSearchParams();
+    if (params.category) queryParams.append('category', params.category);
+    if (params.sort) queryParams.append('sort', params.sort);
+    if (params.filter) queryParams.append('filter', params.filter);
+    
+    const url = `https://workintech-fe-ecommerce.onrender.com/products?${queryParams}`;
+    const response = await axios.get(url);
+
     if (response.status === 200) {
       const data = response.data;
       console.log(data)
@@ -49,4 +57,14 @@ export const setTotal = (total) => ({
 export const setFetchState = (state) => ({
   type: SET_FETCH_STATE,
   payload: state
+});
+
+export const setSort = (sort) => ({
+  type: SET_SORT,
+  payload: sort
+});
+
+export const setFilter = (filter) => ({
+  type: SET_FILTER,
+  payload: filter
 });
