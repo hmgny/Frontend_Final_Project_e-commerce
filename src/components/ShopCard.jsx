@@ -28,11 +28,6 @@ function ShopCard() {
   useEffect(() => {
     // Calculate offset based on current page
     const offset = (currentPage - 1) * productsPerPage;
-    history.replace({
-      pathname: "shop/",
-      search: `?limit=${productsPerPage}&offset=${offset}`,
-    });
-
     dispatch(
       fetchProducts({
         limit: productsPerPage,
