@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useHistory } from "react-router-dom";
 import { fetchProducts } from "@/store/actions/productActions";
-import { Circle } from "lucide-react";
 
 function ShopCard() {
   const dispatch = useDispatch();
@@ -13,6 +12,7 @@ function ShopCard() {
   const queryParams = new URLSearchParams(location.search);
   const urlLimit = parseInt(queryParams.get("limit")) || 25;
   const urlOffset = parseInt(queryParams.get("offset")) || 0;
+  const urlCategory = queryParams.get("category") || "";
 
   const {
     productList = [],
@@ -20,39 +20,60 @@ function ShopCard() {
     total,
   } = useSelector((state) => state.product || {});
 
+  const initialPage = Math.floor(urlOffset / urlLimit) + 1;
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [productsPerPage] = useState(urlLimit);
-  const [currentPage, setCurrentPage] = useState(
-    Math.floor(urlOffset / productsPerPage) + 1
-  );
-
-  useEffect(() => {
-    // Calculate offset based on current page
-    const offset = (currentPage - 1) * productsPerPage;
-    dispatch(
-      fetchProducts({
-        limit: productsPerPage,
-        offset: offset,
-      })
-    );
-  }, [dispatch, currentPage, productsPerPage, history]);
-
-  if (fetchState === "LOADING") {
-    return <Circle className="animate-spin" />;
-  }
-
-  if (fetchState === "FAILED") {
-    return <div className="error">Failed to load products</div>;
-  }
-
-  // Calculate total pages
+  const [selectedCategory, setSelectedCategory] = useState(urlCategory);
   const totalPages = Math.ceil(total / productsPerPage);
 
-  // Change page
-  const paginate = (pageNumber) => {
-    if (pageNumber < 1 || pageNumber > totalPages) return;
-    setCurrentPage(pageNumber);
-    window.scrollTo(0, 0); // Scroll to top when page changes
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1); // Reset page when category changes
+    history.push(`/shop?category=${category}`);
   };
+
+  // Handle pagination
+  const paginate = (newPage) => {
+    setCurrentPage(newPage);
+    const newOffset = (newPage - 1) * productsPerPage;
+    history.push(`/shop?limit=${productsPerPage}&offset=${newOffset}`);
+  };
+
+  useEffect(() => {
+    const offset = (currentPage - 1) * productsPerPage;
+
+    if (selectedCategory) {
+      // Fetch products by category
+      dispatch(
+        fetchProducts({
+          category: selectedCategory,
+        })
+      );
+    } else {
+      // Fetch products with pagination
+      dispatch(
+        fetchProducts({
+          limit: productsPerPage,
+          offset: offset,
+        })
+      );
+    }
+  }, [dispatch, currentPage, productsPerPage, selectedCategory]);
+
+  // Category list rendering
+  const renderCategories = () => (
+    <div className="categories">
+      {categories.map((category) => (
+        <button
+          key={category}
+          onClick={() => handleCategoryClick(category)}
+          className={selectedCategory === category ? "active" : ""}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+  );
 
   return (
     <div className="p-8 sm:px-40">
