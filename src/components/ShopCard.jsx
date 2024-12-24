@@ -36,9 +36,9 @@ function ShopCard() {
   const paginate = (newPage) => {
     setCurrentPage(newPage);
     const newOffset = (newPage - 1) * productsPerPage;
-    history.push(`/shop?limit=${productsPerPage}&offset=${newOffset}`);
+    const basePath = location.pathname.includes("/shop") ? "/shop" : "/home";
+    history.push(`${basePath}?limit=${productsPerPage}&offset=${newOffset}`);
   };
-
   useEffect(() => {
     const offset = (currentPage - 1) * productsPerPage;
 
