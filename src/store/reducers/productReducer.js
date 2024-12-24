@@ -6,8 +6,10 @@ import {
   SET_LIMIT,
   SET_OFFSET,
   SET_FILTER,
-  SET_SORT
-} from '../actions/productActions';
+  SET_SORT,
+  SET_SELECTED_PRODUCT,
+  SET_PRODUCT_LOADING,
+} from "../actions/productActions";
 
 const initialState = {
   categories: [],
@@ -15,9 +17,11 @@ const initialState = {
   total: 0,
   limit: 25,
   offset: 0,
-  filter: '',
-  fetchState: 'NOT_FETCHED',
-  sort: '',
+  filter: "",
+  fetchState: "NOT_FETCHED",
+  sort: "",
+  selectedProduct: null,
+  isLoading: false,
 };
 
 const productReducer = (state = initialState, action) => {
@@ -25,42 +29,52 @@ const productReducer = (state = initialState, action) => {
     case SET_CATEGORIES:
       return {
         ...state,
-        categories: action.payload
+        categories: action.payload,
       };
     case SET_PRODUCT_LIST:
       return {
         ...state,
-        productList: action.payload
+        productList: action.payload,
       };
     case SET_TOTAL:
       return {
         ...state,
-        total: action.payload
+        total: action.payload,
       };
     case SET_FETCH_STATE:
       return {
         ...state,
-        fetchState: action.payload
+        fetchState: action.payload,
+      };
+    case SET_SELECTED_PRODUCT:
+      return {
+        ...state,
+        selectedProduct: action.payload,
+      };
+    case SET_PRODUCT_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload,
       };
     case SET_LIMIT:
       return {
         ...state,
-        limit: action.payload
+        limit: action.payload,
       };
     case SET_OFFSET:
       return {
         ...state,
-        offset: action.payload
+        offset: action.payload,
       };
     case SET_FILTER:
       return {
         ...state,
-        filter: action.payload
+        filter: action.payload,
       };
-      case SET_SORT:
+    case SET_SORT:
       return {
         ...state,
-        sort: action.payload
+        sort: action.payload,
       };
     default:
       return state;

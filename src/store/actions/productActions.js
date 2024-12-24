@@ -8,6 +8,8 @@ export const SET_LIMIT = 'SET_LIMIT';
 export const SET_OFFSET = 'SET_OFFSET';
 export const SET_FILTER = 'SET_FILTER';
 export const SET_SORT = 'SET_SORT';
+export const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
+export const SET_PRODUCT_LOADING = 'SET_PRODUCT_LOADING';
 
 
 // Thunk action to fetch products using axios
@@ -40,6 +42,19 @@ export const fetchProducts = (params = {}) => async (dispatch) => {
     dispatch(setFetchState('FAILED')); // Hata durumunda
     dispatch(setProductList([])); // Ürünleri store'a kaydediyoruz
     dispatch(setTotal(0)); // Toplam ürün sayısını store'a kaydediyoruz
+  }
+};
+
+export const fetchProductDetail = (productId) => async (dispatch) => {
+  dispatch({ type: SET_PRODUCT_LOADING, payload: true });
+
+  try {
+    const response = await axios.get(`https://workintech-fe-ecommerce.onrender.com/products/${productId}`);
+    dispatch({ type: SET_SELECTED_PRODUCT, payload: response.data });
+  } catch (error) {
+    console.error('Error fetching product details:', error);
+  } finally {
+    dispatch({ type: SET_PRODUCT_LOADING, payload: false });
   }
 };
 

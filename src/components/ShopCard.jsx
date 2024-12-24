@@ -32,6 +32,14 @@ function ShopCard() {
     history.push(`/shop?category=${category}`);
   };
 
+  const handleProductClick = (product) => {
+    // Create URL-friendly slug from product name
+    const nameSlug = product.name.toLowerCase().replace(/\s+/g, "-");
+    history.push(
+      `/product/${product.gender}/${product.category_name}/${product.category_id}/${nameSlug}/${product.id}`
+    );
+  };
+
   // Handle pagination
   const paginate = (newPage) => {
     setCurrentPage(newPage);
@@ -83,6 +91,7 @@ function ShopCard() {
             <div className="relative group overflow-hidden mx-8">
               {product.images.map((image, imageIndex) => (
                 <img
+                  onClick={() => handleProductClick(product)}
                   key={imageIndex}
                   src={image.url}
                   alt={`${product.name} - Image ${imageIndex + 1}`}
