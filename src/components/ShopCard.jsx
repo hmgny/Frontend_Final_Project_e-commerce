@@ -89,14 +89,14 @@ function ShopCard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
         {productList.map((product, index) => (
           <div key={product.id || index} className="flex flex-col">
-            <div className="relative group overflow-hidden mx-8">
+            <div className="relative group overflow-hidden mx-8 hover:scale-105">
               {product.images.map((image, imageIndex) => (
                 <img
                   onClick={() => handleProductClick(product)}
                   key={imageIndex}
                   src={image.url}
                   alt={`${product.name} - Image ${imageIndex + 1}`}
-                  className="w-full object-cover aspect-[3/4]"
+                  className="w-full object-cover aspect-[3/4] "
                 />
               ))}
             </div>
