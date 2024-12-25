@@ -35,6 +35,7 @@ function ShopCard() {
   const handleProductClick = (product) => {
     // Create URL-friendly slug from product name
     const nameSlug = product.name.toLowerCase().replace(/\s+/g, "-");
+    window.scrollTo(0, 0);
     history.push(
       `/product/${product.gender}/${product.category_name}/${product.category_id}/${nameSlug}/${product.id}`
     );
