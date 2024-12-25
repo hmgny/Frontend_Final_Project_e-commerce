@@ -27,6 +27,7 @@ function ProductCardDetail({
   const { productId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+
   const { selectedProduct, isLoading, error } = useSelector(
     (state) => state.product
   );
@@ -47,6 +48,11 @@ function ProductCardDetail({
     return <div>Error: {error}</div>;
   }
 
+  if (!selectedProduct) {
+    return <div>No product found.</div>;
+  }
+
+  const productImages = selectedProduct.images || [];
   return (
     <>
       <div className="flex justify-between items-center bg-white shadow-sm sticky top-0 z-10">
