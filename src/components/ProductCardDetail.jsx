@@ -154,8 +154,17 @@ function ProductCardDetail({
             </div>
 
             {/* Price */}
-            <div className="h4 font-bold text-textColor">
-              ${selectedProduct.price}
+
+            <div className="flex gap-5 mt-2">
+              <span className="h4 text-textColor line-through">
+                ₺{selectedProduct.price}
+              </span>
+              <span className="h4 font-bold text-Primary">
+                ₺
+                {`${(
+                  Math.floor((selectedProduct.price / 2) * 100) / 100
+                ).toFixed(2)}`}
+              </span>
             </div>
 
             {/* Availability */}
