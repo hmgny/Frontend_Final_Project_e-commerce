@@ -7,25 +7,27 @@ import LoginForm from "./Pages/LoginForm";
 import ShopPage from "./Pages/ShopPage";
 import ProductDetail from "./Pages/ProductDetail";
 
-
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-      <Route path="/shop">
-          <ShopPage/>
+        <Route path="/shop">
+          <ShopPage />
+        </Route>
+        <Route path="/product/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
+          <ProductDetail />
         </Route>
         <Route path="/product/:id">
-          <ProductDetail/>
+          <ProductDetail />
         </Route>
-      <Route path="/signup">
-          <SignupForm/>
+        <Route path="/signup">
+          <SignupForm />
         </Route>
         <Route path="/login">
-          <LoginForm/>
+          <LoginForm />
         </Route>
         <Route path="/">
-          <HomePage/>
+          <HomePage />
         </Route>
       </Switch>
     </BrowserRouter>

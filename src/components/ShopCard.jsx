@@ -1,200 +1,187 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useHistory } from "react-router-dom";
+import { fetchProducts } from "@/store/actions/productActions";
 
 function ShopCard() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(12);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
 
-  const products = [
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best1.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best2.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best3.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best4.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best5.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best6.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best7.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-      title: "Graphic Design",
-      department: "English Department",
-      originalPrice: "$16.48",
-      salePrice: "$6.48",
-      img: "/images/best8.jpg",
-      colors: ["blue", "green", "orange", "black"]
-    },
-    {
-        title: "Graphic Design",
-        department: "English Department",
-        originalPrice: "$16.48",
-        salePrice: "$6.48",
-        img: "/images/best1.jpg",
-        colors: ["blue", "green", "orange", "black"]
-      },
-      {
-        title: "Graphic Design",
-        department: "English Department",
-        originalPrice: "$16.48",
-        salePrice: "$6.48",
-        img: "/images/best2.jpg",
-        colors: ["blue", "green", "orange", "black"]
-      },
-      {
-        title: "Graphic Design",
-        department: "English Department",
-        originalPrice: "$16.48",
-        salePrice: "$6.48",
-        img: "/images/best3.jpg",
-        colors: ["blue", "green", "orange", "black"]
-      },
-      {
-        title: "Graphic Design",
-        department: "English Department",
-        originalPrice: "$16.48",
-        salePrice: "$6.48",
-        img: "/images/best4.jpg",
-        colors: ["blue", "green", "orange", "black"]
-      },
-      {
-        title: "Graphic Design",
-        department: "English Department",
-        originalPrice: "$16.48",
-        salePrice: "$6.48",
-        img: "/images/best5.jpg",
-        colors: ["blue", "green", "orange", "black"]
-      },
-      {
-        title: "Graphic Design",
-        department: "English Department",
-        originalPrice: "$16.48",
-        salePrice: "$6.48",
-        img: "/images/best6.jpg",
-        colors: ["blue", "green", "orange", "black"]
-      },
-      {
-        title: "Graphic Design",
-        department: "English Department",
-        originalPrice: "$16.48",
-        salePrice: "$6.48",
-        img: "/images/best7.jpg",
-        colors: ["blue", "green", "orange", "black"]
-      },
-  ];
+  // Parse URL parameters
+  const queryParams = new URLSearchParams(location.search);
+  const urlLimit = parseInt(queryParams.get("limit")) || 25;
+  const urlOffset = parseInt(queryParams.get("offset")) || 0;
+  const urlCategory = queryParams.get("category") || "";
 
-  // Get current products
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const {
+    productList = [],
+    fetchState,
+    total,
+  } = useSelector((state) => state.product || {});
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const pageNumbers = Math.ceil(products.length / productsPerPage);
+  const initialPage = Math.floor(urlOffset / urlLimit) + 1;
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [productsPerPage] = useState(urlLimit);
+  const [selectedCategory, setSelectedCategory] = useState(urlCategory);
+  const totalPages = Math.ceil(total / productsPerPage);
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1); // Reset page when category changes
+    history.push(`/shop?category=${category}`);
+  };
+
+  const handleProductClick = (product) => {
+    // Create URL-friendly slug from product name
+    const nameSlug = product.name.toLowerCase().replace(/\s+/g, "-");
+    window.scrollTo(0, 0);
+    history.push(
+      `/product/${product.gender}/${product.category_name}/${product.category_id}/${nameSlug}/${product.id}`
+    );
+  };
+
+  // Handle pagination
+  const paginate = (newPage) => {
+    setCurrentPage(newPage);
+    const newOffset = (newPage - 1) * productsPerPage;
+    const basePath = location.pathname.includes("/shop") ? "/shop" : "/home";
+    history.push(`${basePath}?limit=${productsPerPage}&offset=${newOffset}`);
+  };
+  useEffect(() => {
+    const offset = (currentPage - 1) * productsPerPage;
+
+    if (selectedCategory) {
+      // Fetch products by category
+      dispatch(
+        fetchProducts({
+          category: selectedCategory,
+        })
+      );
+    } else {
+      // Fetch products with pagination
+      dispatch(
+        fetchProducts({
+          limit: productsPerPage,
+          offset: offset,
+        })
+      );
+    }
+  }, [dispatch, currentPage, productsPerPage, selectedCategory]);
+
+  // Category list rendering
+  const renderCategories = () => (
+    <div className="categories">
+      {categories.map((category) => (
+        <button
+          key={category}
+          onClick={() => handleCategoryClick(category)}
+          className={selectedCategory === category ? "active" : ""}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+  );
 
   return (
-    <div className="p-8 sm:px-40 ">
+    <div className="p-8 sm:px-40">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
-        {currentProducts.map((product, index) => (
-          <div key={index} className="flex flex-col">
-            <div className="relative group overflow-hidden mx-8">
-              <img
-                src={product.img}
-                alt={product.title}
-                className="w-full object-cover aspect-[3/4]"
-              />
+        {productList.map((product, index) => (
+          <div key={product.id || index} className="flex flex-col my-12">
+            <div className="relative group overflow-hidden mx-8 hover:scale-105">
+              {product.images.map((image, imageIndex) => (
+                <img
+                  onClick={() => handleProductClick(product)}
+                  key={imageIndex}
+                  src={image.url}
+                  alt={`${product.name} - Image ${imageIndex + 1}`}
+                  className="w-full object-cover aspect-[3/4] "
+                />
+              ))}
             </div>
             <div className="flex flex-col items-center mt-4">
-              <h3 className="text-base font-bold text-textColor">{product.title}</h3>
-              <p className="text-SecondaryTextColor text-sm">{product.department}</p>
+              <h3 className="text-base font-bold text-textColor">
+                {product.description}
+              </h3>
+              <p className="text-SecondaryTextColor text-sm">
+                {product.department}
+              </p>
               <div className="flex gap-2 mt-2">
-                <span className="text-SecondaryTextColor line-through">{product.originalPrice}</span>
-                <span className="text-Primary">{product.salePrice}</span>
+                <span className="text-SecondaryTextColor line-through">
+                  {product.price}₺
+                </span>
+                <span className="text-Secondary font-bold">
+                  {`${(Math.floor((product.price / 2) * 100) / 100).toFixed(
+                    2
+                  )}₺`}
+                </span>
               </div>
               <div className="flex gap-2 mt-2">
-                {product.colors.map((color, i) => (
-                  <div
-                    key={i}
-                    className={`w-4 h-4 rounded-full`}
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
+                <button className="w-4 h-4 rounded-full bg-Primary"></button>
+                <button className="w-4 h-4 rounded-full bg-green-500"></button>
+                <button className="w-4 h-4 rounded-full bg-orange-500"></button>
+                <button className="w-4 h-4 rounded-full bg-darkBackground"></button>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Pagination */}
+      {/* Pagination UI */}
       <div className="flex justify-center mt-8">
         <div className="flex items-center gap-2">
           <button
             onClick={() => paginate(1)}
-            className={`px-4 py-2 border ${currentPage === 1 ? 'bg-gray-100' : 'bg-white'}`}
+            disabled={currentPage === 1}
+            className="px-4 py-2 border disabled:bg-gray-100"
           >
             First
           </button>
-          {[...Array(pageNumbers)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => paginate(i + 1)}
-              className={`px-4 py-2 border ${
-                currentPage === i + 1 ? 'bg-Primary text-white' : 'bg-white'
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 border disabled:bg-gray-100"
+          >
+            Previous
+          </button>
+
+          {/* Sayfa numaraları */}
+          {[...Array(totalPages)].map((_, i) => {
+            // Sadece aktif sayfayı ve etrafındaki 2 sayfayı göster
+            if (
+              i + 1 === 1 ||
+              i + 1 === totalPages ||
+              (i + 1 >= currentPage - 2 && i + 1 <= currentPage + 2)
+            ) {
+              return (
+                <button
+                  key={i}
+                  onClick={() => paginate(i + 1)}
+                  className={`px-4 py-2 border ${
+                    currentPage === i + 1 ? "bg-Primary text-white" : "bg-white"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              );
+            }
+            return null;
+          })}
+
           <button
             onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === pageNumbers}
-            className={`px-4 py-2 border ${currentPage === pageNumbers ? 'bg-gray-100' : 'bg-white'}`}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 border disabled:bg-gray-100"
           >
             Next
+          </button>
+          <button
+            onClick={() => paginate(totalPages)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 border disabled:bg-gray-100"
+          >
+            Last
           </button>
         </div>
       </div>

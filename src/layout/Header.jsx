@@ -121,7 +121,7 @@ function Header() {
             Blog
           </Link>
           <Link
-            to=""
+            to="/product/:id"
             className="text-SecondaryTextColor h4 hover:text-black hover:font-bold"
           >
             Product
@@ -141,7 +141,7 @@ function Header() {
                 <Avatar
                   className="hidden sm:block"
                   name={user.name}
-                  src={user.avatar || "/images/men.jpg"}
+                  src={user.mail || ""}
                   size="40"
                   round={true}
                 />
@@ -185,72 +185,91 @@ function Header() {
           </button>
         </div>
       </div>
-      <div className={`flex flex-col items-center gap-7 py-20 sm:flex-row sm:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-        <Link to="/" className="text-SecondaryTextColor h3  hover:text-black hover:font-bold">
+      <div
+        className={`flex flex-col items-center gap-7 py-20 sm:flex-row sm:hidden ${
+          isMobileMenuOpen ? "block" : "hidden"
+        }`}
+      >
+        <Link
+          to="/"
+          className="text-SecondaryTextColor h3  hover:text-black hover:font-bold"
+        >
           Home
         </Link>
         <div
-            className="relative"
-            onMouseEnter={() => setShowCategories(true)}
-            onMouseLeave={() => setShowCategories(false)}
+          className="relative"
+          onMouseEnter={() => setShowCategories(true)}
+          onMouseLeave={() => setShowCategories(false)}
+        >
+          <Link
+            to="/shop"
+            className="text-SecondaryTextColor h3 hover:text-black hover:font-bold"
           >
-            <Link
-              to="/shop"
-              className="text-SecondaryTextColor h3 hover:text-black hover:font-bold"
-            >
-              Shop
-            </Link>
-            {showCategories && (
-              <div className="absolute bg-white w-96 flex gap-20 p-4 z-10 shadow-lg">
-                {/* Kadın kategorilerini listele */}
-                <div>
-                  <p className="h6 font-bold pb-4">WOMEN</p>
-                  <ul className="space-y-2">
-                    {categories
-                      .filter((category) => category.gender === "k")
-                      .map((category) => (
-                        <li key={category.id}>
-                          <Link
-                            to={`/shop/${category.gender}/${category.code}`}
-                            className="text-lg"
-                          >
-                            {category.title}
-                          </Link>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-                {/* Erkek kategorilerini listele */}
-                <div className="mt-4">
-                  <p className="h6 font-bold pb-4">MEN</p>
-                  <ul className="space-y-2">
-                    {categories
-                      .filter((category) => category.gender === "e")
-                      .map((category) => (
-                        <li key={category.id}>
-                          <Link
-                            to={`/shop/${category.gender}/${category.code}`}
-                            className="text-lg"
-                          >
-                            {category.title}
-                          </Link>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
+            Shop
+          </Link>
+          {showCategories && (
+            <div className="absolute bg-white w-96 flex gap-20 p-4 z-10 shadow-lg">
+              {/* Kadın kategorilerini listele */}
+              <div>
+                <p className="h6 font-bold pb-4">WOMEN</p>
+                <ul className="space-y-2">
+                  {categories
+                    .filter((category) => category.gender === "k")
+                    .map((category) => (
+                      <li key={category.id}>
+                        <Link
+                          to={`/shop/${category.gender}/${category.code}`}
+                          className="text-lg"
+                        >
+                          {category.title}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
               </div>
-            )}
-          </div>
-        <Link to="/product/:id" className="text-SecondaryTextColor h3  hover:text-black hover:font-bold">
+              {/* Erkek kategorilerini listele */}
+              <div className="mt-4">
+                <p className="h6 font-bold pb-4">MEN</p>
+                <ul className="space-y-2">
+                  {categories
+                    .filter((category) => category.gender === "e")
+                    .map((category) => (
+                      <li key={category.id}>
+                        <Link
+                          to={`/shop/${category.gender}/${category.code}`}
+                          className="text-lg"
+                        >
+                          {category.title}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+        <Link
+          to="/product/:id"
+          className="text-SecondaryTextColor h3  hover:text-black hover:font-bold"
+        >
           About
         </Link>
-        <Link to="" className="text-SecondaryTextColor h3  hover:text-black hover:font-bold">
+        <Link
+          to=""
+          className="text-SecondaryTextColor h3  hover:text-black hover:font-bold"
+        >
           Blog
         </Link>
-        <Link to="" className="text-SecondaryTextColor h3  hover:text-black hover:font-bold">
+        <Link
+          to=""
+          className="text-SecondaryTextColor h3  hover:text-black hover:font-bold"
+        >
           Contact
         </Link>
-        <Link to="" className="text-SecondaryTextColor h3 hover:text-black hover:font-bold">
+        <Link
+          to=""
+          className="text-SecondaryTextColor h3 hover:text-black hover:font-bold"
+        >
           Pages
         </Link>
       </div>
