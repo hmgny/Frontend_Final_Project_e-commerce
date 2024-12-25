@@ -159,7 +159,7 @@ function ProductCardDetail({
               <span className="h4 text-textColor line-through">
                 ₺{selectedProduct.price}
               </span>
-              <span className="h4 font-bold text-Primary">
+              <span className="h4 text-Secondary font-bold">
                 ₺
                 {`${(
                   Math.floor((selectedProduct.price / 2) * 100) / 100

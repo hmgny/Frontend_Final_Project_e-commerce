@@ -88,7 +88,7 @@ function ShopCard() {
     <div className="p-8 sm:px-40">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
         {productList.map((product, index) => (
-          <div key={product.id || index} className="flex flex-col">
+          <div key={product.id || index} className="flex flex-col my-12">
             <div className="relative group overflow-hidden mx-8 hover:scale-105">
               {product.images.map((image, imageIndex) => (
                 <img
@@ -111,11 +111,17 @@ function ShopCard() {
                 <span className="text-SecondaryTextColor line-through">
                   {product.price}₺
                 </span>
-                <span className="text-Primary">
+                <span className="text-Secondary font-bold">
                   {`${(Math.floor((product.price / 2) * 100) / 100).toFixed(
                     2
                   )}₺`}
                 </span>
+              </div>
+              <div className="flex gap-2 mt-2">
+                <button className="w-4 h-4 rounded-full bg-Primary"></button>
+                <button className="w-4 h-4 rounded-full bg-green-500"></button>
+                <button className="w-4 h-4 rounded-full bg-orange-500"></button>
+                <button className="w-4 h-4 rounded-full bg-darkBackground"></button>
               </div>
             </div>
           </div>
