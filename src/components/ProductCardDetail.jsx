@@ -16,6 +16,7 @@ import {
   goToSlide,
 } from "../store/actions/carouselActions";
 import { Link } from "react-router-dom";
+import { addToCart } from "@/store/actions/shoppingCartActions";
 
 function ProductCardDetail({
   currentIndex,
@@ -35,6 +36,21 @@ function ProductCardDetail({
   useEffect(() => {
     dispatch(fetchProductDetail(productId));
   }, [dispatch, productId]);
+
+  const handleAddToCart = () => {
+    if (selectedProduct) {
+      dispatch(
+        addToCart({
+          id: selectedProduct.id,
+          name: selectedProduct.name,
+          price: selectedProduct.price,
+          images: selectedProduct.images,
+          // Add other necessary product fields
+        })
+      );
+    }
+    history.push("/shoppingCart");
+  };
 
   if (isLoading) {
     return (
@@ -191,8 +207,11 @@ function ProductCardDetail({
 
             {/* Action Buttons */}
             <div className="flex gap-4 mt-4">
-              <button className="bg-Primary text-white px-8 py-3 rounded-md hover:bg-blue-600 transition-colors">
-                Select Options
+              <button
+                onClick={handleAddToCart}
+                className="bg-Primary text-white px-8 py-3 rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Add to Cart
               </button>
               <button className="p-3 w-12 h-12 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors">
                 <Heart size={20} />

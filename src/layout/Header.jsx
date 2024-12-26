@@ -10,6 +10,7 @@ function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
 
+  const cartCount = useSelector((state) => state.shoppingCart.totalCount);
   const dispatch = useDispatch();
   const { categories, loading, error } = useSelector(
     (state) => state.categories
@@ -171,8 +172,13 @@ function Header() {
           <Link to="" className="w-6 h-6">
             <Search className="text-black sm:text-Primary" />
           </Link>
-          <Link to="" className="w-6 h-6">
+          <Link to="/shoppingCart" className="relative">
             <ShoppingCart className="text-black sm:text-Primary" />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {cartCount}
+              </span>
+            )}
           </Link>
           <Link to="" className="sm:w-6 sm:h-6 hidden sm:block">
             <Heart className="sm:text-Primary" />
