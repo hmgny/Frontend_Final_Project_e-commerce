@@ -55,45 +55,45 @@ function ShopCategory() {
         </div>
       </div>
       <div className="flex gap-40">
-      {/* Eğer showCategories true ise kategori isimlerini ve linklerini göster */}
-      {showCategories && (
-        <div className="py-4 px-4">
-          <p className="text-lg font-bold pb-4">WOMEN</p>
-          <ul className="space-y-2">
-            {categories
-              .filter((category) => category.gender === "k") 
-              .map((category) => (
-                <li key={category.id}>
-                  <Link
-                    to={`/shop/${category.gender}/${category.code}`}
-                    className="text-lg"
-                  >
-                    {category.title}
-                  </Link>
-                </li>
-              ))}
-          </ul>
-        </div>
-      )}
-      {showCategories && (
-        <div className="py-4 px-4">
-          <p className="text-lg font-bold pb-4">MEN</p>
-          <ul className="space-y-2">
-            {categories
-              .filter((category) => category.gender === "e") 
-              .map((category) => (
-                <li key={category.id}>
-                  <Link
-                    to={`/shop/${category.gender}/${category.code}`}
-                    className="text-lg"
-                  >
-                    {category.title}
-                  </Link>
-                </li>
-              ))}
-          </ul>
-        </div>
-      )}
+        {/* Eğer showCategories true ise kategori isimlerini ve linklerini göster */}
+        {showCategories && (
+          <div className="py-4 px-4">
+            <p className="text-lg font-bold pb-4">WOMEN</p>
+            <ul className="space-y-2">
+              {categories
+                .filter((category) => category.gender === "k")
+                .map((category) => (
+                  <li key={category.id}>
+                    <Link
+                      to={`/shop/${category.gender}/${category.code}`}
+                      className="text-lg"
+                    >
+                      {category.title}
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
+        {showCategories && (
+          <div className="py-4 px-4">
+            <p className="text-lg font-bold pb-4">MEN</p>
+            <ul className="space-y-2">
+              {categories
+                .filter((category) => category.gender === "e")
+                .map((category) => (
+                  <li key={category.id}>
+                    <Link
+                      to={`/shop/${category.gender}/${category.code}`}
+                      className="text-lg"
+                    >
+                      {category.title}
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
       </div>
       {/* Kategorilerin görsel olarak görünmesini sağlıyoruz */}
       <div className="grid grid-cols-1 gap-6 px-4 py-4 sm:grid-cols-5 sm:gap-4">

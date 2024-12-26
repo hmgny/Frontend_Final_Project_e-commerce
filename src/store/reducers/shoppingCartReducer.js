@@ -8,7 +8,8 @@ import {
 } from "../actions/shoppingCartActions";
 
 const initialState = {
-  cart: [], // [{count, checked, product}]
+  // LocalStorage'dan sepet verilerini al, yoksa boş array kullan
+  cart: JSON.parse(localStorage.getItem('cart')) || [], 
   payment: {},
   address: {}
 };
@@ -20,36 +21,38 @@ const shoppingCartReducer = (state = initialState, action) => {
         (item) => item.product.id === action.payload.id
       );
 
+      let updatedCart;
       if (existingItem) {
-        const updatedCart = state.cart.map((item) =>
+        updatedCart = state.cart.map((item) =>
           item.product.id === action.payload.id
             ? { ...item, count: item.count + 1 }
             : item
         );
-
-        return {
-          ...state,
-          cart: updatedCart,
+      } else {
+        const newItem = {
+          count: 1,
+          checked: true,
+          product: action.payload,
         };
+        updatedCart = [...state.cart, newItem];
       }
 
-      const newItem = {
-        count: 1,
-        checked: true,
-        product: action.payload,
-      };
+      // Sepet güncellendiğinde localStorage'a kaydet
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
 
       return {
         ...state,
-        cart: [...state.cart, newItem],
+        cart: updatedCart,
       };
     }
-
 
     case REMOVE_FROM_CART: {
       const filteredCart = state.cart.filter(
         (item) => item.product.id !== action.payload
       );
+      
+      // Sepetten ürün silindiğinde localStorage'ı güncelle
+      localStorage.setItem('cart', JSON.stringify(filteredCart));
 
       return {
         ...state,
@@ -64,17 +67,24 @@ const shoppingCartReducer = (state = initialState, action) => {
           : item
       );
 
+      // Ürün miktarı güncellendiğinde localStorage'ı güncelle 
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+
       return {
         ...state,
         cart: updatedCart,
       };
     }
 
-    case SET_CART:
+    case SET_CART: {
+      // Sepet tamamen değiştirildiğinde localStorage'ı güncelle
+      localStorage.setItem('cart', JSON.stringify(action.payload));
+      
       return {
         ...state,
         cart: action.payload,
       };
+    }
 
     default:
       return state;
