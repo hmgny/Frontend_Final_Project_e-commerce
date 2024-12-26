@@ -45,11 +45,9 @@ function ProductCardDetail({
           name: selectedProduct.name,
           price: selectedProduct.price,
           images: selectedProduct.images,
-          // Add other necessary product fields
         })
       );
     }
-    history.push("/shoppingCart");
   };
 
   if (isLoading) {
