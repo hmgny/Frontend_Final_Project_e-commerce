@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { User, Search, ShoppingCart, AlignRight, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import Avatar from "react-avatar";
@@ -9,13 +9,24 @@ function Header() {
   const [user, setUser] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
-  const cartCount = useSelector((state) => state.shoppingCart.totalCount);
+  const toggleCart = () => {
+    setShowCart(!showCart);
+  };
+
   const dispatch = useDispatch();
   const { categories, loading, error } = useSelector(
     (state) => state.categories
   );
+  const cart = useSelector((state) => state.shoppingCart.cart || []);
 
+  const calculateTotal = () => {
+    return cart.reduce(
+      (total, item) => total + item.product.price * item.count,
+      0
+    );
+  };
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
@@ -172,14 +183,81 @@ function Header() {
           <Link to="" className="w-6 h-6">
             <Search className="text-black sm:text-Primary" />
           </Link>
-          <Link to="/shoppingCart" className="relative">
-            <ShoppingCart className="text-black sm:text-Primary" />
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {cartCount}
-              </span>
-            )}
-          </Link>
+          <div>
+            <div className="relative group">
+              <button
+                onClick={toggleCart}
+                className="relative focus:outline-none"
+              >
+                <ShoppingCart className="text-black sm:text-Primary" />
+                {cart.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    {cart.length}
+                  </span>
+                )}
+              </button>
+
+              {/* Cart Dropdown */}
+              <div
+                className={`absolute right-0 top-full mt-2 w-96 bg-white rounded-lg shadow-lg z-50 ${
+                  showCart ? "block" : "hidden"
+                }`}
+              >
+                <div className="p-4">
+                  <div className="max-h-96 overflow-y-auto">
+                    {cart.map((item) => (
+                      <div
+                        key={item.product.id}
+                        className="flex items-center gap-4 py-2 border-b"
+                      >
+                        <img
+                          src={item.product.image?.url}
+                          alt={item.product.name}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                        <div className="flex-1">
+                          <h3 className="text-sm font-medium">
+                            {item.product.name}
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            {item.count} x ${item.product.price}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {cart.length > 0 ? (
+                    <div className="mt-4 pt-4 border-t">
+                      <div className="flex justify-between font-medium mb-4">
+                        <span>Toplam:</span>
+                        <span>
+                          $
+                          {cart
+                            .reduce(
+                              (total, item) =>
+                                total + item.product.price * item.count,
+                              0
+                            )
+                            .toFixed(2)}
+                        </span>
+                      </div>
+                      <Link
+                        to="/shoppingCart"
+                        className="block w-full bg-Primary text-white text-center py-2 rounded hover:bg-Primary/90"
+                      >
+                        Sepete Git
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="text-center py-4">
+                      <p>Sepetiniz boş</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
           <Link to="" className="sm:w-6 sm:h-6 hidden sm:block">
             <Heart className="sm:text-Primary" />
           </Link>
