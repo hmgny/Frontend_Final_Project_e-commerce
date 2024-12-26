@@ -211,7 +211,10 @@ function Header() {
                         className="flex items-center gap-4 py-2 border-b"
                       >
                         <img
-                          src={item.product.image?.url}
+                          src={
+                            item.product.image?.url ||
+                            item.product.images?.[0]?.url
+                          }
                           alt={item.product.name}
                           className="w-16 h-16 object-cover rounded"
                         />

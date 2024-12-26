@@ -57,7 +57,9 @@ const ShoppingCartTable = () => {
                 <div className="flex gap-4">
                   <div className="w-24">
                     <img
-                      src={item.product.images.url}
+                      src={
+                        item.product.image?.url || item.product.images?.[0]?.url
+                      }
                       alt={item.product.name}
                       className="w-full h-auto rounded"
                     />
