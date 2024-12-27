@@ -4,6 +4,12 @@ export const SET_ADDRESS = 'SET_ADDRESS';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const UPDATE_CART_COUNT = 'UPDATE_CART_COUNT';
+export const TOGGLE_CART_ITEM = 'TOGGLE_CART_ITEM';
+
+export const toggleCartItem = (productId) => ({
+  type: TOGGLE_CART_ITEM,
+  payload: productId
+});
 
 export const setCart = (cart) => ({
   type: SET_CART,

@@ -4,14 +4,15 @@ import {
   SET_ADDRESS,
   ADD_TO_CART,
   REMOVE_FROM_CART,
-  UPDATE_CART_COUNT
+  UPDATE_CART_COUNT,
+  TOGGLE_CART_ITEM
 } from "../actions/shoppingCartActions";
 
 const initialState = {
   // LocalStorage'dan sepet verilerini al, yoksa boş array kullan
-  cart: JSON.parse(localStorage.getItem('cart')) || [], 
+  cart: JSON.parse(localStorage.getItem("cart")) || [],
   payment: {},
-  address: {}
+  address: {},
 };
 
 const shoppingCartReducer = (state = initialState, action) => {
@@ -38,7 +39,7 @@ const shoppingCartReducer = (state = initialState, action) => {
       }
 
       // Sepet güncellendiğinde localStorage'a kaydet
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
 
       return {
         ...state,
@@ -50,9 +51,9 @@ const shoppingCartReducer = (state = initialState, action) => {
       const filteredCart = state.cart.filter(
         (item) => item.product.id !== action.payload
       );
-      
+
       // Sepetten ürün silindiğinde localStorage'ı güncelle
-      localStorage.setItem('cart', JSON.stringify(filteredCart));
+      localStorage.setItem("cart", JSON.stringify(filteredCart));
 
       return {
         ...state,
@@ -67,8 +68,8 @@ const shoppingCartReducer = (state = initialState, action) => {
           : item
       );
 
-      // Ürün miktarı güncellendiğinde localStorage'ı güncelle 
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      // Ürün miktarı güncellendiğinde localStorage'ı güncelle
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
 
       return {
         ...state,
@@ -78,13 +79,23 @@ const shoppingCartReducer = (state = initialState, action) => {
 
     case SET_CART: {
       // Sepet tamamen değiştirildiğinde localStorage'ı güncelle
-      localStorage.setItem('cart', JSON.stringify(action.payload));
-      
+      localStorage.setItem("cart", JSON.stringify(action.payload));
+
       return {
         ...state,
         cart: action.payload,
       };
     }
+
+    case TOGGLE_CART_ITEM:
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.product.id === action.payload
+            ? { ...item, checked: !item.checked }
+            : item
+        ),
+      };
 
     default:
       return state;
