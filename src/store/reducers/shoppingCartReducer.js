@@ -1,36 +1,102 @@
 import {
   SET_CART,
   SET_PAYMENT,
-  SET_ADDRESS
-} from '../actions/shoppingCartActions';
+  SET_ADDRESS,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  UPDATE_CART_COUNT,
+  TOGGLE_CART_ITEM
+} from "../actions/shoppingCartActions";
 
 const initialState = {
-  cart: [
-    // Example structure:
-    // { count: 1, product: { id: "1235", ... } },
-    // { count: 3, product: { id: "1236", ... } }
-  ],
+  // LocalStorage'dan sepet verilerini al, yoksa boş array kullan
+  cart: JSON.parse(localStorage.getItem("cart")) || [],
   payment: {},
-  address: {}
+  address: {},
 };
 
 const shoppingCartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_CART:
+    case ADD_TO_CART: {
+      const existingItem = state.cart.find(
+        (item) => item.product.id === action.payload.id
+      );
+
+      let updatedCart;
+      if (existingItem) {
+        updatedCart = state.cart.map((item) =>
+          item.product.id === action.payload.id
+            ? { ...item, count: item.count + 1 }
+            : item
+        );
+      } else {
+        const newItem = {
+          count: 1,
+          checked: true,
+          product: action.payload,
+        };
+        updatedCart = [...state.cart, newItem];
+      }
+
+      // Sepet güncellendiğinde localStorage'a kaydet
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
       return {
         ...state,
-        cart: action.payload
+        cart: updatedCart,
       };
-    case SET_PAYMENT:
+    }
+
+    case REMOVE_FROM_CART: {
+      const filteredCart = state.cart.filter(
+        (item) => item.product.id !== action.payload
+      );
+
+      // Sepetten ürün silindiğinde localStorage'ı güncelle
+      localStorage.setItem("cart", JSON.stringify(filteredCart));
+
       return {
         ...state,
-        payment: action.payload
+        cart: filteredCart,
       };
-    case SET_ADDRESS:
+    }
+
+    case UPDATE_CART_COUNT: {
+      const updatedCart = state.cart.map((item) =>
+        item.product.id === action.payload.id
+          ? { ...item, count: action.payload.count }
+          : item
+      );
+
+      // Ürün miktarı güncellendiğinde localStorage'ı güncelle
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
       return {
         ...state,
-        address: action.payload
+        cart: updatedCart,
       };
+    }
+
+    case SET_CART: {
+      // Sepet tamamen değiştirildiğinde localStorage'ı güncelle
+      localStorage.setItem("cart", JSON.stringify(action.payload));
+
+      return {
+        ...state,
+        cart: action.payload,
+      };
+    }
+
+    case TOGGLE_CART_ITEM:
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.product.id === action.payload
+            ? { ...item, checked: !item.checked }
+            : item
+        ),
+      };
+
     default:
       return state;
   }
