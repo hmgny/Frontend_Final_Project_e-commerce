@@ -7,6 +7,12 @@ import {
   updateAddress,
   deleteAddress,
 } from "../store/actions/orderActions";
+import {
+  fetchCards,
+  addCard,
+  updateCard,
+  deleteCard,
+} from "../store/actions/cardActions";
 
 const OrderPage = () => {
   const dispatch = useDispatch();
@@ -31,6 +37,15 @@ const OrderPage = () => {
   const [cities, setCities] = useState(["İstanbul", "Ankara", "İzmir"]); // Örnek iller
   const [districts, setDistricts] = useState([]);
   const [neighborhoods, setNeighborhoods] = useState([]);
+  const cards = useSelector((state) => state.card?.cards || []);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [showCardForm, setShowCardForm] = useState(false);
+  const [newCard, setNewCard] = useState({
+    card_no: "",
+    expire_month: "",
+    expire_year: "",
+    name_on_card: "",
+  });
 
   const calculateTotal = () => {
     return cart
@@ -75,6 +90,7 @@ const OrderPage = () => {
       history.push("/login");
     } else {
       dispatch(fetchAddresses());
+      dispatch(fetchCards());
     }
   }, [history, token, dispatch]);
 
@@ -116,6 +132,24 @@ const OrderPage = () => {
   // Adres silme işlemi
   const handleDeleteAddress = async (addressId) => {
     await dispatch(deleteAddress(addressId));
+  };
+
+  const handleCardSubmit = async (e) => {
+    e.preventDefault();
+    const success = await dispatch(addCard(newCard));
+    if (success) {
+      setShowCardForm(false);
+      setNewCard({
+        card_no: "",
+        expire_month: "",
+        expire_year: "",
+        name_on_card: "",
+      });
+    }
+  };
+
+  const handleCardDelete = async (cardId) => {
+    await dispatch(deleteCard(cardId));
   };
 
   return (
@@ -202,9 +236,172 @@ const OrderPage = () => {
           )}
 
           {selectedTab === "card" && (
-            <div>
-              <p>Kart bilgileri burada görünecek.</p>
-              {/* Kart bilgileri formu buraya eklenebilir */}
+            <div className="card-section bg-white p-6 rounded-lg shadow">
+              <h2 className="text-xl font-semibold mb-6">Kayıtlı Kartlarım</h2>
+              <div className="space-y-4">
+                {cards.map((card) => (
+                  <label
+                    key={card.id}
+                    className={`flex items-start p-4 border rounded-lg cursor-pointer ${
+                      selectedCard === card.id
+                        ? "border-Primary bg-blue-50"
+                        : "border-gray-200"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentCard"
+                      value={card.id}
+                      checked={selectedCard === card.id}
+                      onChange={() => setSelectedCard(card.id)}
+                      className="mt-1"
+                    />
+                    <div className="ml-3 flex-grow">
+                      <div className="flex justify-between">
+                        <p className="font-medium">{card.name_on_card}</p>
+                        <button
+                          onClick={() => handleCardDelete(card.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          Sil
+                        </button>
+                      </div>
+                      <p className="text-gray-600">
+                        **** **** **** {card.card_no.slice(-4)}
+                      </p>
+                      <p className="text-gray-600">
+                        {card.expire_month}/{card.expire_year}
+                      </p>
+                    </div>
+                  </label>
+                ))}
+
+                <button
+                  onClick={() => setShowCardForm(true)}
+                  className="w-full flex items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-Primary"
+                >
+                  <span className="text-gray-600">+ Yeni Kart Ekle</span>
+                </button>
+              </div>
+
+              {showCardForm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                  <form
+                    onSubmit={handleCardSubmit}
+                    className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md"
+                  >
+                    <h3 className="text-lg font-semibold mb-4">
+                      Yeni Kart Ekle
+                    </h3>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">
+                          Kart Üzerindeki İsim
+                        </label>
+                        <input
+                          type="text"
+                          value={newCard.name_on_card}
+                          onChange={(e) =>
+                            setNewCard({
+                              ...newCard,
+                              name_on_card: e.target.value,
+                            })
+                          }
+                          className="w-full border rounded p-2"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-1">
+                          Kart Numarası
+                        </label>
+                        <input
+                          type="text"
+                          value={newCard.card_no}
+                          onChange={(e) =>
+                            setNewCard({ ...newCard, card_no: e.target.value })
+                          }
+                          className="w-full border rounded p-2"
+                          maxLength="16"
+                          required
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1">
+                            Son Kullanma Ay
+                          </label>
+                          <select
+                            value={newCard.expire_month}
+                            onChange={(e) =>
+                              setNewCard({
+                                ...newCard,
+                                expire_month: e.target.value,
+                              })
+                            }
+                            className="w-full border rounded p-2"
+                            required
+                          >
+                            <option value="">Ay Seçin</option>
+                            {Array.from({ length: 12 }, (_, i) => i + 1).map(
+                              (month) => (
+                                <option key={month} value={month}>
+                                  {month.toString().padStart(2, "0")}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">
+                            Son Kullanma Yıl
+                          </label>
+                          <select
+                            value={newCard.expire_year}
+                            onChange={(e) =>
+                              setNewCard({
+                                ...newCard,
+                                expire_year: e.target.value,
+                              })
+                            }
+                            className="w-full border rounded p-2"
+                            required
+                          >
+                            <option value="">Yıl Seçin</option>
+                            {Array.from(
+                              { length: 10 },
+                              (_, i) => new Date().getFullYear() + i
+                            ).map((year) => (
+                              <option key={year} value={year}>
+                                {year}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end space-x-3 mt-6">
+                      <button
+                        type="button"
+                        onClick={() => setShowCardForm(false)}
+                        className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                      >
+                        İptal
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-Primary text-white rounded hover:bg-Primary/90"
+                      >
+                        Kaydet
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
           )}
 
