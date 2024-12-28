@@ -7,16 +7,20 @@ import LoginForm from "./Pages/LoginForm";
 import ShopPage from "./Pages/ShopPage";
 import ProductDetail from "./Pages/ProductDetail";
 import ShoppingCartTable from "./Pages/ShoppingCartTable";
+import OrderPage from "./Pages/OrderPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/order">
+          <OrderPage />
+        </Route>
+        <Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
+          <ProductDetail />
+        </Route>
         <Route path="/shop">
           <ShopPage />
-        </Route>
-        <Route path="/product/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
-          <ProductDetail />
         </Route>
         <Route path="/product/:id">
           <ProductDetail />
