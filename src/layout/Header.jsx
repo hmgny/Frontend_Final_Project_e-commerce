@@ -316,7 +316,7 @@ function Header() {
                           Sepete Git
                         </Link>
                         <Link
-                          to="/shoppingCart"
+                          to="/order"
                           className="block w-full bg-white text-Primary text-center py-2 rounded hover:bg-Primary hover:text-white border border-Primary"
                         >
                           Siparişi Tamamla
