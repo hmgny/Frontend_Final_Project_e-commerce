@@ -12,6 +12,8 @@ const OrderPage = () => {
   const dispatch = useDispatch();
   const addresses = useSelector((state) => state.order?.addresses || []);
   const history = useHistory();
+  const cart = useSelector((state) => state.shoppingCart.cart || []);
+  const user = useSelector((state) => state.auth.user);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState({
     title: "",
@@ -29,6 +31,12 @@ const OrderPage = () => {
   const [cities, setCities] = useState(["İstanbul", "Ankara", "İzmir"]); // Örnek iller
   const [districts, setDistricts] = useState([]);
   const [neighborhoods, setNeighborhoods] = useState([]);
+
+  const calculateTotal = () => {
+    return cart
+      .filter((item) => item.checked)
+      .reduce((total, item) => total + item.product.price * item.count, 0);
+  };
 
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
@@ -372,20 +380,62 @@ const OrderPage = () => {
           )}
         </div>
 
-        <div className="w-2/5 p-4 bg-gray-100 rounded">
-          <h2 className="text-lg font-semibold mb-4">Sipariş Özeti</h2>
-          <p className="mb-2">
-            Ürünün Toplamı: <strong>8.448,99 TL</strong>
-          </p>
-          <p className="mb-2">
-            Kargo Toplamı: <strong>29,99 TL</strong>
-          </p>
-          <p className="mb-4">
-            Toplam: <strong>8.478,98 TL</strong>
-          </p>
-          <button className="w-full bg-Primary text-white py-2 px-4 rounded">
-            Kaydet ve Devam Et
-          </button>
+        <div className="lg:w-1/3">
+          <div className="bg-white rounded-lg shadow p-6 sticky top-4">
+            <h3 className="text-lg font-semibold mb-4">
+              Sipariş Özeti (
+              {cart
+                .filter((item) => item.checked)
+                .reduce((total, item) => total + item.count, 0)}{" "}
+              Ürün)
+            </h3>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span>Ara Toplam</span>
+                <span>{(calculateTotal() * 0.5).toFixed(2)} TL</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Kargo</span>
+                <span>49.90 TL</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="flex flex-wrap">
+                  {calculateTotal() * (0.5).toFixed(2) > 500
+                    ? "500 TL ve üzeri alışverişlerde kargo ücretsiz"
+                    : ""}
+                </span>
+                <span className="text-red-500">
+                  {calculateTotal() * (0.5).toFixed(2) > 500
+                    ? "- 49.90 TL"
+                    : ""}
+                </span>
+              </div>
+              <div className="border-t pt-4 mt-4">
+                <div className="flex justify-between font-semibold">
+                  <span>Toplam</span>
+                  <span>
+                    {(
+                      calculateTotal() * (0.5).toFixed(2) +
+                      (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)
+                    ).toFixed(2)}
+                    TL
+                  </span>
+                </div>
+              </div>
+              <button className="w-full bg-Primary text-white py-3 rounded-md mt-6 hover:bg-Primary/90">
+                {selectedTab === "address"
+                  ? "Kaydet ve Devam Et"
+                  : selectedTab === "card"
+                  ? "Ödeme Yap"
+                  : "Devam Et"}
+              </button>
+              <span className="h7 text-red-600">
+                {calculateTotal() * (0.5).toFixed(2) > 500
+                  ? ""
+                  : "500 TL ve üzeri alışverişlerde kargo ücretsiz"}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
