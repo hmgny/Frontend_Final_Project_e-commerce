@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import axios from "axios"; // Backend ile iletişim için axios kullanıyoruz.
+import {
+  fetchAddresses,
+  addAddress,
+  updateAddress,
+  deleteAddress,
+} from "../store/actions/orderActions";
 
 const OrderPage = () => {
+  const dispatch = useDispatch();
+  const addresses = useSelector((state) => state.order?.addresses || []);
   const history = useHistory();
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [addresses, setAddresses] = useState([]); // Başlangıçta boş bir dizi olarak tanımlanır.
   const [newAddress, setNewAddress] = useState({
     title: "",
     name: "",
@@ -59,31 +66,9 @@ const OrderPage = () => {
     if (!token) {
       history.push("/login");
     } else {
-      fetchAddresses();
+      dispatch(fetchAddresses());
     }
-  }, [history, token]);
-
-  // Adres listesini backend'den çek
-  const fetchAddresses = async () => {
-    try {
-      const response = await axios.get(
-        "https://workintech-fe-ecommerce.onrender.com/user/address",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      // Gelen verinin bir dizi olduğundan emin olun
-      if (Array.isArray(response.data)) {
-        setAddresses(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching addresses", error);
-      setAddresses([]); // Hata durumunda boş bir dizi set edin
-    }
-  };
+  }, [history, token, dispatch]);
 
   // Formdaki inputları kontrol et
   const handleInputChange = (e) => {
@@ -95,25 +80,7 @@ const OrderPage = () => {
   const handleAddAddress = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://workintech-fe-ecommerce.onrender.com/user/address",
-        {
-          title: newAddress.title,
-          name: newAddress.name,
-          surname: newAddress.surname,
-          phone: newAddress.phone,
-          city: newAddress.city,
-          district: newAddress.district,
-          neighborhood: newAddress.neighborhood,
-          address: newAddress.address,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setAddresses([...addresses, response.data]); // Yeni adresi listeye ekle
+      await dispatch(addAddress(newAddress));
       setShowForm(false);
       setNewAddress({
         title: "",
@@ -125,56 +92,22 @@ const OrderPage = () => {
         neighborhood: "",
         address: "",
       });
+      // Adres eklendikten sonra adres listesini güncelle
+      dispatch(fetchAddresses());
+      console.log("adres eklendi", fetchAddresses);
     } catch (error) {
-      console.error("Error adding address", error);
+      console.error("Error adding address:", error);
     }
   };
 
   // Adres güncelleme işlemi
   const handleUpdateAddress = async (address) => {
-    try {
-      const response = await axios.put(
-        "https://workintech-fe-ecommerce.onrender.com/user/address",
-        {
-          id: address.id,
-          title: address.title,
-          name: address.name,
-          surname: address.surname,
-          phone: address.phone,
-          city: address.city,
-          district: address.district,
-          neighborhood: address.neighborhood,
-          address: address.address,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setAddresses(
-        addresses.map((addr) => (addr.id === address.id ? response.data : addr))
-      );
-    } catch (error) {
-      console.error("Error updating address", error);
-    }
+    await dispatch(updateAddress(address));
   };
 
   // Adres silme işlemi
   const handleDeleteAddress = async (addressId) => {
-    try {
-      await axios.delete(
-        `https://workintech-fe-ecommerce.onrender.com/user/address/${addressId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setAddresses(addresses.filter((address) => address.id !== addressId));
-    } catch (error) {
-      console.error("Error deleting address", error);
-    }
+    await dispatch(deleteAddress(addressId));
   };
 
   return (
@@ -200,32 +133,64 @@ const OrderPage = () => {
             </button>
           </div>
           {selectedTab === "address" && (
-            <>
-              {addresses.map((address) => (
-                <div
-                  key={address.id}
-                  className={`border p-4 mb-2 rounded cursor-pointer ${
-                    selectedAddress === address.id
-                      ? "border-Primary"
-                      : "border-gray-300"
-                  }`}
-                  onClick={() => setSelectedAddress(address.id)}
-                >
-                  <h3 className="font-bold">{address.title}</h3>
-                  <p>{`${address.name} ${address.surname}`}</p>
-                  <p>{address.phone}</p>
-                  <p>{`${address.city}, ${address.district}, ${address.neighborhood}`}</p>
-                  <p>{address.address}</p>
-                </div>
-              ))}
+            <div className="address-section">
+              <h2 className="text-xl font-semibold mb-4">Teslimat Adresi</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {addresses.map((address) => (
+                  <label
+                    key={address.id}
+                    className={`relative border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer ${
+                      selectedAddress === address.id
+                        ? "border-Primary bg-blue-50"
+                        : "border-gray-200"
+                    }`}
+                  >
+                    <div className="flex items-start gap-4">
+                      <input
+                        type="radio"
+                        name="deliveryAddress"
+                        value={address.id}
+                        checked={selectedAddress === address.id}
+                        onChange={() => setSelectedAddress(address.id)}
+                        className="mt-1"
+                      />
+                      <div className="flex-grow">
+                        <div className="flex justify-between">
+                          <h3 className="font-bold text-lg mb-1">
+                            {address.title}
+                          </h3>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleDeleteAddress(address.id);
+                              }}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              Sil
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-gray-700 mb-1">{`${address.name} ${address.surname}`}</p>
+                        <p className="text-gray-600 mb-1">{address.phone}</p>
+                        <p className="text-gray-600">{`${address.address}`}</p>
+                        <p className="text-gray-600">{`${address.neighborhood} Mah. ${address.district}/${address.city}`}</p>
+                      </div>
+                    </div>
+                  </label>
+                ))}
 
-              <button
-                className="mt-4 text-blue-500 underline"
-                onClick={() => setShowForm(true)}
-              >
-                Yeni Adres Ekle
-              </button>
-            </>
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="flex items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg hover:border-Primary hover:bg-gray-50"
+                >
+                  <div className="text-center">
+                    <span className="block text-3xl mb-2">+</span>
+                    <span className="text-gray-600">Yeni Adres Ekle</span>
+                  </div>
+                </button>
+              </div>
+            </div>
           )}
 
           {selectedTab === "card" && (
@@ -395,6 +360,7 @@ const OrderPage = () => {
                     İptal
                   </button>
                   <button
+                    onClick={handleAddAddress}
                     type="submit"
                     className="bg-Primary text-white py-2 px-4 rounded"
                   >
