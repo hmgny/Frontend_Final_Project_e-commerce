@@ -12,6 +12,15 @@ const ShoppingCartTable = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.shoppingCart.cart || []);
   const history = useHistory();
+  const user = useSelector((state) => state.auth.user);
+
+  const handleCheckout = () => {
+    if (user || localStorage.getItem("token")) {
+      history.push("/order");
+    } else {
+      history.push("/login");
+    }
+  };
 
   const calculateTotal = () => {
     return cart
@@ -186,7 +195,7 @@ const ShoppingCartTable = () => {
                 </div>
               </div>
               <button
-                onClick={() => history.push("/checkout")}
+                onClick={handleCheckout}
                 className="w-full bg-Primary text-white py-3 rounded-md mt-6 hover:bg-Primary/90"
               >
                 Sepeti Onayla
