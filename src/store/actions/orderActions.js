@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const FETCH_ADDRESSES = 'FETCH_ADDRESSES';
@@ -50,7 +49,13 @@ const fetchAddresses = () => async (dispatch) => {
     }
   };
 
-
-
-
-export { FETCH_ADDRESSES, ADD_ADDRESS, UPDATE_ADDRESS, DELETE_ADDRESS};
+export { 
+  FETCH_ADDRESSES, 
+  ADD_ADDRESS, 
+  UPDATE_ADDRESS, 
+  DELETE_ADDRESS,
+  fetchAddresses,
+  addAddress,
+  updateAddress,
+  deleteAddress 
+};

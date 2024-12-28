@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HomePage from "./Pages/HomePage";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -8,14 +8,23 @@ import ShopPage from "./Pages/ShopPage";
 import ProductDetail from "./Pages/ProductDetail";
 import ShoppingCartTable from "./Pages/ShoppingCartTable";
 import OrderPage from "./Pages/OrderPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { useDispatch } from "react-redux";
+import { verifyToken } from "./store/actions/authActions";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(verifyToken());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/order">
+        <ProtectedRoute path="/order">
           <OrderPage />
-        </Route>
+        </ProtectedRoute>
         <Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
           <ProductDetail />
         </Route>
