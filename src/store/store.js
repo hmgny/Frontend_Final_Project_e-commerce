@@ -6,6 +6,7 @@ import authReducer from './reducers/authReducer';
 import carouselReducer from './reducers/carouselReducer';
 import categoryReducer from './reducers/categoryReducer';
 import { thunk } from 'redux-thunk';
+import orderReducer from './reducers/orderReducer';
 
 const rootReducer = combineReducers({
   client: clientReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   carousel: carouselReducer,
   categories: categoryReducer,
+  addres: orderReducer
 });
 
 const store = createStore(rootReducer,applyMiddleware(thunk));

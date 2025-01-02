@@ -6,48 +6,136 @@ const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
 const DELETE_ADDRESS = 'DELETE_ADDRESS';
 
 const fetchAddresses = () => async (dispatch) => {
-    try {
-      const response = await axios.get('https://workintech-fe-ecommerce.onrender.com/user/address', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      dispatch({ type: FETCH_ADDRESSES, payload: response.data });
-    } catch (error) {
-      console.error('Error fetching addresses:', error);
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
     }
-  };
-  
-  const addAddress = (address) => async (dispatch) => {
-    try {
-      const response = await axios.post('https://workintech-fe-ecommerce.onrender.com/user/address', address, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+
+    const response = await axios.get(
+      'https://workintech-fe-ecommerce.onrender.com/user/address',
+      {
+        headers: { 
+          'Authorization': token
+        }
+      }
+    );
+    
+    console.log('API Response:', response.data); // Debug için ekle
+
+    if (response.data) {
+      dispatch({ 
+        type: FETCH_ADDRESSES, 
+        payload: response.data 
       });
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error fetching addresses:', error);
+    dispatch({ 
+      type: FETCH_ADDRESSES, 
+      payload: [] 
+    });
+  }
+};
+
+const addAddress = (address) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    // API'ye gönderilecek veriyi düzenle
+    const addressData = {
+      ...address,
+      title: address.title || 'Ev Adresi', // Varsayılan başlık
+      name: address.name,
+      surname: address.surname,
+      phone: address.phone,
+      city: address.city,
+      district: address.district,
+      neighborhood: address.neighborhood,
+      address: address.address
+    };
+
+    const response = await axios.post(
+      'https://workintech-fe-ecommerce.onrender.com/user/address', 
+      addressData,
+      {
+        headers: { 
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    if (response.data) {
+      // Yeni adresi localStorage'a ekle
+      const existingAddresses = JSON.parse(localStorage.getItem('addresses') || '[]');
+      const updatedAddresses = [...existingAddresses, response.data];
+      localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
+
+      // Redux store'u güncelle
       dispatch({ type: ADD_ADDRESS, payload: response.data });
-    } catch (error) {
-      console.error('Error adding address:', error);
+      // Adres listesini yenile
+      await dispatch(fetchAddresses());
+      return response.data;
     }
-  };
-  
-  const updateAddress = (address) => async (dispatch) => {
-    try {
-      const response = await axios.put('https://workintech-fe-ecommerce.onrender.com/user/address', address, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      dispatch({ type: UPDATE_ADDRESS, payload: response.data });
-    } catch (error) {
-      console.error('Error updating address:', error);
+  } catch (error) {
+    console.error('Error adding address:', error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
     }
-  };
-  
-  const deleteAddress = (addressId) => async (dispatch) => {
-    try {
-      await axios.delete(`https://workintech-fe-ecommerce.onrender.com/user/address/${addressId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      dispatch({ type: DELETE_ADDRESS, payload: addressId });
-    } catch (error) {
-      console.error('Error deleting address:', error);
+    return null;
+  }
+};
+
+const updateAddress = (address) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
     }
-  };
+
+    const response = await axios.put(
+      'https://workintech-fe-ecommerce.onrender.com/user/address',
+      address,
+      {
+        headers: { 
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    dispatch({ type: UPDATE_ADDRESS, payload: response.data });
+  } catch (error) {
+    console.error('Error updating address:', error);
+  }
+};
+
+const deleteAddress = (addressId) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    await axios.delete(
+      `https://workintech-fe-ecommerce.onrender.com/user/address/${addressId}`,
+      {
+        headers: { 
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    dispatch({ type: DELETE_ADDRESS, payload: addressId });
+  } catch (error) {
+    console.error('Error deleting address:', error);
+  }
+};
 
 export { 
   FETCH_ADDRESSES, 
