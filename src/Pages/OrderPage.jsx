@@ -249,172 +249,120 @@ const OrderPage = () => {
   );
 
   const renderCardSection = () => (
-    <div className="card-section bg-white p-6 rounded-lg shadow">
+    <div className="card-section bg-white p-10 rounded-lg shadow">
       <h2 className="text-xl font-semibold mb-6">Kayıtlı Kartlarım</h2>
       <div className="space-y-4">
-        {creditCards && creditCards.length > 0 ? ( // Changed from cards to creditCards
-          <ul className="list-disc pl-5">
-            {creditCards.map(
-              (
-                card // Changed from cards to creditCards
-              ) => (
-                <label
-                  key={card.id}
-                  className={`flex items-start p-4 border rounded-lg cursor-pointer ${
+        {creditCards && creditCards.length > 0 ? (
+          <ul className="grid grid-cols-2 gap-4">
+            {" "}
+            {/* Changed from grid-cols-1 to grid-cols-2 */}
+            {creditCards.map((card) => (
+              <label key={card.id} className="block cursor-pointer">
+                <div
+                  className={`relative overflow-hidden rounded-xl ${
                     selectedCard === card.id
-                      ? "border-Primary bg-blue-50"
-                      : "border-gray-200"
-                  }`}
+                      ? "bg-gradient-to-r from-Primary to-Secondary"
+                      : "bg-gradient-to-r from-gray-400 to-gray-500"
+                  } text-white p-6 aspect-[1.7/1]`}
                 >
-                  <input
-                    type="radio"
-                    name="paymentCard"
-                    value={card.id}
-                    checked={selectedCard === card.id}
-                    onChange={() => setSelectedCard(card.id)}
-                    className="mt-1"
-                  />
-                  <div className="ml-3 flex-grow">
-                    <div className="flex justify-between">
-                      <p className="font-medium">{card.name_on_card}</p>
-                      <button
-                        onClick={() => handleCardDelete(card.id)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        Sil
-                      </button>
-                    </div>
-                    <p className="text-gray-600">
+                  {" "}
+                  {/* Added fixed height */}
+                  {/* Rest of the card content */}
+                  <div className="absolute top-4 left-4">
+                    <svg width="45" height="35" viewBox="0 0 45 35" fill="none">
+                      <path
+                        d="M0 5C0 2.23858 2.23858 0 5 0H40C42.7614 0 45 2.23858 45 5V30C45 32.7614 42.7614 35 40 35H5C2.23858 35 0 32.7614 0 30V5Z"
+                        fill="#FFD700"
+                      />
+                      <rect x="5" y="8" width="35" height="5" fill="#DAA520" />
+                      <rect x="5" y="16" width="35" height="5" fill="#DAA520" />
+                    </svg>
+                  </div>
+                  {/* Card Content */}
+                  <div className="mt-12">
+                    <input
+                      type="radio"
+                      name="paymentCard"
+                      value={card.id}
+                      checked={selectedCard === card.id}
+                      onChange={() => setSelectedCard(card.id)}
+                      className="absolute top-4 right-4"
+                    />
+                    <p className="text-2xl font-mono tracking-wider mb-8">
                       **** **** **** {card.card_no.slice(-4)}
                     </p>
-                    <p className="text-gray-600">
-                      {card.expire_month}/{card.expire_year}
-                    </p>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="text-xs opacity-75">Kart Sahibi</p>
+                        <p className="font-medium">{card.name_on_card}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs opacity-75">Son Kullanma</p>
+                        <p className="font-mono">
+                          {card.expire_month}/{card.expire_year}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </label>
-              )
-            )}
+                  {/* Delete Button */}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleCardDelete(card.id);
+                    }}
+                    className="absolute bottom-4 right-4 opacity-75 hover:opacity-100 transition-opacity"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                  {/* Card Network Logo - Updated positioning and size */}
+                  <div className="absolute top-4 right-12">
+                    <div className="text-white text-sm font-bold opacity-75">
+                      MASTERCARD
+                    </div>
+                  </div>
+                </div>
+              </label>
+            ))}
           </ul>
         ) : (
           <p>Kayıtlı kartınız bulunmamaktadır.</p>
         )}
 
+        {/* Add New Card Button - full width */}
         <button
           onClick={() => setShowCardForm(true)}
-          className="w-full flex items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-Primary"
+          className="w-full flex items-center justify-center p-6 border-2 border-dashed border-blue-300 rounded-xl hover:bg-blue-50 hover:border-blue-400 transition-all group"
         >
-          <span className="text-gray-600">+ Yeni Kart Ekle</span>
+          <span className="flex items-center text-Primary group-hover:text-blue-700">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Yeni Kart Ekle
+          </span>
         </button>
       </div>
-
-      {showCardForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <form
-            onSubmit={handleCardSubmit}
-            className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md"
-          >
-            <h3 className="text-lg font-semibold mb-4">Yeni Kart Ekle</h3>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Kart Üzerindeki İsim
-                </label>
-                <input
-                  type="text"
-                  value={newCard.name_on_card}
-                  onChange={(e) =>
-                    setNewCard({ ...newCard, name_on_card: e.target.value })
-                  }
-                  className="w-full border rounded p-2"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Kart Numarası
-                </label>
-                <input
-                  type="text"
-                  value={newCard.card_no}
-                  onChange={(e) =>
-                    setNewCard({ ...newCard, card_no: e.target.value })
-                  }
-                  className="w-full border rounded p-2"
-                  maxLength="16"
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Son Kullanma Ay
-                  </label>
-                  <select
-                    value={newCard.expire_month}
-                    onChange={(e) =>
-                      setNewCard({ ...newCard, expire_month: e.target.value })
-                    }
-                    className="w-full border rounded p-2"
-                    required
-                  >
-                    <option value="">Ay Seçin</option>
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map(
-                      (month) => (
-                        <option key={month} value={month}>
-                          {month.toString().padStart(2, "0")}
-                        </option>
-                      )
-                    )}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Son Kullanma Yıl
-                  </label>
-                  <select
-                    value={newCard.expire_year}
-                    onChange={(e) =>
-                      setNewCard({ ...newCard, expire_year: e.target.value })
-                    }
-                    className="w-full border rounded p-2"
-                    required
-                  >
-                    <option value="">Yıl Seçin</option>
-                    {Array.from(
-                      { length: 10 },
-                      (_, i) => new Date().getFullYear() + i
-                    ).map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end space-x-3 mt-6">
-              <button
-                type="button"
-                onClick={() => setShowCardForm(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                İptal
-              </button>
-              <button
-                type="submit"
-                onClick={handleCardSubmit}
-                className="px-4 py-2 bg-Primary text-white rounded hover:bg-Primary/90"
-              >
-                Kaydet
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
     </div>
   );
 
