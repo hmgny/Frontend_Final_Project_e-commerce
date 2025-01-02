@@ -4,6 +4,7 @@ const FETCH_ADDRESSES = 'FETCH_ADDRESSES';
 const ADD_ADDRESS = 'ADD_ADDRESS';
 const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
 const DELETE_ADDRESS = 'DELETE_ADDRESS';
+export const CREATE_ORDER = 'CREATE_ORDER';
 
 const fetchAddresses = () => async (dispatch) => {
   try {
@@ -134,6 +135,33 @@ const deleteAddress = (addressId) => async (dispatch) => {
     dispatch({ type: DELETE_ADDRESS, payload: addressId });
   } catch (error) {
     console.error('Error deleting address:', error);
+  }
+};
+
+export const createOrder = (orderData) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('No token found');
+
+    const response = await axios.post(
+      'https://workintech-fe-ecommerce.onrender.com/order',
+      orderData,
+      {
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (response.data) {
+      dispatch({ type: CREATE_ORDER, payload: response.data });
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error creating order:', error);
+    return false;
   }
 };
 

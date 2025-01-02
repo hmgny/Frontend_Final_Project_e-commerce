@@ -6,6 +6,7 @@ import {
   addAddress,
   updateAddress,
   deleteAddress,
+  createOrder,
 } from "../store/actions/orderActions";
 import {
   fetchCards,
@@ -13,6 +14,8 @@ import {
   updateCard,
   deleteCard,
 } from "../store/actions/cardActions";
+import { clearCart } from "../store/actions/shoppingCartActions"; // Bu action'ı oluşturmanız gerekebilir
+import { toast } from "react-toastify";
 
 const OrderPage = () => {
   const dispatch = useDispatch();
@@ -177,13 +180,53 @@ const OrderPage = () => {
     return false;
   };
 
+  const handleCreateOrder = async () => {
+    if (selectedAddress && selectedCard) {
+      const selectedCardData = creditCards.find(
+        (card) => card.id === selectedCard
+      );
+
+      const orderData = {
+        address_id: selectedAddress,
+        order_date: new Date().toISOString(),
+        card_no: selectedCardData.card_no,
+        card_name: selectedCardData.name_on_card,
+        card_expire_month: selectedCardData.expire_month,
+        card_expire_year: selectedCardData.expire_year,
+        card_ccv: "123", // Güvenlik için gerçek CCV kullanılmıyor
+        price: calculateTotal(),
+        products: cart
+          .filter((item) => item.checked)
+          .map((item) => ({
+            product_id: item.product.id,
+            count: item.count,
+            detail: `${item.product.color} - ${item.product.size}`,
+          })),
+      };
+      console.log("order dataaaaaaaaaaaaaaaaaaa", orderData);
+
+      try {
+        const success = await dispatch(createOrder(orderData));
+        if (success) {
+          toast.success("Siparişiniz başarıyla oluşturuldu! Teşekkür ederiz.");
+          await dispatch(clearCart()); // Sepeti temizle
+          history.push("/orders"); // Siparişler sayfasına yönlendir
+        } else {
+          toast.error("Sipariş oluşturulurken bir hata oluştu.");
+        }
+      } catch (error) {
+        console.error("Order creation error:", error);
+        toast.error("Sipariş oluşturulurken bir hata oluştu.");
+      }
+    }
+  };
+
   // Buton işlevini yöneten fonksiyon
   const handleButtonClick = () => {
     if (selectedTab === "address" && selectedAddress) {
       setSelectedTab("card");
     } else if (selectedTab === "card" && selectedCard) {
-      // Ödeme işlemi buraya gelecek
-      console.log("Ödeme yapılıyor...");
+      handleCreateOrder();
     }
   };
 

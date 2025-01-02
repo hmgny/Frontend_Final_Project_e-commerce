@@ -5,6 +5,7 @@ export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const UPDATE_CART_COUNT = 'UPDATE_CART_COUNT';
 export const TOGGLE_CART_ITEM = 'TOGGLE_CART_ITEM';
+export const CLEAR_CART = 'CLEAR_CART';
 
 export const toggleCartItem = (productId) => ({
   type: TOGGLE_CART_ITEM,
@@ -40,3 +41,13 @@ export const setAddress = (address) => ({
   type: SET_ADDRESS,
   payload: address
 });
+
+export const clearCart = () => async (dispatch) => {
+  try {
+    dispatch({ type: CLEAR_CART });
+    return true;
+  } catch (error) {
+    console.error('Error clearing cart:', error);
+    return false;
+  }
+};

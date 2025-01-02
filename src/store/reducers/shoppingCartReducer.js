@@ -5,7 +5,8 @@ import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
   UPDATE_CART_COUNT,
-  TOGGLE_CART_ITEM
+  TOGGLE_CART_ITEM,
+  CLEAR_CART
 } from "../actions/shoppingCartActions";
 
 const initialState = {
@@ -95,6 +96,12 @@ const shoppingCartReducer = (state = initialState, action) => {
             ? { ...item, checked: !item.checked }
             : item
         ),
+      };
+
+    case CLEAR_CART:
+      return {
+        ...state,
+        cart: []
       };
 
     default:
