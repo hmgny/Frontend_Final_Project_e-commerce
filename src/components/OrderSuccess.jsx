@@ -37,6 +37,12 @@ const OrderSuccess = ({ onClose }) => {
         >
           Alışverişe Devam Et
         </button>
+        <button
+          onClick={() => history.push("/PastOrders")}
+          className="w-full bg-Primary text-white py-3 px-6 rounded-md my-2 hover:bg-Primary/90 transition-colors"
+        >
+          Siparişlerim
+        </button>
       </div>
     </div>
   );
