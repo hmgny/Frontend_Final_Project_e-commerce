@@ -16,6 +16,7 @@ import {
 } from "../store/actions/cardActions";
 import { clearCart } from "../store/actions/shoppingCartActions"; // Bu action'ı oluşturmanız gerekebilir
 import { toast } from "react-toastify";
+import OrderSuccess from "../components/OrderSuccess";
 
 const OrderPage = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const OrderPage = () => {
     expire_year: "",
     name_on_card: "",
   });
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const calculateTotal = () => {
     return cart
@@ -208,9 +210,9 @@ const OrderPage = () => {
       try {
         const success = await dispatch(createOrder(orderData));
         if (success) {
-          toast.success("Siparişiniz başarıyla oluşturuldu! Teşekkür ederiz.");
+          setShowSuccess(true); // Show success modal instead of toast
           await dispatch(clearCart()); // Sepeti temizle
-          history.push("/orders"); // Siparişler sayfasına yönlendir
+          // Don't redirect immediately, let user click the continue button
         } else {
           toast.error("Sipariş oluşturulurken bir hata oluştu.");
         }
@@ -517,6 +519,7 @@ const OrderPage = () => {
       </div>
 
       {/* Modals */}
+      {showSuccess && <OrderSuccess />}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <form
