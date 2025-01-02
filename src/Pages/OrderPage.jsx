@@ -166,17 +166,46 @@ const OrderPage = () => {
     await dispatch(deleteCard(cardId));
   };
 
+  // Buton durumunu kontrol eden fonksiyon
+  const isButtonActive = () => {
+    if (selectedTab === "address") {
+      return selectedAddress !== null;
+    }
+    if (selectedTab === "card") {
+      return selectedCard !== null;
+    }
+    return false;
+  };
+
+  // Buton işlevini yöneten fonksiyon
+  const handleButtonClick = () => {
+    if (selectedTab === "address" && selectedAddress) {
+      setSelectedTab("card");
+    } else if (selectedTab === "card" && selectedCard) {
+      // Ödeme işlemi buraya gelecek
+      console.log("Ödeme yapılıyor...");
+    }
+  };
+
   const renderAddressSection = () => (
     <div className="mt-8">
       <h2 className="text-xl font-semibold mb-2">Teslimat Adresi</h2>
       {addresses && addresses.length > 0 ? (
         <ul className="list-disc pl-5">
           {addresses.map((address) => (
-            <li key={address.id} className="mb-2">
+            <li
+              key={address.id}
+              className={`mb-2 p-4 rounded-lg ${
+                selectedAddress === address.id
+                  ? "bg-blue-50 border border-Primary"
+                  : ""
+              }`}
+            >
               <input
                 type="radio"
                 name="selectedAddress"
                 value={address.id}
+                checked={selectedAddress === address.id}
                 onChange={() => setSelectedAddress(address.id)}
                 className="mr-2"
               />
@@ -471,7 +500,15 @@ const OrderPage = () => {
                   </span>
                 </div>
               </div>
-              <button className="w-full bg-Primary text-white py-3 rounded-md mt-6 hover:bg-Primary/90">
+              <button
+                onClick={handleButtonClick}
+                disabled={!isButtonActive()}
+                className={`w-full py-3 rounded-md mt-6 transition-all ${
+                  isButtonActive()
+                    ? "bg-Primary text-white hover:bg-Primary/90"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
+              >
                 {selectedTab === "address"
                   ? "Kaydet ve Devam Et"
                   : selectedTab === "card"
