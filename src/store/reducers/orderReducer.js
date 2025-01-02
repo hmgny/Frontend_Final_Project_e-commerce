@@ -7,17 +7,21 @@ const initialState = {
 };
 
 export const orderReducer = (state = initialState, action) => {
+  console.log('Reducer received action:', action); // Debug için ekle
   switch (action.type) {
     case FETCH_ADDRESSES:
+      console.log('Updating addresses in reducer:', action.payload); // Debug için ekle
       return {
         ...state,
-        addresses: action.payload,
+        addresses: action.payload || [], // Null check ekle
         loading: false
       };
     case ADD_ADDRESS:
       return {
         ...state,
-        addresses: [...state.addresses, action.payload]
+        addresses: Array.isArray(state.addresses) 
+          ? [...state.addresses, action.payload]
+          : [action.payload]
       };
     case UPDATE_ADDRESS:
       return {

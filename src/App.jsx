@@ -11,6 +11,7 @@ import OrderPage from "./Pages/OrderPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useDispatch } from "react-redux";
 import { verifyToken } from "./store/actions/authActions";
+import PastOrders from "./components/PastOrders";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +23,9 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <ProtectedRoute path="/pastOrders">
+          <PastOrders />
+        </ProtectedRoute>
         <ProtectedRoute path="/order">
           <OrderPage />
         </ProtectedRoute>

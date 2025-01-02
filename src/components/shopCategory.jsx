@@ -65,7 +65,7 @@ function ShopCategory() {
                 .map((category) => (
                   <li key={category.id}>
                     <Link
-                      to={`/shop/${category.gender}/${category.code}`}
+                      to={`/shop/${category.gender}/${category.title}/${category.id}`}
                       className="text-lg"
                     >
                       {category.title}
@@ -84,7 +84,7 @@ function ShopCategory() {
                 .map((category) => (
                   <li key={category.id}>
                     <Link
-                      to={`/shop/${category.gender}/${category.code}`}
+                      to={`/shop/${category.gender}/${category.title}/${category.id}`}
                       className="text-lg"
                     >
                       {category.title}
@@ -99,7 +99,7 @@ function ShopCategory() {
       <div className="grid grid-cols-1 gap-6 px-4 py-4 sm:grid-cols-5 sm:gap-4">
         {topCategories.map((category) => (
           <Link
-            to={`/shop/${category.gender}/${category.code}`}
+            to={`/shop/${category.gender}/${category.title}/${category.id}`}
             key={category.id}
             className="relative group"
           >
@@ -123,7 +123,7 @@ function ShopCategory() {
         <div className="grid grid-cols-1 gap-6 px-4 pb-8 sm:grid-cols-5 sm:gap-4">
           {remainingCategories.map((category) => (
             <Link
-              to={`/shop/${category.gender}/${category.code}`}
+              to={`/shop/${category.gender}/${category.title}/${category.id}`}
               key={category.id}
               className="relative group"
             >
