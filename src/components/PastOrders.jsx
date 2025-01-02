@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import PageContent from "@/layout/PageContent";
 
 const PastOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -130,89 +131,96 @@ const PastOrders = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-semibold mb-6 text-center">
-        Geçmiş Siparişlerim
-      </h2>
-      <div className="space-y-4">
-        {orders.map((order, index) => (
-          <div
-            key={order.id}
-            className={`bg-white p-4 rounded-lg shadow border ${getOrderBorderColor(
-              index
-            )} transition-shadow hover:shadow-lg`}
-          >
-            <div className="flex justify-around items-center">
-              <div className="text-center w-full flex justify-between items-center">
-                <div>
-                  {(index > 2 || index === 1 || index === 2 || index === 0) && (
-                    <div className="flex justify-center items-center mb-2">
-                      {getStatusIcon(index)}
-                      <span className="text-gray-600">
-                        {getOrderStatus(index)}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-col gap-4">
-                  <p className="text-base font-semibold">
-                    Sipariş No: {order.id}
-                  </p>
+    <PageContent>
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-semibold mb-6 text-center">
+          Geçmiş Siparişlerim
+        </h2>
+        <div className="space-y-4">
+          {orders.map((order, index) => (
+            <div
+              key={order.id}
+              className={`bg-white p-4 rounded-lg shadow border ${getOrderBorderColor(
+                index
+              )} transition-shadow hover:shadow-lg`}
+            >
+              <div className="flex justify-around items-center">
+                <div className="text-center w-full flex justify-between items-center">
                   <div>
-                    <p className="text-gray-600">
-                      Sipariş Tarihi:{" "}
-                      {new Date(order.order_date).toLocaleDateString()}
+                    {(index > 2 ||
+                      index === 1 ||
+                      index === 2 ||
+                      index === 0) && (
+                      <div className="flex justify-center items-center mb-2">
+                        {getStatusIcon(index)}
+                        <span className="text-gray-600">
+                          {getOrderStatus(index)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <p className="text-base font-semibold">
+                      Sipariş No: {order.id}
                     </p>
-                    <div className="flex gap-2 justify-center">
-                      <p className="text-gray-600">Tutar:</p>
-                      <p className="text-green-500 font-semibold">
-                        {order.price.toFixed(2)} TL
+                    <div>
+                      <p className="text-gray-600">
+                        Sipariş Tarihi:{" "}
+                        {new Date(order.order_date).toLocaleDateString()}
                       </p>
+                      <div className="flex gap-2 justify-center">
+                        <p className="text-gray-600">Tutar:</p>
+                        <p className="text-green-500 font-semibold">
+                          {order.price.toFixed(2)} TL
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <button
+                    onClick={() => toggleOrderDetails(order.id)}
+                    className="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white rounded-md transition-colors py-1 px-2 m-4"
+                  >
+                    {expandedOrderId === order.id ? "Gizle" : "Sipariş Detayı"}
+                  </button>
                 </div>
-                <button
-                  onClick={() => toggleOrderDetails(order.id)}
-                  className="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white rounded-md transition-colors py-1 px-2 m-4"
-                >
-                  {expandedOrderId === order.id ? "Gizle" : "Sipariş Detayı"}
-                </button>
               </div>
-            </div>
-            {expandedOrderId === order.id && (
-              <div className="mt-4">
-                <ul className="space-y-2">
-                  {order.products.map((product) => (
-                    <li
-                      key={product.product_id}
-                      className="flex justify-between items-center"
-                    >
-                      <div className="flex items-center">
-                        <img
-                          src={product.images[0].url}
-                          alt={product.name}
-                          className="w-16 h-16 object-cover rounded mr-4"
-                        />
-                        <div>
-                          <p className="font-medium">{product.detail}</p>
-                          <p className="text-gray-600">
-                            Ürün Adı: {product.name}
-                          </p>
-                          <p className="text-gray-600">Adet: {product.count}</p>
+              {expandedOrderId === order.id && (
+                <div className="mt-4">
+                  <ul className="space-y-2">
+                    {order.products.map((product) => (
+                      <li
+                        key={product.product_id}
+                        className="flex justify-between items-center"
+                      >
+                        <div className="flex items-center">
+                          <img
+                            src={product.images[0].url}
+                            alt={product.name}
+                            className="w-16 h-16 object-cover rounded mr-4"
+                          />
+                          <div>
+                            <p className="font-medium">{product.detail}</p>
+                            <p className="text-gray-600">
+                              Ürün Adı: {product.name}
+                            </p>
+                            <p className="text-gray-600">
+                              Adet: {product.count}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-gray-600">
-                        {product.price.toFixed(2)} TL
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        ))}
+                        <p className="text-gray-600">
+                          {product.price.toFixed(2)} TL
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </PageContent>
   );
 };
 
