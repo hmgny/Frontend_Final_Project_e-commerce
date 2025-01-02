@@ -11,13 +11,16 @@ const cardReducer = (state = initialState, action) => {
     case FETCH_CARDS:
       return {
         ...state,
-        cards: action.payload
+        cards: action.payload,
+        loading: false
       };
     case ADD_CARD:
       return {
         ...state,
-        cards: [...state.cards, action.payload]
-      };
+        cards:  Array.isArray(state.cards) 
+        ? [...state.cards, action.payload]
+        : [action.payload]
+    };
     case UPDATE_CARD:
       return {
         ...state,
