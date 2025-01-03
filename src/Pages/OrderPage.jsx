@@ -25,6 +25,7 @@ const OrderPage = () => {
   const cart = useSelector((state) => state.shoppingCart.cart || []);
   const user = useSelector((state) => state.auth.user);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedBillingAddress, setSelectedBillingAddress] = useState(null);
   const [newAddress, setNewAddress] = useState({
     title: "",
     name: "",
@@ -233,63 +234,237 @@ const OrderPage = () => {
   };
 
   const renderAddressSection = () => (
-    <div className="mt-8">
-      <h2 className="text-xl font-semibold mb-2">Teslimat Adresi</h2>
-      {addresses && addresses.length > 0 ? (
-        <ul className="list-disc pl-5">
-          {addresses.map((address) => (
-            <li
-              key={address.id}
-              className={`mb-2 p-4 rounded-lg ${
-                selectedAddress === address.id
-                  ? "bg-blue-50 border border-Primary"
-                  : ""
-              }`}
-            >
-              <input
-                type="radio"
-                name="selectedAddress"
-                value={address.id}
-                checked={selectedAddress === address.id}
-                onChange={() => setSelectedAddress(address.id)}
-                className="mr-2"
-              />
-              {`${address.title}, ${address.city}, ${address.district}, ${address.neighborhood}`}
-              <button
-                onClick={() => handleDeleteAddress(address.id)}
-                className="ml-4 text-red-500 hover:underline"
+    <div className="mt-8 ">
+      <h2 className="text-xl font-semibold mb-2">Adres Bilgileri</h2>
+      <div className="grid grid-cols-2 gap-6">
+        <div className="flex flex-col space-y-4">
+          <h3 className="text-lg font-semibold mb-2">Teslimat Adresi</h3>
+          {addresses && addresses.length > 0 ? (
+            <div className="flex flex-col space-y-4">
+              {addresses.map((address) => (
+                <div
+                  key={address.id}
+                  className={`relative p-4 border border-blue-300 rounded-xl hover:bg-blue-50 hover:border-blue-400 transition-all w-full ${
+                    selectedAddress === address.id
+                      ? "bg-blue-50 border border-Primary"
+                      : ""
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <input
+                      type="radio"
+                      name="selectedAddress"
+                      value={address.id}
+                      checked={selectedAddress === address.id}
+                      onChange={() => setSelectedAddress(address.id)}
+                      className="mr-2"
+                    />
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleDeleteAddress(address.id)}
+                        className="text-red-500 hover:underline"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-trash-2"
+                        >
+                          <path d="M3 6h18" />
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                          <line x1="10" x2="10" y1="11" y2="17" />
+                          <line x1="14" x2="14" y1="11" y2="17" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setNewAddress({
+                            title: address.title,
+                            name: address.name,
+                            phone: address.phone,
+                            city: address.city,
+                            district: address.district,
+                            neighborhood: address.neighborhood,
+                            address: address.address,
+                          });
+                          setShowForm(true);
+                        }}
+                        className="text-blue-500 hover:underline"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-pencil"
+                        >
+                          <path d="M12 20h9" />
+                          <path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-semibold">{address.name}</span>
+                    <span>{address.phone}</span>
+                  </div>
+                  <div className="text-sm">
+                    {`${address.title}, ${address.city}, ${address.district}, ${address.neighborhood}, ${address.address}`}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Kayıtlı adresiniz bulunmamaktadır.</p>
+          )}
+          <button
+            onClick={() => setShowForm((prev) => !prev)}
+            className="w-full flex items-center justify-center p-6 border-2 border-dashed border-blue-300 rounded-xl hover:bg-blue-50 hover:border-blue-400 transition-all group"
+          >
+            <span className="flex items-center text-Primary group-hover:text-blue-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
               >
-                Sil
-              </button>
-              <button
-                onClick={() => {
-                  setNewAddress({
-                    title: address.title,
-                    name: address.name,
-                    phone: address.phone,
-                    city: address.city,
-                    district: address.district,
-                    neighborhood: address.neighborhood,
-                  });
-                  setShowForm(true);
-                }}
-                className="ml-4 text-blue-500 hover:underline"
+                <path
+                  fillRule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Yeni Adres Ekle
+            </span>
+          </button>
+        </div>
+        {/* Fatura Adresi */}
+        <div className="flex flex-col space-y-4">
+          <h3 className="text-lg font-semibold mb-2">Fatura Adresi</h3>
+          {addresses && addresses.length > 0 ? (
+            <div className="flex flex-col space-y-4">
+              {addresses.map((address) => (
+                <div
+                  key={address.id}
+                  className={`relative p-4 border border-green-300 rounded-xl hover:bg-green-50 hover:border-green-400 transition-all w-full ${
+                    selectedBillingAddress === address.id
+                      ? "bg-green-50 border border-Primary"
+                      : ""
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <input
+                      type="radio"
+                      name="selectedBillingAddress"
+                      value={address.id}
+                      checked={selectedBillingAddress === address.id}
+                      onChange={() => setSelectedBillingAddress(address.id)}
+                      className="mr-2"
+                    />
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleDeleteAddress(address.id)}
+                        className="text-red-500 hover:underline"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-trash-2"
+                        >
+                          <path d="M3 6h18" />
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                          <line x1="10" x2="10" y1="11" y2="17" />
+                          <line x1="14" x2="14" y1="11" y2="17" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setNewAddress({
+                            title: address.title,
+                            name: address.name,
+                            phone: address.phone,
+                            city: address.city,
+                            district: address.district,
+                            neighborhood: address.neighborhood,
+                            address: address.address,
+                          });
+                          setShowForm(true);
+                        }}
+                        className="text-blue-500 hover:underline"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-pencil"
+                        >
+                          <path d="M12 20h9" />
+                          <path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-semibold">{address.name}</span>
+                    <span>{address.phone}</span>
+                  </div>
+                  <div className="text-sm">
+                    {`${address.title}, ${address.city}, ${address.district}, ${address.neighborhood}, ${address.address}`}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Kayıtlı adresiniz bulunmamaktadır.</p>
+          )}
+          <button
+            onClick={() => setShowForm((prev) => !prev)}
+            className="w-full flex items-center justify-center p-6 border-2 border-dashed border-green-300 rounded-xl hover:bg-green-50 hover:border-green-400 transition-all group"
+          >
+            <span className="flex items-center text-succes group-hover:text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
               >
-                Güncelle
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>Kayıtlı adresiniz bulunmamaktadır.</p>
-      )}
-
-      <button
-        onClick={() => setShowForm((prev) => !prev)}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        + Yeni Adres Ekle
-      </button>
+                <path
+                  fillRule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Fatura Adresi Ekle
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 
