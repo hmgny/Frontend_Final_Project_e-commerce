@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ChevronRight, ChevronDown, ChevronUp } from "lucide-react"; // Ok ikonları
 import { Link } from "react-router-dom";
 import { fetchCategories } from "../store/actions/categoryActions";
+import { fetchProducts, setFilter } from "../store/actions/productActions";
 
 function ShopCategory() {
   const dispatch = useDispatch();
@@ -32,6 +33,11 @@ function ShopCategory() {
   const allCategories = categories;
   // Kalan kategoriler
   const remainingCategories = categories.slice(5);
+
+  const handleCategoryClick = (category) => {
+    dispatch(setFilter(category.id));
+    dispatch(fetchProducts({ category: category.id }));
+  };
 
   return (
     <div className="bg-lightGray flex flex-col sm:px-40">
@@ -67,6 +73,7 @@ function ShopCategory() {
                     <Link
                       to={`/shop/${category.gender}/${category.title}/${category.id}`}
                       className="text-lg"
+                      onClick={() => handleCategoryClick(category)}
                     >
                       {category.title}
                     </Link>
@@ -86,6 +93,7 @@ function ShopCategory() {
                     <Link
                       to={`/shop/${category.gender}/${category.title}/${category.id}`}
                       className="text-lg"
+                      onClick={() => handleCategoryClick(category)}
                     >
                       {category.title}
                     </Link>
@@ -102,6 +110,7 @@ function ShopCategory() {
             to={`/shop/${category.gender}/${category.title}/${category.id}`}
             key={category.id}
             className="relative group"
+            onClick={() => handleCategoryClick(category)}
           >
             <div className="relative mx-2 overflow-hidden sm:h6">
               <img
@@ -126,6 +135,7 @@ function ShopCategory() {
               to={`/shop/${category.gender}/${category.title}/${category.id}`}
               key={category.id}
               className="relative group"
+              onClick={() => handleCategoryClick(category)}
             >
               <div className="relative mx-2 overflow-hidden sm:h6">
                 <img
