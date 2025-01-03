@@ -17,6 +17,7 @@ const ShoppingCartTable = () => {
 
   const handleCheckout = () => {
     if (user || localStorage.getItem("token")) {
+      dispatch({ type: "RESET_CART" }); // Reset the cart
       history.push("/order");
     } else {
       history.push("/login");
@@ -174,22 +175,26 @@ const ShoppingCartTable = () => {
                   <span>Ara Toplam</span>
                   <span>{(calculateTotal() * 0.5).toFixed(2)} TL</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Kargo</span>
-                  <span>49.90 TL</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="flex flex-wrap">
-                    {calculateTotal() * (0.5).toFixed(2) > 500
-                      ? "500 TL ve üzeri alışverişlerde kargo ücretsiz"
-                      : ""}
-                  </span>
-                  <span className="text-red-500">
-                    {calculateTotal() * (0.5).toFixed(2) > 500
-                      ? "- 49.90 TL"
-                      : ""}
-                  </span>
-                </div>
+                {cart.some((item) => item.checked) && (
+                  <>
+                    <div className="flex justify-between">
+                      <span>Kargo</span>
+                      <span>49.90 TL</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="flex flex-wrap">
+                        {calculateTotal() * (0.5).toFixed(2) > 500
+                          ? "500 TL ve üzeri alışverişlerde kargo ücretsiz"
+                          : ""}
+                      </span>
+                      <span className="text-red-500">
+                        {calculateTotal() * (0.5).toFixed(2) > 500
+                          ? "- 49.90 TL"
+                          : ""}
+                      </span>
+                    </div>
+                  </>
+                )}
                 <div className="border-t pt-4 mt-4">
                   <div className="flex justify-between font-semibold">
                     <span>Toplam</span>
@@ -202,12 +207,14 @@ const ShoppingCartTable = () => {
                     </span>
                   </div>
                 </div>
-                <button
-                  onClick={handleCheckout}
-                  className="w-full bg-Primary text-white py-3 rounded-md mt-6 hover:bg-Primary/90"
-                >
-                  Sepeti Onayla
-                </button>
+                {cart.some((item) => item.checked) && (
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-Primary text-white py-3 rounded-md mt-6 hover:bg-Primary/90"
+                  >
+                    Sepeti Onayla
+                  </button>
+                )}
                 <span className="h7 text-red-600">
                   {calculateTotal() * (0.5).toFixed(2) > 500
                     ? ""

@@ -465,10 +465,12 @@ const OrderPage = () => {
                 <span>Ara Toplam</span>
                 <span>{(calculateTotal() * 0.5).toFixed(2)} TL</span>
               </div>
-              <div className="flex justify-between">
-                <span>Kargo</span>
-                <span>49.90 TL</span>
-              </div>
+              {(calculateTotal() * 0.5).toFixed(2) > 0 && (
+                <div className="flex justify-between">
+                  <span>Kargo</span>
+                  <span>49.90 TL</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="flex flex-wrap">
                   {calculateTotal() * (0.5).toFixed(2) > 500
@@ -484,13 +486,20 @@ const OrderPage = () => {
               <div className="border-t pt-4 mt-4">
                 <div className="flex justify-between font-semibold">
                   <span>Toplam</span>
-                  <span>
-                    {(
-                      calculateTotal() * (0.5).toFixed(2) +
-                      (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)
-                    ).toFixed(2)}
-                    TL
-                  </span>
+                  {(calculateTotal() * 0.5).toFixed(2) > 0 ? (
+                    <span>
+                      {(
+                        calculateTotal() * (0.5).toFixed(2) +
+                        (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)
+                      ).toFixed(2)}
+                      TL
+                    </span>
+                  ) : (
+                    <span>
+                      {calculateTotal() * (0.5).toFixed(2)}
+                      TL
+                    </span>
+                  )}
                 </div>
               </div>
               <button
