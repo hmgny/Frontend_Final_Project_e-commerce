@@ -787,39 +787,29 @@ const OrderPage = () => {
                 <label className="block text-sm font-medium mb-1">
                   İlçe<span className="text-red-500">*</span>
                 </label>
-                <select
+                <input
+                  type="text"
                   name="district"
+                  placeholder="İlçe giriniz"
                   value={newAddress.district}
-                  onChange={handleDistrictChange} // Dinamik mahalle güncellemesi
+                  onChange={handleInputChange}
                   required
                   className="block w-full border p-2 rounded"
-                >
-                  <option value="">İlçe Seçiniz</option>
-                  {districts.map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">
                   Mahalle<span className="text-red-500">*</span>
                 </label>
-                <select
+                <input
+                  type="text"
                   name="neighborhood"
+                  placeholder="Mahalle giriniz"
                   value={newAddress.neighborhood}
                   onChange={handleInputChange}
                   required
                   className="block w-full border p-2 rounded"
-                >
-                  <option value="">Mahalle Seçiniz</option>
-                  {neighborhoods.map((neighborhood) => (
-                    <option key={neighborhood} value={neighborhood}>
-                      {neighborhood}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
