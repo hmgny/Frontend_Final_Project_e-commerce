@@ -24,9 +24,16 @@ function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [showCart, setShowCart] = useState(false);
+  const [showOrders, setShowOrders] = useState(false);
 
   const toggleCart = () => {
     setShowCart(!showCart);
+    setShowOrders(false);
+  };
+
+  const toggleOrders = () => {
+    setShowOrders(!showOrders);
+    setShowCart(false);
   };
 
   const dispatch = useDispatch();
@@ -194,9 +201,21 @@ function Header() {
               </div>
             )}
           </div>
-          <Link to="" className="w-6 h-6">
-            <Search className="text-black sm:text-Primary" />
-          </Link>
+          <div className="relative group">
+            <button onClick={toggleOrders} className="w-6 h-6">
+              <User className="text-black sm:text-Primary" />
+            </button>
+            {showOrders && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg z-50">
+                <Link
+                  to="/pastOrders"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <h2 className="text-lg font-semibold mb-4">Siparişlerim</h2>
+                </Link>
+              </div>
+            )}
+          </div>
           <div>
             <div className="relative group">
               <button
