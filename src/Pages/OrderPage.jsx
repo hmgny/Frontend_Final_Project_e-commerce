@@ -172,6 +172,16 @@ const OrderPage = () => {
     await dispatch(deleteCard(cardId));
   };
 
+  const handleEditCard = (card) => {
+    setNewCard({
+      card_no: card.card_no,
+      expire_month: card.expire_month,
+      expire_year: card.expire_year,
+      name_on_card: card.name_on_card,
+    });
+    setShowCardForm(true);
+  };
+
   // Buton durumunu kontrol eden fonksiyon
   const isButtonActive = () => {
     if (selectedTab === "address") {
@@ -536,28 +546,58 @@ const OrderPage = () => {
                         </div>
                       </div>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleCardDelete(card.id);
-                      }}
-                      className="absolute bottom-2 right-4 opacity-75 hover:opacity-100 transition-opacity"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    <div className="absolute bottom-2 right-4 flex space-x-2">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleEditCard(card);
+                        }}
+                        className="opacity-75 hover:opacity-100 transition-opacity"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 20h9"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleCardDelete(card.id);
+                        }}
+                        className="opacity-75 hover:opacity-100 transition-opacity"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                     <div className="absolute top-4 right-12">
                       <div className="text-white text-xs font-bold opacity-75">
                         MASTERCARD
