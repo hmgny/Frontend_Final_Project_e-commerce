@@ -81,9 +81,17 @@ export const updateCard = (card) => async (dispatch) => {
       throw new Error('No token found');
     }
 
+    const formattedCard = {
+      id: card.id,
+      card_no: card.card_no,
+      expire_month: card.expire_month,
+      expire_year: card.expire_year,
+      name_on_card: card.name_on_card,
+    };
+
     const response = await axios.put(
       'https://workintech-fe-ecommerce.onrender.com/user/card',
-      card,
+      formattedCard,
       {
         headers: { 
           'Authorization': token,
@@ -93,7 +101,7 @@ export const updateCard = (card) => async (dispatch) => {
     );
     dispatch({ type: UPDATE_CARD, payload: response.data });
   } catch (error) {
-    console.error('Error updating cars:', error);
+    console.error('Error updating card:', error);
   }
 };
 

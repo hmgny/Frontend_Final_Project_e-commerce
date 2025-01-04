@@ -140,14 +140,20 @@ const OrderPage = () => {
   const handleCardSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(addCard(newCard));
+      if (newCard.id) {
+        await dispatch(updateCard(newCard));
+      } else {
+        await dispatch(addCard(newCard));
+      }
       setShowCardForm(false);
       setNewCard({
+        id: "",
         card_no: "",
         expire_month: "",
         expire_year: "",
         name_on_card: "",
       });
+      await dispatch(fetchCards()); // Refresh the card list
     } catch (error) {
       console.error("Error submitting card:", error);
     }
@@ -174,6 +180,7 @@ const OrderPage = () => {
 
   const handleEditCard = (card) => {
     setNewCard({
+      id: card.id,
       card_no: card.card_no,
       expire_month: card.expire_month,
       expire_year: card.expire_year,
