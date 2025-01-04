@@ -1,17 +1,34 @@
 import React, { useEffect } from "react";
 import HomePage from "./Pages/HomePage";
 import "./App.css";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import SignupForm from "./Pages/SignupForm";
 import LoginForm from "./Pages/LoginForm";
 import ShopPage from "./Pages/ShopPage";
 import ProductDetail from "./Pages/ProductDetail";
 import ShoppingCartTable from "./Pages/ShoppingCartTable";
 import OrderPage from "./Pages/OrderPage";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { verifyToken } from "./store/actions/authActions";
 import PastOrders from "./components/PastOrders";
+import Header from "./layout/Header";
+
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
+      }
+    />
+  );
+};
 
 function App() {
   const dispatch = useDispatch();
@@ -21,7 +38,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <Router>
       <Switch>
         <ProtectedRoute path="/pastOrders">
           <PastOrders />
@@ -51,7 +68,7 @@ function App() {
           <HomePage />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
 
