@@ -139,8 +139,36 @@ const OrderPage = () => {
     }
   };
 
+  const handleCardInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "card_no") {
+      const formattedValue = value
+        .replace(/\s?/g, "")
+        .replace(/(\d{4})/g, "$1 ")
+        .trim();
+      setNewCard((prev) => ({ ...prev, [name]: formattedValue }));
+    } else {
+      setNewCard((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const validateCardForm = () => {
+    const { card_no, name_on_card, expire_month, expire_year } = newCard;
+    if (
+      card_no.replace(/\s/g, "").length !== 16 ||
+      !name_on_card ||
+      !expire_month ||
+      !expire_year
+    ) {
+      toast.error("Lütfen tüm alanları doğru şekilde doldurun.");
+      return false;
+    }
+    return true;
+  };
+
   const handleCardSubmit = async (e) => {
     e.preventDefault();
+    if (!validateCardForm()) return;
     try {
       if (newCard.id) {
         await dispatch(updateCard(newCard));
@@ -1030,13 +1058,9 @@ const OrderPage = () => {
                 </label>
                 <input
                   type="text"
+                  name="name_on_card"
                   value={newCard.name_on_card}
-                  onChange={(e) =>
-                    setNewCard({
-                      ...newCard,
-                      name_on_card: e.target.value,
-                    })
-                  }
+                  onChange={handleCardInputChange}
                   className="w-full border rounded p-2"
                   required
                 />
@@ -1048,12 +1072,11 @@ const OrderPage = () => {
                 </label>
                 <input
                   type="text"
+                  name="card_no"
                   value={newCard.card_no}
-                  onChange={(e) =>
-                    setNewCard({ ...newCard, card_no: e.target.value })
-                  }
+                  onChange={handleCardInputChange}
                   className="w-full border rounded p-2"
-                  maxLength="16"
+                  maxLength="19" // 16 digits + 3 spaces
                   required
                 />
               </div>
@@ -1064,13 +1087,9 @@ const OrderPage = () => {
                     Son Kullanma Ay
                   </label>
                   <select
+                    name="expire_month"
                     value={newCard.expire_month}
-                    onChange={(e) =>
-                      setNewCard({
-                        ...newCard,
-                        expire_month: e.target.value,
-                      })
-                    }
+                    onChange={handleCardInputChange}
                     className="w-full border rounded p-2"
                     required
                   >
@@ -1089,13 +1108,9 @@ const OrderPage = () => {
                     Son Kullanma Yıl
                   </label>
                   <select
+                    name="expire_year"
                     value={newCard.expire_year}
-                    onChange={(e) =>
-                      setNewCard({
-                        ...newCard,
-                        expire_year: e.target.value,
-                      })
-                    }
+                    onChange={handleCardInputChange}
                     className="w-full border rounded p-2"
                     required
                   >
