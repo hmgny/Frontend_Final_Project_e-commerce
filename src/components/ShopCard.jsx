@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useHistory } from "react-router-dom";
 import { fetchProducts } from "@/store/actions/productActions";
+import { addToCart } from "@/store/actions/shoppingCartActions";
+import { toast } from "react-toastify";
 
 function ShopCard() {
   const dispatch = useDispatch();
@@ -84,6 +86,18 @@ function ShopCard() {
     </div>
   );
 
+  const handleAddToCart = (product) => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        images: product.images,
+      })
+    );
+    toast.success("Ürün sepete eklendi.");
+  };
+
   return (
     <div className="p-8 sm:px-40">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
@@ -123,6 +137,12 @@ function ShopCard() {
                 <button className="w-4 h-4 rounded-full bg-orange-500"></button>
                 <button className="w-4 h-4 rounded-full bg-darkBackground"></button>
               </div>
+              <button
+                onClick={() => handleAddToCart(product)}
+                className="bg-Primary text-white px-8 py-3 rounded-md hover:bg-blue-600 transition-colors mt-3"
+              >
+                Sepete Ekle
+              </button>
             </div>
           </div>
         ))}

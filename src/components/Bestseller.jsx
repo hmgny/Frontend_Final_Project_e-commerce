@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { addToCart } from "@/store/actions/shoppingCartActions";
+import { toast } from "react-toastify";
 
 function Bestseller() {
   const { productList } = useSelector((state) => state.product || []);
   const [topRatedProducts, setTopRatedProducts] = useState([]);
   const history = useHistory();
+  const { productId } = useParams();
+  const dispatch = useDispatch();
 
   const handleProductClick = (product) => {
     // Ürün adından slug oluşturuluyor
@@ -14,6 +18,18 @@ function Bestseller() {
     history.push(
       `/shop/${product.gender}/${product.category_name}/${product.category_id}/${nameSlug}/${product.id}`
     );
+  };
+
+  const handleAddToCart = (product) => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        images: product.images,
+      })
+    );
+    toast.success("Ürün sepete eklendi.");
   };
 
   useEffect(() => {
@@ -77,6 +93,14 @@ function Bestseller() {
                 <button className="w-4 h-4 rounded-full bg-green-500"></button>
                 <button className="w-4 h-4 rounded-full bg-orange-500"></button>
                 <button className="w-4 h-4 rounded-full bg-darkBackground"></button>
+              </div>
+              <div>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="bg-Primary text-white px-8 py-3 rounded-md hover:bg-blue-600 transition-colors mt-3"
+                >
+                  Sepete Ekle
+                </button>
               </div>
             </div>
           </div>
