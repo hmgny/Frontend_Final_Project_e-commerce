@@ -17,6 +17,7 @@ import {
 } from "../store/actions/carouselActions";
 import { Link } from "react-router-dom";
 import { addToCart } from "@/store/actions/shoppingCartActions";
+import { toast } from "react-toastify";
 
 function ProductCardDetail({
   currentIndex,
@@ -48,6 +49,7 @@ function ProductCardDetail({
         })
       );
     }
+    toast.success("ürün sepete eklendi");
   };
 
   if (isLoading) {

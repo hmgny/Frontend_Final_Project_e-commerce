@@ -16,7 +16,8 @@ import OrderPage from "./Pages/OrderPage";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyToken } from "./store/actions/authActions";
 import PastOrders from "./components/PastOrders";
-import Header from "./layout/Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -68,6 +69,7 @@ function App() {
           <HomePage />
         </Route>
       </Switch>
+      <ToastContainer />
     </Router>
   );
 }

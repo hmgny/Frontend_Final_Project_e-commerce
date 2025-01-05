@@ -18,6 +18,7 @@ import {
   removeFromCart,
   toggleCartItem,
 } from "../store/actions/shoppingCartActions";
+import { toast } from "react-toastify";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -63,6 +64,16 @@ function Header() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
+  };
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+    toast.success("Ürün sepete eklendi.");
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    dispatch(removeFromCart(productId));
+    toast.success("Ürün sepetten çıkarıldı.");
   };
 
   if (loading) {
@@ -279,7 +290,7 @@ function Header() {
                         <div className="flex flex-col justify-around">
                           <button
                             onClick={() =>
-                              dispatch(removeFromCart(item.product.id))
+                              handleRemoveFromCart(item.product.id)
                             }
                             className="text-red-500 hover:text-red-700 flex justify-end"
                           >

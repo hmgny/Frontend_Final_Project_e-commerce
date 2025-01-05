@@ -132,8 +132,10 @@ const OrderPage = () => {
         neighborhood: "",
         address: "",
       });
+      toast.success("Yeni adres başarıyla eklendi.");
     } catch (error) {
       console.error("Error adding address:", error);
+      toast.error("Adres eklenirken bir hata oluştu.");
     }
   };
 
@@ -142,8 +144,10 @@ const OrderPage = () => {
     try {
       if (newCard.id) {
         await dispatch(updateCard(newCard));
+        toast.success("Kart başarıyla güncellendi.");
       } else {
         await dispatch(addCard(newCard));
+        toast.success("Yeni kart başarıyla eklendi.");
       }
       setShowCardForm(false);
       setNewCard({
@@ -156,6 +160,7 @@ const OrderPage = () => {
       await dispatch(fetchCards()); // Refresh the card list
     } catch (error) {
       console.error("Error submitting card:", error);
+      toast.error("Kart eklenirken bir hata oluştu.");
     }
   };
 
@@ -230,6 +235,7 @@ const OrderPage = () => {
         if (success) {
           setShowSuccess(true); // Show success modal instead of toast
           await dispatch(clearCart()); // Sepeti temizle
+          toast.success("Sipariş başarıyla tamamlandı.");
           // Don't redirect immediately, let user click the continue button
         } else {
           toast.error("Sipariş oluşturulurken bir hata oluştu.");
