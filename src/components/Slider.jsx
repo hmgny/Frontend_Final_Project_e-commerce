@@ -44,11 +44,11 @@ const Slider = () => {
             style={{ backgroundImage: `url(${image})` }}
           >
             <div className="flex flex-col items-center sm:items-start gap-12 py-44 max-w-64 sm:max-w-none text-center">
-              <h6 className="h6 font-bold">SUMMER 2020</h6>
+              <h6 className="h4 font-bold">SPRING 2024</h6>
               <h2 className="h2 sm:h1 font-bold">NEW COLLECTION</h2>
-              <h4 className="h4 sm:h5 sm:max-w-80 text-lightGray">
-                We know how large objects will act, but things on a small scale.
-              </h4>
+              <h3 className="h3 sm:h5 sm:max-w-80 text-lightGray">
+                Don't miss the blooming Spring discounts
+              </h3>
               <Link to="/shop">
                 <button className="bg-succes text-lightTextColor text-3xl font-bold w-56 h-16 rounded-md">
                   SHOP NOW

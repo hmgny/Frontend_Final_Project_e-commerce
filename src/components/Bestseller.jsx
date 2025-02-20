@@ -45,15 +45,12 @@ function Bestseller() {
   return (
     <div className="px-8 sm:px-40 flex flex-col items-center py-24 gap-16">
       <div className="max-w-52 flex flex-col gap-5 sm:max-w-screen-2xl text-center">
-        <h5 className="h5 text-SecondaryTextColor flex justify-center">
-          Featured Products
-        </h5>
         <h4 className="h4 font-bold flex justify-center text-textColor ">
           BESTSELLER PRODUCTS
         </h4>
-        <p className="text-SecondaryTextColor h7 justify-center">
-          Problems trying to resolve the conflict between
-        </p>
+        <h5 className="h5 text-SecondaryTextColor flex justify-center">
+          Featured Products
+        </h5>
       </div>
 
       {/* Yalnızca en yüksek puanlı 8 ürünü ShopCard bileşeniyle göster */}
@@ -80,12 +77,12 @@ function Bestseller() {
               </p>
               <div className="flex gap-2 mt-2">
                 <span className="text-SecondaryTextColor line-through">
-                  {product.price}₺
+                  {product.price}$
                 </span>
                 <span className="text-Secondary font-bold">
                   {`${(Math.floor((product.price / 2) * 100) / 100).toFixed(
                     2
-                  )}₺`}
+                  )}$`}
                 </span>
               </div>
               <div className="flex gap-2 mt-2">
@@ -99,7 +96,7 @@ function Bestseller() {
                   onClick={() => handleAddToCart(product)}
                   className="bg-Primary text-white px-8 py-3 rounded-md hover:bg-blue-600 transition-colors mt-3"
                 >
-                  Sepete Ekle
+                  Add to Cart
                 </button>
               </div>
             </div>

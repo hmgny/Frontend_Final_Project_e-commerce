@@ -7,8 +7,8 @@ function Category() {
         <h4 className="h4 font-bold flex justify-center text-textColor">
           EDITOR'S PICK
         </h4>
-        <p className="text-SecondaryTextColor h7">
-          Problems trying to resolve the confict between
+        <p className="text-SecondaryTextColor h6">
+          Choices That Will Warm Your Heart
         </p>
       </div>
       <div className=" flex flex-col gap-8 sm:flex-row">

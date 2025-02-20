@@ -39,7 +39,7 @@ const OrderPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedTab, setSelectedTab] = useState("address");
   const token = localStorage.getItem("token");
-  const [cities, setCities] = useState(["İstanbul", "Ankara", "İzmir"]); // Örnek iller
+  const [cities, setCities] = useState(["Istanbul", "Ankara", "Izmir"]); // Örnek iller
   const [districts, setDistricts] = useState([]);
   const [neighborhoods, setNeighborhoods] = useState([]);
   const creditCards = useSelector((state) => state.card.cards || []);
@@ -62,32 +62,6 @@ const OrderPage = () => {
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
     setNewAddress({ ...newAddress, city: selectedCity });
-
-    // İlçeleri güncelle
-    if (selectedCity === "İstanbul") {
-      setDistricts(["Kadıköy", "Üsküdar", "Beşiktaş"]);
-    } else if (selectedCity === "Ankara") {
-      setDistricts(["Çankaya", "Keçiören", "Altındağ"]);
-    } else if (selectedCity === "İzmir") {
-      setDistricts(["Karşıyaka", "Konak", "Bornova"]);
-    } else {
-      setDistricts([]);
-    }
-    setNeighborhoods([]); // İl değiştiğinde mahalleleri sıfırla
-  };
-
-  const handleDistrictChange = (e) => {
-    const selectedDistrict = e.target.value;
-    setNewAddress({ ...newAddress, district: selectedDistrict });
-
-    // Mahalleleri güncelle
-    if (selectedDistrict === "Kadıköy") {
-      setNeighborhoods(["Bostancı", "Erenköy", "Suadiye"]);
-    } else if (selectedDistrict === "Çankaya") {
-      setNeighborhoods(["Ayrancı", "Birlik", "Bahçelievler"]);
-    } else {
-      setNeighborhoods([]);
-    }
   };
 
   // Eğer kullanıcı giriş yapmamışsa, login sayfasına yönlendir.
@@ -132,10 +106,10 @@ const OrderPage = () => {
         neighborhood: "",
         address: "",
       });
-      toast.success("Yeni adres başarıyla eklendi.");
+      toast.success("New address added successfully.");
     } catch (error) {
       console.error("Error adding address:", error);
-      toast.error("Adres eklenirken bir hata oluştu.");
+      toast.error("An error occurred while adding the address.");
     }
   };
 
@@ -160,7 +134,7 @@ const OrderPage = () => {
       !expire_month ||
       !expire_year
     ) {
-      toast.error("Lütfen tüm alanları doğru şekilde doldurun.");
+      toast.error("Please fill in all fields correctly.");
       return false;
     }
     return true;
@@ -172,10 +146,10 @@ const OrderPage = () => {
     try {
       if (newCard.id) {
         await dispatch(updateCard(newCard));
-        toast.success("Kart başarıyla güncellendi.");
+        toast.success("The card has been successfully updated.");
       } else {
         await dispatch(addCard(newCard));
-        toast.success("Yeni kart başarıyla eklendi.");
+        toast.success("New card successfully added.");
       }
       setShowCardForm(false);
       setNewCard({
@@ -188,7 +162,7 @@ const OrderPage = () => {
       await dispatch(fetchCards()); // Refresh the card list
     } catch (error) {
       console.error("Error submitting card:", error);
-      toast.error("Kart eklenirken bir hata oluştu.");
+      toast.error("An error occurred while adding a card.");
     }
   };
 
@@ -256,21 +230,20 @@ const OrderPage = () => {
             detail: `${item.product.color} - ${item.product.size}`,
           })),
       };
-      console.log("order dataaaaaaaaaaaaaaaaaaa", orderData);
 
       try {
         const success = await dispatch(createOrder(orderData));
         if (success) {
           setShowSuccess(true); // Show success modal instead of toast
           await dispatch(clearCart()); // Sepeti temizle
-          toast.success("Sipariş başarıyla tamamlandı.");
+          toast.success("Order completed successfully.");
           // Don't redirect immediately, let user click the continue button
         } else {
-          toast.error("Sipariş oluşturulurken bir hata oluştu.");
+          toast.error("An error occurred while creating the order.");
         }
       } catch (error) {
         console.error("Order creation error:", error);
-        toast.error("Sipariş oluşturulurken bir hata oluştu.");
+        toast.error("An error occurred while creating the order.");
       }
     }
   };
@@ -286,10 +259,10 @@ const OrderPage = () => {
 
   const renderAddressSection = () => (
     <div className="mt-8 ">
-      <h2 className="text-xl font-semibold mb-2">Adres Bilgileri</h2>
+      <h2 className="text-xl font-semibold mb-2">Address Information</h2>
       <div className="grid grid-cols-2 gap-6">
         <div className="flex flex-col space-y-4">
-          <h3 className="text-lg font-semibold mb-2">Teslimat Adresi</h3>
+          <h3 className="text-lg font-semibold mb-2">Delivery Address</h3>
           {addresses && addresses.length > 0 ? (
             <div className="flex flex-col space-y-4">
               {addresses.map((address) => (
@@ -378,7 +351,7 @@ const OrderPage = () => {
               ))}
             </div>
           ) : (
-            <p>Kayıtlı adresiniz bulunmamaktadır.</p>
+            <p>You do not have a registered address.</p>
           )}
           <button
             onClick={() => setShowForm((prev) => !prev)}
@@ -397,13 +370,13 @@ const OrderPage = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              Yeni Adres Ekle
+              Add New Address
             </span>
           </button>
         </div>
         {/* Fatura Adresi */}
         <div className="flex flex-col space-y-4">
-          <h3 className="text-lg font-semibold mb-2">Fatura Adresi</h3>
+          <h3 className="text-lg font-semibold mb-2">Invoice Address</h3>
           {addresses && addresses.length > 0 ? (
             <div className="flex flex-col space-y-4">
               {addresses.map((address) => (
@@ -492,7 +465,7 @@ const OrderPage = () => {
               ))}
             </div>
           ) : (
-            <p>Kayıtlı adresiniz bulunmamaktadır.</p>
+            <p>You do not have a registered address.</p>
           )}
           <button
             onClick={() => setShowForm((prev) => !prev)}
@@ -511,7 +484,7 @@ const OrderPage = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              Fatura Adresi Ekle
+              Add Invoice Address
             </span>
           </button>
         </div>
@@ -521,7 +494,7 @@ const OrderPage = () => {
 
   const renderCardSection = () => (
     <div className="card-section bg-white p-10 rounded-lg shadow">
-      <h2 className="text-xl font-semibold mb-6">Kayıtlı Kartlarım</h2>
+      <h2 className="text-xl font-semibold mb-6">Registered Cards</h2>
       <div className="grid grid-cols-3 gap-8">
         <div className="col-span-2 space-y-4">
           {creditCards && creditCards.length > 0 ? (
@@ -576,11 +549,11 @@ const OrderPage = () => {
                       </p>
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="text-xs opacity-75">Kart Sahibi</p>
+                          <p className="text-xs opacity-75">Card Owner</p>
                           <p className="font-medium">{card.name_on_card}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs opacity-75">Son Kullanma</p>
+                          <p className="text-xs opacity-75">Expiry Date</p>
                           <p className="font-mono">
                             {card.expire_month}/{card.expire_year}
                           </p>
@@ -649,7 +622,7 @@ const OrderPage = () => {
               ))}
             </ul>
           ) : (
-            <p>Kayıtlı kartınız bulunmamaktadır.</p>
+            <p>You do not have a registered card.</p>
           )}
 
           <button
@@ -669,12 +642,12 @@ const OrderPage = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              Yeni Kart Ekle
+              Add New Card
             </span>
           </button>
         </div>
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold mb-6">Taksit Seçenekleri</h2>
+          <h2 className="text-xl font-semibold mb-6">Installment Options</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center space-x-4">
               <input
@@ -684,7 +657,7 @@ const OrderPage = () => {
                 checked={true}
                 className="form-radio h-5 w-5 text-Primary"
               />
-              <label className="text-ml">Tek Çekim</label>
+              <label className="text-ml">One Take</label>
             </div>
             <div className="text-right">
               <span className="text-gray-500">
@@ -692,7 +665,7 @@ const OrderPage = () => {
                   calculateTotal() * (0.5).toFixed(2) +
                   (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)
                 ).toFixed(2)}{" "}
-                TL
+                $
               </span>
             </div>
           </div>
@@ -704,7 +677,7 @@ const OrderPage = () => {
                 value="installment"
                 className="form-radio h-5 w-5 text-Primary"
               />
-              <label className="text-ml">2 Taksit</label>
+              <label className="text-ml">2 Inst.</label>
             </div>
             <div className="text-right">
               <span className="text-gray-500">
@@ -713,7 +686,7 @@ const OrderPage = () => {
                     (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)) /
                   3
                 ).toFixed(2)}{" "}
-                TL x 3 Ay
+                $ x 2 mo.
               </span>
             </div>
           </div>
@@ -725,7 +698,7 @@ const OrderPage = () => {
                 value="installment"
                 className="form-radio h-5 w-5 text-Primary"
               />
-              <label className="text-ml">3 Taksit</label>
+              <label className="text-ml">3 Inst.</label>
             </div>
             <div className="text-right">
               <span className="text-gray-500">
@@ -734,7 +707,7 @@ const OrderPage = () => {
                     (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)) /
                   3
                 ).toFixed(2)}{" "}
-                TL x 3 Ay
+                $ x 3 mo.
               </span>
             </div>
           </div>
@@ -746,7 +719,7 @@ const OrderPage = () => {
                 value="installment"
                 className="form-radio h-5 w-5 text-Primary"
               />
-              <label className="text-ml">6 Taksit</label>
+              <label className="text-ml">6 Inst.</label>
             </div>
             <div className="text-right">
               <span className="text-gray-500">
@@ -755,7 +728,7 @@ const OrderPage = () => {
                     (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)) /
                   3
                 ).toFixed(2)}{" "}
-                TL x 3 Ay
+                $ x 6 mo.
               </span>
             </div>
           </div>
@@ -779,7 +752,7 @@ const OrderPage = () => {
               }`}
               onClick={() => setSelectedTab("address")}
             >
-              Adres Bilgileri
+              Address Information
             </button>
             <button
               className={`py-2 px-4 ${
@@ -789,7 +762,7 @@ const OrderPage = () => {
               }`}
               onClick={() => setSelectedTab("card")}
             >
-              Kart Bilgileri
+              Card Information
             </button>
           </div>
 
@@ -807,33 +780,31 @@ const OrderPage = () => {
         <div className="w-1/3">
           <div className="bg-white rounded-lg shadow-sm p-6 sticky top-4">
             <h3 className="text-lg font-semibold mb-4">
-              Sipariş Özeti (
+              Order Summary (
               {cart
                 .filter((item) => item.checked)
                 .reduce((total, item) => total + item.count, 0)}{" "}
-              Ürün)
+              Product)
             </h3>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span>Ara Toplam</span>
-                <span>{(calculateTotal() * 0.5).toFixed(2)} TL</span>
+                <span>Subtotal</span>
+                <span>{(calculateTotal() * 0.5).toFixed(2)} $</span>
               </div>
               {(calculateTotal() * 0.5).toFixed(2) > 0 && (
                 <div className="flex justify-between">
-                  <span>Kargo</span>
-                  <span>49.90 TL</span>
+                  <span>Cargo</span>
+                  <span>49.90 $</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span className="flex flex-wrap">
                   {calculateTotal() * (0.5).toFixed(2) > 500
-                    ? "500 TL ve üzeri alışverişlerde kargo ücretsiz"
+                    ? "Free shipping for purchases of 500 $ and above"
                     : ""}
                 </span>
                 <span className="text-red-500">
-                  {calculateTotal() * (0.5).toFixed(2) > 500
-                    ? "- 49.90 TL"
-                    : ""}
+                  {calculateTotal() * (0.5).toFixed(2) > 500 ? "- 49.90 $" : ""}
                 </span>
               </div>
               <div className="border-t pt-4 mt-4">
@@ -845,13 +816,10 @@ const OrderPage = () => {
                         calculateTotal() * (0.5).toFixed(2) +
                         (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)
                       ).toFixed(2)}
-                      TL
+                      $
                     </span>
                   ) : (
-                    <span>
-                      {calculateTotal() * (0.5).toFixed(2)}
-                      TL
-                    </span>
+                    <span>{calculateTotal() * (0.5).toFixed(2)}$</span>
                   )}
                 </div>
               </div>
@@ -865,15 +833,15 @@ const OrderPage = () => {
                 }`}
               >
                 {selectedTab === "address"
-                  ? "Kaydet ve Devam Et"
+                  ? "Save and Continue"
                   : selectedTab === "card"
-                  ? "Ödeme Yap"
-                  : "Devam Et"}
+                  ? "Make a Payment"
+                  : "Continue"}
               </button>
               <span className="h7 text-red-600">
                 {calculateTotal() * (0.5).toFixed(2) > 500
                   ? ""
-                  : "500 TL ve üzeri alışverişlerde kargo ücretsiz"}
+                  : "Free shipping for purchases of 500 $ and above"}
               </span>
             </div>
           </div>
@@ -888,18 +856,18 @@ const OrderPage = () => {
             onSubmit={handleAddAddress}
             className="bg-white p-8 rounded shadow-md w-full sm:w-1/3"
           >
-            <h3 className="text-lg font-semibold mb-4">Yeni Adres Ekle</h3>
+            <h3 className="text-lg font-semibold mb-4">Add New Address</h3>
 
             {/* Ad ve Soyad */}
             <div className="flex justify-between gap-4 mb-2">
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">
-                  Ad<span className="text-red-500">*</span>
+                  Name<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="name"
-                  placeholder="Adınızı giriniz"
+                  placeholder="Enter your name"
                   value={newAddress.name}
                   onChange={handleInputChange}
                   required
@@ -908,12 +876,12 @@ const OrderPage = () => {
               </div>
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">
-                  Soyad<span className="text-red-500">*</span>
+                  Surname<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="surname"
-                  placeholder="Soyadınızı giriniz"
+                  placeholder="Enter your surname"
                   value={newAddress.surname}
                   onChange={handleInputChange}
                   required
@@ -926,7 +894,7 @@ const OrderPage = () => {
             <div className="flex justify-between gap-4 mb-2">
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">
-                  Telefon<span className="text-red-500">*</span>
+                  Phone<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -940,16 +908,16 @@ const OrderPage = () => {
               </div>
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">
-                  İl<span className="text-red-500">*</span>
+                  City<span className="text-red-500">*</span>
                 </label>
                 <select
                   name="city"
                   value={newAddress.city}
                   onChange={handleCityChange} // Dinamik ilçe güncellemesi
                   required
-                  className="block w-full border p-2 rounded"
+                  className="block w-full border p-2 rounded text-gray-500"
                 >
-                  <option value="">İl Seçiniz</option>
+                  <option value="">Select City</option>
                   {cities.map((city) => (
                     <option key={city} value={city}>
                       {city}
@@ -963,12 +931,12 @@ const OrderPage = () => {
             <div className="flex justify-between gap-4 mb-2">
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">
-                  İlçe<span className="text-red-500">*</span>
+                  District<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="district"
-                  placeholder="İlçe giriniz"
+                  placeholder="Enter district"
                   value={newAddress.district}
                   onChange={handleInputChange}
                   required
@@ -977,12 +945,12 @@ const OrderPage = () => {
               </div>
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">
-                  Mahalle<span className="text-red-500">*</span>
+                  Neighborhood<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="neighborhood"
-                  placeholder="Mahalle giriniz"
+                  placeholder="Enter neighborhood"
                   value={newAddress.neighborhood}
                   onChange={handleInputChange}
                   required
@@ -994,11 +962,11 @@ const OrderPage = () => {
             {/* Adres Detayı */}
             <div className="mb-2">
               <label className="block text-sm font-medium mb-1">
-                Adres Detayı<span className="text-red-500">*</span>
+                Address Detail<span className="text-red-500">*</span>
               </label>
               <textarea
                 name="address"
-                placeholder="Detaylı adres bilgisi giriniz"
+                placeholder="Enter detailed address information"
                 value={newAddress.address}
                 onChange={handleInputChange}
                 required
@@ -1009,12 +977,12 @@ const OrderPage = () => {
             {/* Adres Başlığı */}
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">
-                Adres Başlığı<span className="text-red-500">*</span>
+                Address Title<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="title"
-                placeholder="Adres Başlığı"
+                placeholder="Address Title"
                 value={newAddress.title}
                 onChange={handleInputChange}
                 required
@@ -1029,14 +997,14 @@ const OrderPage = () => {
                 onClick={() => setShowForm(false)}
                 className="bg-gray-500 text-white py-2 px-4 rounded"
               >
-                İptal
+                Cancel
               </button>
               <button
                 onClick={handleAddAddress}
                 type="submit"
                 className="bg-Primary text-white py-2 px-4 rounded"
               >
-                Kaydet
+                Save
               </button>
             </div>
           </form>
@@ -1049,12 +1017,12 @@ const OrderPage = () => {
             onSubmit={handleCardSubmit}
             className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md"
           >
-            <h3 className="text-lg font-semibold mb-4">Yeni Kart Ekle</h3>
+            <h3 className="text-lg font-semibold mb-4">Add New Card</h3>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Kart Üzerindeki İsim
+                  Name on the Card
                 </label>
                 <input
                   type="text"
@@ -1068,7 +1036,7 @@ const OrderPage = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Kart Numarası
+                  Card Number
                 </label>
                 <input
                   type="text"
@@ -1084,7 +1052,7 @@ const OrderPage = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">
-                    Son Kullanma Ay
+                    Expiry Month
                   </label>
                   <select
                     name="expire_month"
@@ -1093,7 +1061,7 @@ const OrderPage = () => {
                     className="w-full border rounded p-2"
                     required
                   >
-                    <option value="">Ay Seçin</option>
+                    <option value="">Select Month</option>
                     {Array.from({ length: 12 }, (_, i) => i + 1).map(
                       (month) => (
                         <option key={month} value={month}>
@@ -1105,7 +1073,7 @@ const OrderPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">
-                    Son Kullanma Yıl
+                    Expiry Year
                   </label>
                   <select
                     name="expire_year"
@@ -1114,7 +1082,7 @@ const OrderPage = () => {
                     className="w-full border rounded p-2"
                     required
                   >
-                    <option value="">Yıl Seçin</option>
+                    <option value="">Select Year</option>
                     {Array.from(
                       { length: 10 },
                       (_, i) => new Date().getFullYear() + i
@@ -1134,13 +1102,13 @@ const OrderPage = () => {
                 onClick={() => setShowCardForm(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800"
               >
-                İptal
+                Cancel
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-Primary text-white rounded hover:bg-Primary/90"
               >
-                Kaydet
+                Save
               </button>
             </div>
           </form>

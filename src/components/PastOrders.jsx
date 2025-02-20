@@ -49,11 +49,11 @@ const PastOrders = () => {
 
   const getOrderStatus = (index) => {
     if (index === 0) {
-      return "Hazırlanıyor";
+      return "Preparing...";
     } else if (index === 1 || index === 2) {
-      return "Kargoya Verildi";
+      return "Delivered to Cargo";
     } else {
-      return "Teslim Edildi";
+      return "Delivered";
     }
   };
 
@@ -133,9 +133,7 @@ const PastOrders = () => {
   return (
     <PageContent>
       <div className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-semibold mb-6 text-center">
-          Geçmiş Siparişlerim
-        </h2>
+        <h2 className="text-2xl font-semibold mb-6 text-center">Past Orders</h2>
         <div className="space-y-4">
           {orders.map((order, index) => (
             <div
@@ -161,17 +159,17 @@ const PastOrders = () => {
                   </div>
                   <div className="flex flex-col gap-4">
                     <p className="text-base font-semibold">
-                      Sipariş No: {order.id}
+                      Order No: {order.id}
                     </p>
                     <div>
                       <p className="text-gray-600">
-                        Sipariş Tarihi:{" "}
+                        Order Date:{" "}
                         {new Date(order.order_date).toLocaleDateString()}
                       </p>
                       <div className="flex gap-2 justify-center">
-                        <p className="text-gray-600">Tutar:</p>
+                        <p className="text-gray-600">Amount:</p>
                         <p className="text-green-500 font-semibold">
-                          {order.price.toFixed(2)} TL
+                          {order.price.toFixed(2)} $
                         </p>
                       </div>
                     </div>
@@ -180,7 +178,7 @@ const PastOrders = () => {
                     onClick={() => toggleOrderDetails(order.id)}
                     className="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white rounded-md transition-colors py-1 px-2 m-4"
                   >
-                    {expandedOrderId === order.id ? "Gizle" : "Sipariş Detayı"}
+                    {expandedOrderId === order.id ? "Hide" : "Order Detail"}
                   </button>
                 </div>
               </div>
@@ -201,15 +199,15 @@ const PastOrders = () => {
                           <div>
                             <p className="font-medium">{product.detail}</p>
                             <p className="text-gray-600">
-                              Ürün Adı: {product.name}
+                              Product: {product.name}
                             </p>
                             <p className="text-gray-600">
-                              Adet: {product.count}
+                              Piece: {product.count}
                             </p>
                           </div>
                         </div>
                         <p className="text-gray-600">
-                          {product.price.toFixed(2)} TL
+                          {product.price.toFixed(2)} $
                         </p>
                       </li>
                     ))}

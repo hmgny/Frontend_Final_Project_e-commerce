@@ -39,15 +39,17 @@ const ShoppingCartTable = () => {
             alt="Empty Cart"
             className="w-32 h-32 mx-auto mb-4"
           />
-          <h2 className="text-xl font-semibold mb-2">Sepetiniz şu an boş</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            Your cart is currently empty
+          </h2>
           <p className="text-gray-500 mb-4">
-            Sepetinize ürün eklemek için alışverişe başlayın!
+            Start shopping to add items to your cart!
           </p>
           <button
             onClick={() => history.push("/shop")}
             className="bg-Primary text-white px-6 py-2 rounded-md hover:bg-Primary/90"
           >
-            Alışverişe Başla
+            Start Shopping
           </button>
         </div>
       </div>
@@ -63,11 +65,11 @@ const ShoppingCartTable = () => {
           <div className="lg:w-2/3">
             <div className="bg-white rounded-lg shadow p-6">
               <h2 className="text-xl font-semibold mb-4">
-                Sepetim (
+                My Cart (
                 {cart
                   .filter((item) => item.checked)
                   .reduce((total, item) => total + item.count, 0)}{" "}
-                Ürün)
+                Product)
               </h2>
               {cart.map((item) => (
                 <div className="flex justify-between px-6 border border-gray-100">
@@ -96,7 +98,7 @@ const ShoppingCartTable = () => {
                       <div className="flex-grow">
                         <h3 className="font-medium">{item.product.name}</h3>
                         <div className="text-gray-500 text-sm mt-1">
-                          Satıcı: MeyaShop
+                          Seller: MeyaShop
                         </div>
                         <div className="flex items-center justify-between mt-4">
                           <div className="flex items-center gap-2 border border-gray-200">
@@ -143,7 +145,7 @@ const ShoppingCartTable = () => {
                     </button>
                     <div className="flex flex-col items-center">
                       <span className="font-semibold line-through">
-                        {(item.product.price * item.count).toFixed(2)} TL
+                        {(item.product.price * item.count).toFixed(2)} $
                       </span>
                       <span className="font-semibold text-red-500">
                         {`${(
@@ -151,7 +153,7 @@ const ShoppingCartTable = () => {
                             ((item.product.price * item.count) / 2) * 100
                           ) / 100
                         ).toFixed(2)}`}{" "}
-                        TL
+                        $
                       </span>
                     </div>
                   </div>
@@ -164,32 +166,32 @@ const ShoppingCartTable = () => {
           <div className="lg:w-1/3">
             <div className="bg-white rounded-lg shadow p-6 sticky top-4">
               <h3 className="text-lg font-semibold mb-4">
-                Sipariş Özeti (
+                Order Summary (
                 {cart
                   .filter((item) => item.checked)
                   .reduce((total, item) => total + item.count, 0)}{" "}
-                Ürün)
+                Product)
               </h3>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span>Ara Toplam</span>
-                  <span>{(calculateTotal() * 0.5).toFixed(2)} TL</span>
+                  <span>Subtotal</span>
+                  <span>{(calculateTotal() * 0.5).toFixed(2)} $</span>
                 </div>
                 {cart.some((item) => item.checked) && (
                   <>
                     <div className="flex justify-between">
-                      <span>Kargo</span>
-                      <span>49.90 TL</span>
+                      <span>Cargo</span>
+                      <span>49.90 $</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="flex flex-wrap">
                         {calculateTotal() * (0.5).toFixed(2) > 500
-                          ? "500 TL ve üzeri alışverişlerde kargo ücretsiz"
+                          ? "Free shipping for purchases of 500 $ and above"
                           : ""}
                       </span>
                       <span className="text-red-500">
                         {calculateTotal() * (0.5).toFixed(2) > 500
-                          ? "- 49.90 TL"
+                          ? "- 49.90 $"
                           : ""}
                       </span>
                     </div>
@@ -197,13 +199,13 @@ const ShoppingCartTable = () => {
                 )}
                 <div className="border-t pt-4 mt-4">
                   <div className="flex justify-between font-semibold">
-                    <span>Toplam</span>
+                    <span>Total</span>
                     <span>
                       {(
                         calculateTotal() * (0.5).toFixed(2) +
                         (calculateTotal() * (0.5).toFixed(2) > 500 ? 0 : 49.9)
                       ).toFixed(2)}
-                      TL
+                      $
                     </span>
                   </div>
                 </div>
@@ -212,13 +214,13 @@ const ShoppingCartTable = () => {
                     onClick={handleCheckout}
                     className="w-full bg-Primary text-white py-3 rounded-md mt-6 hover:bg-Primary/90"
                   >
-                    Sepeti Onayla
+                    Confirm Cart
                   </button>
                 )}
                 <span className="h7 text-red-600">
                   {calculateTotal() * (0.5).toFixed(2) > 500
                     ? ""
-                    : "500 TL ve üzeri alışverişlerde kargo ücretsiz"}
+                    : "Free shipping for purchases of 500 $ and above"}
                 </span>
               </div>
             </div>

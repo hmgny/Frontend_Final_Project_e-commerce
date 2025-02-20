@@ -123,12 +123,12 @@ function ShopCard() {
               </p>
               <div className="flex gap-2 mt-2">
                 <span className="text-SecondaryTextColor line-through">
-                  {product.price}₺
+                  {product.price}$
                 </span>
                 <span className="text-Secondary font-bold">
                   {`${(Math.floor((product.price / 2) * 100) / 100).toFixed(
                     2
-                  )}₺`}
+                  )}$`}
                 </span>
               </div>
               <div className="flex gap-2 mt-2">
@@ -141,7 +141,7 @@ function ShopCard() {
                 onClick={() => handleAddToCart(product)}
                 className="bg-Primary text-white px-8 py-3 rounded-md hover:bg-blue-600 transition-colors mt-3"
               >
-                Sepete Ekle
+                Add to Cart
               </button>
             </div>
           </div>

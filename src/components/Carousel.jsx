@@ -43,15 +43,14 @@ function Carousel() {
           >
             <div className="flex flex-col items-center sm:flex-row sm:justify-around">
               <div className="flex flex-col gap-8 max-w-64 sm:max-w-96 items-center text-center sm:text-start sm:items-start ">
-                <h5 className="h5 text-base">SUMMER 2020</h5>
+                <h5 className="h4 text-base">SPRINT 2024</h5>
                 <h2 className="h2 text-4xl font-bold sm:h1 sm:leading-[80px]">
-                  Vita Classic Product
+                  Favorite Classic Products
                 </h2>
                 <h4 className="text-xl text-lightGray ">
-                  We know how large objects will act, but things on a small
-                  scale.
+                  For those who can't give up the classics
                 </h4>
-                <div className="flex flex-col gap-6 sm:flex-row">
+                <div className="flex flex-col gap-6 sm:flex-row items-center">
                   <h4 className="h4 text-base font-bold">$16.48</h4>
                   <button className="bg-succes text-lightTextColor text-3xl h7 font-bold w-56 h-16 rounded-md">
                     ADD TO CART

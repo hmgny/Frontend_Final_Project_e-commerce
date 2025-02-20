@@ -68,12 +68,12 @@ function Header() {
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
-    toast.success("Ürün sepete eklendi.");
+    toast.success("Product added to cart.");
   };
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
-    toast.success("Ürün sepetten çıkarıldı.");
+    toast.success("Product removed from the cart.");
   };
 
   if (loading) {
@@ -91,7 +91,7 @@ function Header() {
           to="/"
           className="h4 font-bold text-textColor sm:flex sm:justify-start"
         >
-          Bandage
+          MeyaShop
         </Link>
         <div className="sm:flex gap-10 items-center hidden">
           <Link
@@ -222,7 +222,7 @@ function Header() {
                   to="/pastOrders"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
-                  <h2 className="text-lg font-semibold mb-4">Siparişlerim</h2>
+                  <h2 className="text-lg font-semibold mb-4">My Orders</h2>
                 </Link>
               </div>
             )}
@@ -249,11 +249,11 @@ function Header() {
               >
                 <div className="p-4">
                   <h2 className="text-xl font-semibold mb-4">
-                    Sepetim (
+                    My Cart (
                     {cart
                       .filter((item) => item.checked)
                       .reduce((total, item) => total + item.count, 0)}{" "}
-                    Ürün)
+                    Product)
                   </h2>
                   <div className="max-h-96 overflow-y-auto">
                     {cart.map((item) => (
@@ -283,7 +283,7 @@ function Header() {
                                   ((item.product.price * item.count) / 2) * 100
                                 ) / 100
                               ).toFixed(2)}`}{" "}
-                              TL
+                              $
                             </p>
                           </div>
                         </div>
@@ -332,30 +332,27 @@ function Header() {
                   {cart.length > 0 ? (
                     <div className="mt-4 pt-4 border-t">
                       <div className="flex justify-between font-medium mb-4">
-                        <span>Toplam:</span>
-                        <span>
-                          {(calculateTotal() * 0.5).toFixed(2)}
-                          TL
-                        </span>
+                        <span>Total:</span>
+                        <span>{(calculateTotal() * 0.5).toFixed(2)}$</span>
                       </div>
                       <div className="flex gap-4">
                         <Link
                           to="/shoppingCart"
                           className="block w-full bg-Primary text-white text-center py-2 rounded hover:text-Primary hover:bg-white border border-Primary"
                         >
-                          Sepete Git
+                          Go to cart
                         </Link>
                         <Link
                           to="/order"
                           className="block w-full bg-white text-Primary text-center py-2 rounded hover:bg-Primary hover:text-white border border-Primary"
                         >
-                          Siparişi Tamamla
+                          Complete Order
                         </Link>
                       </div>
                     </div>
                   ) : (
                     <div className="text-center py-4">
-                      <p>Sepetiniz boş</p>
+                      <p>Your basket is empty</p>
                     </div>
                   )}
                 </div>

@@ -24,10 +24,10 @@ const OrderSuccess = ({ onClose }) => {
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            SİPARİŞİNİZ ALINDI
+            YOUR ORDER RECEIVED
           </h2>
           <p className="text-gray-600 mb-6">
-            Siparişiniz başarıyla oluşturuldu.
+            Your order was successfully created.
           </p>
         </div>
 
@@ -35,13 +35,13 @@ const OrderSuccess = ({ onClose }) => {
           onClick={() => history.push("/")}
           className="w-full bg-Primary text-white py-3 px-6 rounded-md hover:bg-Primary/90 transition-colors"
         >
-          Alışverişe Devam Et
+          Continue Shopping
         </button>
         <button
           onClick={() => history.push("/PastOrders")}
           className="w-full bg-Primary text-white py-3 px-6 rounded-md my-2 hover:bg-Primary/90 transition-colors"
         >
-          Siparişlerim
+          My Orders
         </button>
       </div>
     </div>

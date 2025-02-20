@@ -3,31 +3,27 @@ import { AlarmClock, ChartArea, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function CardBlog() {
-
-  const Blogimg=[{
-    img:"/images/blog_img1.jpg",
-    alt:"best1",
+  const Blogimg = [
+    {
+      img: "/images/blog_img1.jpg",
+      alt: "best1",
     },
     {
-    img:"/images/blog_img2.jpg",
-    alt:"best1",
+      img: "/images/blog_img2.jpg",
+      alt: "best1",
     },
     {
-    img:"/images/blog_img3.jpg",
-    alt:"best1",
-  }
-  
-]
+      img: "/images/blog_img3.jpg",
+      alt: "best1",
+    },
+  ];
   return (
     <div className="px-8 flex flex-col items-center py-24 gap-16  ">
       <div className="max-w-52 sm:max-w-none flex flex-col gap-5 text-center">
-        <p className="h7 text-Primary">Practice Advice</p>
         <h2 className="h2 font-bold flex justify-center text-textColor">
-          Featured Products
+          A Little Art
         </h2>
-        <p className="text-SecondaryTextColor h7">
-          Problems trying to resolve the conflict between the two major
-        </p>
+        <p className="text-SecondaryTextColor h5">Treat yourself to art</p>
       </div>
 
       <div className="flex flex-wrap gap-10 justify-center sm:gap-4">
@@ -57,19 +53,19 @@ function CardBlog() {
                     New
                   </Link>
                 </div>
-                
+
                 <h5 className="h5 text-textColor">
                   Loudest à la Madison #1 (L'integral)
                 </h5>
                 <p className="h6 text-SecondaryTextColor">
-                  We focus on ergonomics and meeting you where you work. It's
-                  only a keystroke away.
+                  We aim to bring ergonomics and aesthetics together in the same
+                  place. Just a keystroke away.
                 </p>
 
                 <div className="flex justify-between">
                   <p className="flex items-center gap-2 text-SecondaryTextColor h8">
                     <AlarmClock color="#23A6F0" size={18} />
-                    22 April 2021
+                    22 April 2024
                   </p>
                   <p className="flex items-center gap-2 text-SecondaryTextColor h8">
                     <ChartArea color="#23856D" size={20} />
@@ -78,10 +74,10 @@ function CardBlog() {
                 </div>
 
                 <Link to="/product/:id">
-            <button className="mt-4 bg-white text-Primary font-bold border border-Primary px-6 py-2 rounded-full transition-colors w-40 flex items-center gap-2">
-              Learn More <span className="text-lg">&gt;</span>
-            </button>
-            </Link>
+                  <button className="mt-4 bg-white text-Primary font-bold border border-Primary px-6 py-2 rounded-full transition-colors w-40 flex items-center gap-2">
+                    Learn More <span className="text-lg">&gt;</span>
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

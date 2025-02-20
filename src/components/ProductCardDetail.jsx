@@ -49,7 +49,7 @@ function ProductCardDetail({
         })
       );
     }
-    toast.success("ürün sepete eklendi");
+    toast.success("product added to cart");
   };
 
   if (isLoading) {
@@ -173,10 +173,10 @@ function ProductCardDetail({
 
             <div className="flex gap-5 mt-2">
               <span className="h4 text-textColor line-through">
-                ₺{selectedProduct.price}
+                ${selectedProduct.price}
               </span>
               <span className="h4 text-Secondary font-bold">
-                ₺
+                $
                 {`${(
                   Math.floor((selectedProduct.price / 2) * 100) / 100
                 ).toFixed(2)}`}
